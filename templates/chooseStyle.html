@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/css/output.css">
+        <link rel="stylesheet" href="/css/customStyles.css">
+        <title>Выбор пола</title>
+     </head>
+     <body class="bg-customGray flex flex-col items-center justify-center h-screen">
+        <!-- Wrapper for Container and Stripes -->
+        <div class="w-full max-w-4xl">
+            <!-- Card Selection Section -->
+            <div class="bg-customWhite p-8 shadow-md">
+                <div class="flex justify-start items-start pb-5">
+                    <img src="/assets/img/svg/logo.svg" alt="">
+                </div>
+                
+                <h2 class="text-2xl font-bold mb-6 text-center">Выберите стиль</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Карточка Casual -->
+                    <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer">
+                        <img src="/assets/img/png/Casual.png" alt="Casual" class="w-full h-64 object-cover rounded-lg mb-4">
+                        <h3 class="text-xl font-semibold text-gray-700 text-center">Casual</h3>
+                    </div>
+    
+                    <!-- Карточка Спортивный стиль -->
+                    <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer">
+                        <img src="/assets/img/png/Sport.png" alt="Спортивный стиль" class="w-full h-64 object-cover rounded-lg mb-4">
+                        <h3 class="text-xl font-semibold text-gray-700 text-center">Спортивный стиль</h3>
+                    </div>
+    
+                    <!-- Карточка Business casual -->
+                    <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer">
+                        <img src="/assets/img/png/Business.png" alt="Business casual" class="w-full h-64 object-cover rounded-lg mb-4">
+                        <h3 class="text-xl font-semibold text-gray-700 text-center">Business casual</h3>
+                    </div>
+                </div>
+    
+                <!-- Navigation Buttons -->
+                <div class="flex justify-end mt-6">
+
+                    <div class="border-2 border-customBlack rounded-full py-1 px-2 flex items-center">
+
+                        <button onclick="window.location.href='previousPage.html'">
+                            <img src="/assets/img/png/prev.png" alt="">
+                        </button>
+                        
+                        <!-- Separator -->
+                        <div class="w-1 h-8 bg-customBlack mx-2"></div>
+                        
+                        <button onclick="window.location.href='confirmStyle.html'">
+                            <img src="/assets/img/png/next.png" alt="">
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+    
+            <!-- Green and Black Stripes -->
+            <div class="w-full h-4 bg-customGreen"></div>
+            <div class="w-full h-8 bg-customBlack"></div>
+
+        </div>
+
+        <div class="absolute right-28">
+            <img src="/assets/img/png/janna-full.png" alt="">
+        </div>
+
+    </body>
+</html>

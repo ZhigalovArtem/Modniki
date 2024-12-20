@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="./static/css/output.css">
+      <link rel="stylesheet" href="./static/css/customStyles.css">
+      <title>Выбор пола</title>
+   </head>
+   <body class="bg-gray-100 font-sans">
+
+    <!-- Header -->
+    <header class="flex items-center justify-between p-6 bg-white shadow-md">
+      <!-- Logo -->
+      <div class="ml-20">
+        <img src="./static/assets/img/svg/logoHead.svg" alt="">
+      </div>
+  
+      <!-- Navigation -->
+      <nav class="flex space-x-6 gap-5">
+        <button class="bg-black text-customWhite text-xl px-8 py-4 rounded-full hover:bg-gray-800">СТИЛИСТАМ</button>
+        <button class="bg-black text-customWhite text-xl px-8 py-4 rounded-full hover:bg-gray-800">РАЗБОР ГАРДЕРОБА</button>
+        <button class="bg-black text-customWhite text-xl px-8 py-4 rounded-full hover:bg-gray-800">КАПСУЛА</button>
+      </nav>
+  
+      <!-- Menu Icon -->
+      <div class="text-3xl cursor-pointer mr-10">
+        <img src="./static/assets/img/svg/burger-menu.svg" alt="">
+      </div>
+    </header>
+  
+    <!-- Main Content -->
+    <main class="flex flex-col items-center mt-12">
+      <!-- Image Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-20 px-4">
+        <!-- Image 1 -->
+        <div class="overflow-hidden">
+          <img src="./static/assets/img/png/card-1.png" alt="Image 1" class="w-full h-full object-cover filter grayscale hover:grayscale-0 transition duration-300 ease-in-out">
+        </div>
+      
+        <!-- Image 2 -->
+        <div class="overflow-hidden">
+          <img src="./static/assets/img/png/card-2.png" alt="Image 2" class="w-full h-full object-cover filter grayscale hover:grayscale-0 transition duration-300 ease-in-out">
+        </div>
+      
+        <!-- Image 3 -->
+        <div class="overflow-hidden">
+          <img src="./static/assets/img/png/card-3.png" alt="Image 3" class="w-full h-full object-cover filter grayscale hover:grayscale-0 transition duration-300 ease-in-out">
+        </div>
+      </div>
+  
+      <!-- Login Button -->
+      <a href="/auth"><button class="mt-10 text-xl px-8 py-4 bg-lime-400 text-black font-semibold rounded-full hover:bg-lime-500 transition">
+        ВОЙТИ
+      </button></a>
+    </main>
+  
+  </body>
+</html>
