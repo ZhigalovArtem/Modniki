@@ -116,34 +116,57 @@ def registrationST_page():
 
 @app.route('/anket-gender', methods = ['POST', 'GET']) # выбор пола для анкеты
 def anket_gender():
+    # if 'email' not in session:
+    #     return redirect(url_for('start_page'))
     email = session['email']
     if request.method == 'POST':
         gender = request.form.get('gender')
         print(gender)
-        # anketa[email]['gender'] = gender
-    # if 'email' not in session:
-    #     return redirect(url_for('start_page'))
+        anketa[email]['gender'] = gender
+    
     return render_template('gender.html') # after that target woman
 
 @app.route('/anket-purpose', methods = ['POST', 'GET']) # первая страниц анкеты(цели)
 def anket_purpose():
+    email = session['email']
     if request.method == 'POST':
-        print(request.args.get('home1'))
+        everyday1 = request.form.get('everyday1')
+        everyday2 = request.form.get('everyday2')
+        everyday3 = request.form.get('everyday3')
+        everyday4 = request.form.get('everyday4')
+        everyday5 = request.form.get('everyday5')
+        everyday6 = request.form.get('everyday6')
+
+        everyday_section = {'1': everyday1, '2': everyday2, '3': everyday3,
+                             '4': everyday4, '5': everyday5, '6': everyday6}
+
+        home1 = request.form.get('home1')
+        home2 = request.form.get('home2')
+        home3 = request.form.get('home3')
+        home4 = request.form.get('home4')
+        home5 = request.form.get('home5')
+        home6 = request.form.get('home6')
+        
+        home_section = {'1': home1, '2': home2, '3': home3,
+                             '4': home4, '5': home5, '6': home6}
+
+        anketa[email]['purpose'] = {'everyday': everyday_section, 'home': home_section}
+        
     return render_template('targetWoman.html')
 
-@app.route('/anket-style') # выбор стиля 2
+@app.route('/anket-style', methods = ['POST', 'GET']) # выбор стиля 2
 def anket_style():
     return render_template('/chooseStyle.html')
 
-@app.route('/season') # сезон 5
+@app.route('/season', methods = ['POST', 'GET']) # сезон 5
 def season():
     return render_template('season.html')
 
-@app.route('/anket-confirmStyle') # выбор стиля 4
+@app.route('/anket-confirmStyle', methods = ['POST', 'GET']) # выбор стиля 4
 def confirmStyle():
     return render_template('confirmStyle.html')
 
-@app.route('/skin1') # 6
+@app.route('/skin1', methods = ['POST', 'GET']) # 6
 def skin1():
     return render_template('skin1.html')
 
