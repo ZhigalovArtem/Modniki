@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="/css/customStyles.css">
         <title>Document</title>
     </head>
-    <body class="bg-gray-200">
+    <body class="bg-customGray">
         <!-- Main Content -->
         <main class="flex items-center justify-center h-screen">
             <!-- Wrapper for Container and Stripes -->
@@ -17,7 +17,7 @@
                     <img src="/assets/img/svg/logo.svg" alt="">
                 </div>
                 <!-- Card Selection Section -->
-                <div class="bg-white p-8 shadow-md relative">
+                <div class="bg-customWhite p-8 shadow-md relative">
 
                     <div class="flex justify-center items-center">
                         <img src="/assets/img/png/skin4.png" alt="Логотип" class="max-w-full h-auto">
@@ -25,26 +25,27 @@
 
                     <div class="absolute top-10 right-64">
                         <img src="/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox1" onclick="toggleCheckboxImage('likeCheckbox1')">
+                        <input type="hidden" id="likeCheckboxState1" name="likeCheckboxState1" value="false">
                     </div>
 
-                    <div class="absolute top-28 left-60">
+                    <div class="absolute top-10 left-72">
                         <img src="/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox2" onclick="toggleCheckboxImage('likeCheckbox2')">
+                        <input type="hidden" id="likeCheckboxState2" name="likeCheckboxState2" value="false">
                     </div>
 
-                    <div class="absolute top-56 left-80">
+                    <div class="absolute top-72 left-72">
                         <img src="/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox3" onclick="toggleCheckboxImage('likeCheckbox3')">
+                        <input type="hidden" id="likeCheckboxState3" name="likeCheckboxState3" value="false">
                     </div>
 
-                    <div class="absolute top-52 right-80">
+                    <div class="absolute top-52 right-96">
                         <img src="/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox4" onclick="toggleCheckboxImage('likeCheckbox4')">
+                        <input type="hidden" id="likeCheckboxState4" name="likeCheckboxState4" value="false">
                     </div>
 
-                    <div class="absolute top-64 right-52">
+                    <div class="absolute top-72 right-64">
                         <img src="/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox5" onclick="toggleCheckboxImage('likeCheckbox5')">
-                    </div>
-
-                    <div class="absolute top-72 right-72">
-                        <img src="/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox6" onclick="toggleCheckboxImage('likeCheckbox6')">
+                        <input type="hidden" id="likeCheckboxState5" name="likeCheckboxState5" value="false">
                     </div>
 
                     <div class="flex justify-end mt-6">
@@ -65,6 +66,11 @@
                 </div>
 
                 <div class="absolute right-28 top-72">
+
+                    <div class="rounded-xl bg-customWhite text-center border border-customBlack text-xl px-8 py-4">
+                        <p>Как вам образ?</p>
+                    </div>
+
                     <img src="/assets/img/png/janna-skin4.png" alt="">
                 </div>
 

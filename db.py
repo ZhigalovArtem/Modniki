@@ -82,6 +82,17 @@ def create_tables():
     );
     ''')
 
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS shmotki (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        shmotka_id TEXT,
+        FOREIGN KEY (user_id) REFERENCES users(user_id)
+    );
+    ''')
+
+    
+
     conn.commit()
     conn.close()
 

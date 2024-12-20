@@ -197,3 +197,7 @@ label {
     transform: translate(-10%, -50%);
     transition: 1s;
 }
+
+.selected {
+    border-color: #6ED01C;
+}

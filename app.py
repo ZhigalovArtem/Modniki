@@ -18,16 +18,15 @@ def start_page():
 def choose_role():
     return render_template('choose_role.html')
 
-@app.route('/auth') # авторизация
+@app.route('/auth', methods=['POST', 'GET']) # авторизация
 def auth_page():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
 
         userInfo = db.get_user_info_by_email(email)
-
-        # Исправление: проверка на наличие userInfo и его структуры
-        if userInfo and email == userInfo.get('email'):
+        print(userInfo)
+        if userInfo:
             print('Правильное мыло')
             if password == userInfo.get('password'):
                 print('Правильный пароль')
@@ -118,18 +117,26 @@ def registrationST_page():
 def anket_gender():
     # if 'email' not in session:
     #     return redirect(url_for('start_page'))
-    email = session['email']
+    print(session)
+    if 'email' in session:
+        email = session['email']
+    else:
+        pass
+
     if request.method == 'POST':
         gender = request.form.get('gender')
-        print(gender)
-        anketa[email]['gender'] = gender
+        print(f'email {email}\ngender {gender}')
+        anketa[email]= {'gender': gender}
+        return redirect(url_for('anket_purpose'))
     
     return render_template('gender.html') # after that target woman
 
 @app.route('/anket-purpose', methods = ['POST', 'GET']) # первая страниц анкеты(цели)
 def anket_purpose():
     email = session['email']
+    print(email)
     user_gender = get_gender(email)
+    print(f'\n\npurpose {user_gender}\n\n')
     if request.method == 'POST': # запись выбранных ответов
             everyday1 = request.form.get('everyday1')
             everyday2 = request.form.get('everyday2')
@@ -152,8 +159,9 @@ def anket_purpose():
                                 '4': home4, '5': home5, '6': home6}
 
             anketa[email]['purpose'] = {'everyday': everyday_section, 'home': home_section}
+            print(f'\n\n{anketa}\n\n')
     
-    if user_gender == 0:
+    if user_gender == '0':
         return render_template('targetWoman.html')
     else:
         return render_template('man')
@@ -315,15 +323,24 @@ def skin10():
 def wrkEDC():
     return render_template('workOrEducation.html')
 
+@app.route('/stylistam')
+def stylistam():
+    return render_template('stilistam.html')
+
+@app.route('/capsula')
+def capsula():
+    return render_template('capsula.html')
+
+
 @app.route('/users')
 def users():
     return db.get_users()
 
-
-
 def get_gender(email):
-    user_gender = anketa[email]['gender']
-    return user_gender
+    user_gender = anketa.get(email)
+    print(f'full {user_gender}')
+    print(user_gender['gender'])
+    return user_gender['gender']
 
 
 if __name__ == '__main__':
