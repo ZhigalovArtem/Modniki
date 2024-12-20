@@ -36,8 +36,9 @@
                 {% for user in users %}
                 {% if user['email'] != email %}
                 <li>
-                    <a href="{{ url_for('create_chat_with_user', user_id=user['user_id']) }}" class="block bg-white p-4 rounded-lg shadow hover:bg-gray-50">
-                        Chat with {{ user['name'] }}
+                    <!-- <a href="{{ url_for('create_chat_with_user', user_id=user['user_id']) }}" class="block bg-white p-4 rounded-lg shadow hover:bg-gray-50"> -->
+                    <a href="" class="block bg-white p-4 rounded-lg shadow hover:bg-gray-50">
+                        Chat with {{ user['first_name'] }}
                     </a>
                 </li>
                 {% endif %}

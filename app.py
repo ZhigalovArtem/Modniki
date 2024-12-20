@@ -345,7 +345,38 @@ def lkCL():
 
 @app.route('/chatsCL')
 def chatsCL():
-    return render_template('lkClientChat.html')
+    email = session['email']
+    user_info = db.get_user_info_by_email(email)
+    if user_info['stylist'] == 0:
+        users = db.get_ST_list()
+    else:
+        users = db.get_CL_list()
+
+    return render_template('lkClientChat.html', users = users)
+
+####### ДОДЕЛАТЬ СОЗДАНИЕ ЧАТОВ, ОТОБРАЖЕНИЕ СУЩЕСТВУЮЩИХ ЧАТОВ, СОХРАНЕНИЕ И ОТПРАВКА СООБЩЕНИЙ
+
+@app.route('/create_chat_with_user/<int:user_id>', methods = ['GET', 'POST']) # Создание чата
+def create_chat_with_user(user_id):
+    if 'email' not in session:
+        return redirect(url_for('home'))  # Если нет, отправляем на логин
+    
+    current_user = session['email']
+    user_info = db.get_user_info(current_user) # Получение инфомарци о пользователе
+
+    if not user_info:
+        flash('Ошибка авторизации')
+        return redirect(url_for('home'))
+    
+    current_user_id = user_info['user_id']
+
+    chat_between_users = db.get_chat_between_users(current_user_id, user_id) # Получении информации о чатах между пользов.
+    print(f'Chat between users: {chat_between_users}')
+
+    if not chat_between_users: # Проверка на существование чата между пользователями
+        db.create_chat(user_ids=[current_user_id, user_id]) # Создание чата
+
+    return redirect(url_for('chat')) # Обновление страницы по завершении
 
 @app.route('/chatRoom')
 def chat_room():

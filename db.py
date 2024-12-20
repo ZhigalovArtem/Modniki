@@ -91,7 +91,7 @@ def create_tables():
     );
     ''')
 
-    
+
 
     conn.commit()
     conn.close()
@@ -142,9 +142,23 @@ def get_user_info_by_id(user_id):
     conn.close()
     return dict(user_info) if user_info else None
 
+def get_CL_list():
+    conn = get_db_connection()
+    cursor = conn.cursor()
 
+    cursor.execute('SELECT * FROM users WHERE stylist = 0')
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
 
+def get_ST_list():
+    conn = get_db_connection()
+    cursor = conn.cursor()
 
+    cursor.execute('SELECT * FROM users WHERE stylist = 1')
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
 
 def get_users():
     conn = get_db_connection()
