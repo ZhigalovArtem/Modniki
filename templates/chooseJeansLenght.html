@@ -3,8 +3,8 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/css/output.css">
-        <link rel="stylesheet" href="/css/customStyles.css">
+        <link rel="stylesheet" href="./static/css/output.css">
+        <link rel="stylesheet" href="./static/css/customStyles.css">
         <title>Document</title>
 </head>
 <body class="bg-gray-200">
@@ -14,7 +14,7 @@
             <div class="w-full max-w-4xl">
 
                 <div class="w-full max-w-4xl flex justify-start items-start pb-5">
-                    <img src="/assets/img/svg/logo.svg" alt="">
+                    <img src="./static/assets/img/svg/logo.svg" alt="">
                 </div>
                 <!-- Card Selection Section -->
                 <div class="bg-customWhite p-8 shadow-md relative">
@@ -28,7 +28,7 @@
                                 <!-- Card 1 -->
                                 <div class="flex flex-col items-center">
                                     <div class="w-auto h-auto border-2 border-customBlack cursor-pointer" onclick="toggleSquare(this, 'short')" data-length-type="short">
-                                        <img src="/assets/img/png/lenght1.png" alt="Jeans 1" class="w-full h-full object-cover">
+                                        <img src="./static/assets/img/png/lenght1.png" alt="Jeans 1" class="w-full h-full object-cover">
                                     </div>
                                     <span class="mt-2 text-sm text-center">Укороченные</span>
                                 </div>
@@ -36,7 +36,7 @@
                                 <!-- Card 2 -->
                                 <div class="flex flex-col items-center">
                                     <div class="w-auto h-auto border-2 border-customBlack cursor-pointer" onclick="toggleSquare(this, 'standard')" data-length-type="standard">
-                                        <img src="/assets/img/png/lenght2.png" alt="Jeans 2" class="w-full h-full object-cover">
+                                        <img src="./static/assets/img/png/lenght2.png" alt="Jeans 2" class="w-full h-full object-cover">
                                     </div>
                                     <span class="mt-2 text-sm text-center">Стандартные</span>
                                 </div>
@@ -44,7 +44,7 @@
                                 <!-- Card 3 -->
                                 <div class="flex flex-col items-center">
                                     <div class="w-auto h-auto border-2 border-customBlack cursor-pointer" onclick="toggleSquare(this, 'long')" data-length-type="long">
-                                        <img src="/assets/img/png/lenght3.png" alt="Jeans 3" class="w-full h-full object-cover">
+                                        <img src="./static/assets/img/png/lenght3.png" alt="Jeans 3" class="w-full h-full object-cover">
                                     </div>
                                     <span class="mt-2 text-sm text-center">Длинные</span>
                                 </div>
@@ -57,14 +57,14 @@
                     <div class="flex justify-end mt-6">
                         <div class="border-2 border-customBlack rounded-full py-1 px-2 flex items-center">
                             <button onclick="window.location.href='skin10.html'">
-                                <img src="/assets/img/png/prev.png" alt="">
+                                <img src="./static/assets/img/png/prev.png" alt="">
                             </button>
                             
                             <!-- Separator -->
                             <div class="w-1 h-8 bg-customBlack mx-2"></div>
                             
                             <button onclick="window.location.href='chooseDeatelnost.html'">
-                                <img src="/assets/img/png/next.png" alt="">
+                                <img src="./static/assets/img/png/next.png" alt="">
                             </button>
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                         <p>Какая цветовая гамма вам ближе?</p>
                     </div>
 
-                    <img src="/assets/img/png/janna-skin10.png" alt="">
+                    <img src="./static/assets/img/png/janna-skin10.png" alt="">
                 </div>
 
                 <!-- Green and Black Stripes -->
@@ -92,10 +92,10 @@
                 const otherImage = document.getElementById(otherId);
     
                 // Toggle the clicked image
-                clickedImage.src = clickedImage.src.includes('likeWhite.svg') ? '/assets/img/svg/likeRed.svg' : '/assets/img/svg/likeWhite.svg';
+                clickedImage.src = clickedImage.src.includes('likeWhite.svg') ? './static/assets/img/svg/likeRed.svg' : './static/assets/img/svg/likeWhite.svg';
     
                 // Change the state of the other image
-                otherImage.src = otherImage.src.includes('likeWhite.svg') ? '/assets/img/svg/likeRed.svg' : '/assets/img/svg/likeWhite.svg';
+                otherImage.src = otherImage.src.includes('likeWhite.svg') ? './static/assets/img/svg/likeRed.svg' : './static/assets/img/svg/likeWhite.svg';
             }
         </script>
 

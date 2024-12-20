@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/output.css">
-    <link rel="stylesheet" href="/css/customStyles.css">
+    <link rel="stylesheet" href="./static/css/output.css">
+    <link rel="stylesheet" href="./static/css/customStyles.css">
     <title>Document</title>
 </head>
 <body>
@@ -13,7 +13,7 @@
 
         <!-- Logo Section -->
         <div class="w-full max-w-4xl flex justify-start items-start pb-5">
-            <img src="/assets/img/svg/logo.svg" alt="">
+            <img src="./static/assets/img/svg/logo.svg" alt="">
         </div>
 
         <!-- Wrapper for Container and Stripes -->
@@ -28,25 +28,25 @@
 
                             <div class="checkbox-container" onclick="toggleCheckbox('everyday1')">
                                 <input type="checkbox" name="everyday1" id="everyday1" name="everyday1">
-                                <img src="/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-everyday1">
+                                <img src="./static/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-everyday1">
                                 <label for="everyday1">XXS</label>
                             </div>
                     
                             <div class="checkbox-container" onclick="toggleCheckbox('everyday2')">
                                 <input type="checkbox" name="everyday2" id="everyday2" name="everyday2">
-                                <img src="/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-everyday2">
+                                <img src="./static/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-everyday2">
                                 <label for="everyday2">XS</label>
                             </div>
                     
                             <div class="checkbox-container" onclick="toggleCheckbox('everyday3')">
                                 <input type="checkbox" name="everyday3" id="everyday3" name="everyday3">
-                                <img src="/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-everyday3">
+                                <img src="./static/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-everyday3">
                                 <label for="everyday3">S</label>
                             </div>
                     
                             <div class="checkbox-container" onclick="toggleCheckbox('everyday4')">
                                 <input type="checkbox" name="everyday4" id="everyday4" name="everyday4">
-                                <img src="/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-everyday4">
+                                <img src="./static/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-everyday4">
                                 <label for="everyday4">M</label>
                             </div>
 
@@ -58,25 +58,25 @@
                         <form class="space-y-2">
                             <div class="checkbox-container" onclick="toggleCheckbox('home1')">
                                 <input type="checkbox" name="home1" id="home1" name="home1">
-                                <img src="/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-home1">
+                                <img src="./static/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-home1">
                                 <label for="home1">L</label>
                             </div>
                     
                             <div class="checkbox-container" onclick="toggleCheckbox('home2')">
                                 <input type="checkbox" name="home2" id="home2" name="home2">
-                                <img src="/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-home2">
+                                <img src="./static/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-home2">
                                 <label for="home2">XL</label>
                             </div>
                     
                             <div class="checkbox-container" onclick="toggleCheckbox('home3')">
                                 <input type="checkbox" name="home3" id="home3" name="home3">
-                                <img src="/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-home3">
+                                <img src="./static/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-home3">
                                 <label for="home3">XXL</label>
                             </div>
                     
                             <div class="checkbox-container" onclick="toggleCheckbox('home4')">
                                 <input type="checkbox" name="home4" id="home4" name="home4">
-                                <img src="/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-home4">
+                                <img src="./static/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-home4">
                                 <label for="home4">3XL</label>
                             </div>
 
@@ -87,14 +87,14 @@
                 <div class="flex justify-end mt-6">
                     <div class="border-2 border-customBlack rounded-full py-1 px-2 flex items-center">
                         <button onclick="window.location.href='previousPage.html'">
-                            <img src="/assets/img/png/prev.png" alt="">
+                            <img src="./static/assets/img/png/prev.png" alt="">
                         </button>
                         
                         <!-- Separator -->
                         <div class="w-1 h-8 bg-customBlack mx-2"></div>
                         
                         <button onclick="window.location.href='confirmStyle.html'">
-                            <img src="/assets/img/png/next.png" alt="">
+                            <img src="./static/assets/img/png/next.png" alt="">
                         </button>
                     </div>
                 </div>
@@ -107,7 +107,7 @@
         </div>
 
         <div class="absolute right-28 top-72">
-            <img src="/assets/img/png/edick-full.png" alt="">
+            <img src="./static/assets/img/png/edick-full.png" alt="">
         </div>
 
     </div>
@@ -117,7 +117,7 @@
     const checkbox = document.getElementById(id);
     const img = document.getElementById(`img-${id}`);
     checkbox.checked = !checkbox.checked;
-    img.src = checkbox.checked ? '/assets/img/svg/crystallActive.svg' : '/assets/img/svg/crystall.svg';
+    img.src = checkbox.checked ? './static/assets/img/svg/crystallActive.svg' : './static/assets/img/svg/crystall.svg';
 }
     </script>
 
