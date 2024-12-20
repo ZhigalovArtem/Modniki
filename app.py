@@ -129,46 +129,187 @@ def anket_gender():
 @app.route('/anket-purpose', methods = ['POST', 'GET']) # первая страниц анкеты(цели)
 def anket_purpose():
     email = session['email']
-    if request.method == 'POST':
-        everyday1 = request.form.get('everyday1')
-        everyday2 = request.form.get('everyday2')
-        everyday3 = request.form.get('everyday3')
-        everyday4 = request.form.get('everyday4')
-        everyday5 = request.form.get('everyday5')
-        everyday6 = request.form.get('everyday6')
+    user_gender = get_gender(email)
+    if request.method == 'POST': # запись выбранных ответов
+            everyday1 = request.form.get('everyday1')
+            everyday2 = request.form.get('everyday2')
+            everyday3 = request.form.get('everyday3')
+            everyday4 = request.form.get('everyday4')
+            everyday5 = request.form.get('everyday5')
+            everyday6 = request.form.get('everyday6')
 
-        everyday_section = {'1': everyday1, '2': everyday2, '3': everyday3,
-                             '4': everyday4, '5': everyday5, '6': everyday6}
+            everyday_section = {'1': everyday1, '2': everyday2, '3': everyday3,
+                                '4': everyday4, '5': everyday5, '6': everyday6}
 
-        home1 = request.form.get('home1')
-        home2 = request.form.get('home2')
-        home3 = request.form.get('home3')
-        home4 = request.form.get('home4')
-        home5 = request.form.get('home5')
-        home6 = request.form.get('home6')
-        
-        home_section = {'1': home1, '2': home2, '3': home3,
-                             '4': home4, '5': home5, '6': home6}
+            home1 = request.form.get('home1')
+            home2 = request.form.get('home2')
+            home3 = request.form.get('home3')
+            home4 = request.form.get('home4')
+            home5 = request.form.get('home5')
+            home6 = request.form.get('home6')
+            
+            home_section = {'1': home1, '2': home2, '3': home3,
+                                '4': home4, '5': home5, '6': home6}
 
-        anketa[email]['purpose'] = {'everyday': everyday_section, 'home': home_section}
-        
-    return render_template('targetWoman.html')
+            anketa[email]['purpose'] = {'everyday': everyday_section, 'home': home_section}
+    
+    if user_gender == 0:
+        return render_template('targetWoman.html')
+    else:
+        return render_template('man')
 
 @app.route('/anket-style', methods = ['POST', 'GET']) # выбор стиля 2
 def anket_style():
+    email = session['email']
+    if request.method == 'POST':
+        style = request.form.get('') # исправить
+        anketa[email]['style'] = style
     return render_template('/chooseStyle.html')
-
-@app.route('/season', methods = ['POST', 'GET']) # сезон 5
-def season():
-    return render_template('season.html')
 
 @app.route('/anket-confirmStyle', methods = ['POST', 'GET']) # выбор стиля 4
 def confirmStyle():
+    email = session['email']
+    if request.method == 'POST':
+        answer = request.form.get('') # исправить
+        anketa[email]['answer'] = answer
     return render_template('confirmStyle.html')
+
+@app.route('/season', methods = ['POST', 'GET']) # сезон 5
+def season(): # исправить под два пола
+    email = session['email']
+    if request.method == 'POST':
+        season = request.form.get('') # исправить
+        anketa[email]['season'] = season
+    return render_template('season.html')
 
 @app.route('/skin1', methods = ['POST', 'GET']) # 6
 def skin1():
-    return render_template('skin1.html')
+    email = session['email']
+    user_gender = get_gender(email)
+
+    if request.method == 'POST':
+        liked = request.form.get('') # исправить
+
+    if user_gender == 0:
+        return render_template('skin1.html')
+    else:
+        return render_template('skin1man.html')
+
+@app.route('/skin2', methods = ['POST', 'GET']) # 7
+def skin2():
+    email = session['email']
+    user_gender = get_gender(email)
+    if request.method == 'POST':
+        liked = request.form.get('') # исправить
+
+    if user_gender == 0:
+        return render_template('skin2.html')
+    else:
+        return render_template('skin2man.html')
+
+@app.route('/skin3', methods = ['POST', 'GET']) # 8
+def skin3():
+    email = session['email']
+    user_gender = get_gender(email)
+
+    if request.method == 'POST':
+        liked = request.form.get('') # исправить
+
+    if user_gender == 0:
+        return render_template('skin3.html')
+    else:
+        return render_template('skin3man.html')
+    
+@app.route('/skin4', methods = ['POST', 'GET']) # 9
+def skin4():
+    email = session['email']
+    user_gender = get_gender(email)
+
+    if request.method == 'POST':
+        liked = request.form.get('') # исправить
+
+    if user_gender == 0:
+        return render_template('skin4.html')
+    else:
+        return render_template('skin4man.html')
+
+@app.route('/skin5', methods = ['POST', 'GET']) # 10
+def skin5():
+    email = session['email']
+    user_gender = get_gender(email)
+
+    if request.method == 'POST':
+        liked = request.form.get('') # исправить
+
+    if user_gender == 0:
+        return render_template('skin5.html')
+    else:
+        return render_template('skin5man.html')
+
+@app.route('/skin6', methods = ['POST', 'GET']) #11
+def skin6():
+    email = session['email']
+    user_gender = get_gender(email)
+
+    if request.method == 'POST':
+        liked = request.form.get('') # исправить
+
+    if user_gender == 0:
+        return render_template('skin6.html')
+    else:
+        return render_template('skin6man.html')
+    
+@app.route('/skin7', methods = ['POST', 'GET']) #12
+def skin7():
+    email = session['email']
+    user_gender = get_gender(email)
+
+    if request.method == 'POST':
+        liked = request.form.get('') # исправить
+
+    if user_gender == 0:
+        return render_template('skin.7.html')
+    else:
+        return render_template('skin7man.html')
+    
+@app.route('/skin8', methods = ['POST', 'GET']) #13
+def skin8():
+    email = session['email']
+    user_gender = get_gender(email)
+
+    if request.method == 'POST':
+        liked = request.form.get('') # исправить
+
+    if user_gender == 0:
+        return render_template('skin.8.html')
+    else:
+        return render_template('skin8man.html')
+    
+@app.route('/skin9', methods = ['POST', 'GET']) #14
+def skin9():
+    email = session['email']
+    user_gender = get_gender(email)
+
+    if request.method == 'POST':
+        liked = request.form.get('') # исправить
+
+    if user_gender == 0:
+        return render_template('skin9.html')
+    else:
+        return render_template('skin9man.html')
+    
+@app.route('/skin10', methods = ['POST', 'GET']) #15
+def skin10():
+    email = session['email']
+    user_gender = get_gender(email)
+
+    if request.method == 'POST':
+        liked = request.form.get('') # исправить
+
+    if user_gender == 0:
+        return render_template('skin10.html')
+    else:
+        return render_template('skin10man.html')
 
 @app.route('/wrkEDC') # выбор стиля 3
 def wrkEDC():
@@ -177,6 +318,12 @@ def wrkEDC():
 @app.route('/users')
 def users():
     return db.get_users()
+
+
+
+def get_gender(email):
+    user_gender = anketa[email]['gender']
+    return user_gender
 
 
 if __name__ == '__main__':
