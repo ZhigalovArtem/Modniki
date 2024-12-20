@@ -4,28 +4,10 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
-      <link rel="stylesheet" href="/css/output.css">
-      <link rel="stylesheet" href="/css/customStyles.css">
+      <link rel="stylesheet" href="./static/css/output.css">
+      <link rel="stylesheet" href="./static/css/customStyles.css">
       <title>Личный кабинет - Клиент</title>
    </head>
-   <body class="bg-gray-100 font-sans">
-
-    <!-- Header -->
-    <header class="flex items-center justify-between p-3 bg-customWhite shadow-md">
-      <!-- Logo -->
-      <div class="ml-20">
-        <a href="index.html">
-          <img src="/assets/img/svg/logoHead.svg" alt="">
-        </a>
-      </div>
-  
-      <!-- Menu Icon -->
-      <div class="text-3xl cursor-pointer mr-10">
-        <img src="/assets/img/svg/burger-menu.svg" alt="">
-      </div>
-      
-    </header>
-
     <body class="bg-gray-100 min-h-screen">
         <div class="container mx-auto p-4">
             <h1 class="text-2xl font-bold mb-4">Welcome, {{ username }}</h1>
@@ -67,7 +49,7 @@
             const socket = io();
     
             socket.on('update_unreaded', (data) => {
-                const unreadedElement = document.getElementById(`unreaded_${data.unreaded.chat_id}`);
+                const unreadedElement = document.getElementById(unreaded_${data.unreaded.chat_id});
                 if (unreadedElement) {
                     unreadedElement.innerHTML = data.unreaded.unreaded;
                 }
@@ -75,6 +57,3 @@
         </script>
     </body>
     </html>
-  
-  </body>
-</html>

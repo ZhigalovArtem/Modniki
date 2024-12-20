@@ -14,9 +14,9 @@ def start_page():
     db.create_tables()
     return render_template('index.html')
 
-@app.route('/choose_role') # выбор роли (стилист\клиент)
-def choose_role():
-    return render_template('choose_role.html')
+@app.route('/chooseClientOrStyle') # выбор роли (стилист\клиент)
+def chooseClientOrStyle():
+    return render_template('chooseClientOrStyle.html')
 
 @app.route('/auth', methods=['POST', 'GET']) # авторизация
 def auth_page():
@@ -31,7 +31,10 @@ def auth_page():
             if password == userInfo.get('password'):
                 print('Правильный пароль')
                 session['email'] = email
-                return redirect(url_for('start_page'))  # При удачной авторизации перенаправляется на страницу index
+                if userInfo['stylist'] == 0:
+                    return redirect(url_for('lkCL'))  # При удачной авторизации перенаправляется в лк
+                if userInfo['stylist'] == 1:
+                    return redirect(url_for('lkST'))
             else:
                 #flash(message='Неправильный пароль')
                 print('Неправильный пароль')
@@ -41,7 +44,7 @@ def auth_page():
     return render_template('auth.html')
 
 @app.route('/registrationCL', methods=['GET', 'POST'])  # регистрация клиента
-def registrationCL_page():
+def registrationCL_page(): ########### ИСПРАВИТЬ #################
     if request.method == 'POST':
         #данные регистрации
         email = request.form.get('email')
@@ -74,7 +77,8 @@ def registrationCL_page():
 
                 print('Регистрация успешна!')
                 session['email'] = email
-                return redirect(url_for('anket_gender'))  # Редирект на страницу выбра пола анкета
+                return redirect(url_for('auth_page'))
+                #return redirect(url_for('anket_gender'))  # Редирект на страницу выбра пола анкета
            #else:
                 #flash(message='Пароли не совпадают')
         else:
@@ -84,7 +88,7 @@ def registrationCL_page():
     return render_template('registration.html')  # Возвращаем форму регистрации для GET-запроса
 
 @app.route('/registrationST', methods=['GET', 'POST'])  # регистрация стилиста
-def registrationST_page():
+def registrationST_page(): ###### исправить №№№№№№№№№
     if request.method == 'POST':
         #данные регистрации
         email = request.form.get('email')
@@ -105,7 +109,8 @@ def registrationST_page():
                 db.add_user(first_name= first_name, last_name= last_name, email= email, 
                              birth_date='NULL', password= password, level= level, photo_path= '', stylist= isStylist)
                 flash('Регистрация успешна!')
-                return redirect(url_for('start_page'))  # Редирект на страницу входа после регистрации ???
+                return redirect(url_for('auth_page'))
+                #return redirect(url_for('start_page'))  # Редирект на страницу входа после регистрации ???
            #else:
                 flash(message='Пароли не совпадают')
         else:
@@ -331,10 +336,35 @@ def stylistam():
 def capsula():
     return render_template('capsula.html')
 
+@app.route('/lkCL')
+def lkCL():
+    email = session['email']
+    user_info = db.get_user_info_by_email(email)
+
+    return render_template('lkClient.html', user_info=user_info)
+
+@app.route('/chatsCL')
+def chatsCL():
+    return render_template('lkClientChat.html')
+
+@app.route('/chatRoom')
+def chat_room():
+   return render_template('lkClientChatRoom.html') 
+
+@app.route('/lkST')
+def lkST():
+   email = session['email']
+   user_info = db.get_user_info_by_email(email)
+   return render_template('lkStilist.html', user_info = user_info) 
 
 @app.route('/users')
 def users():
     return db.get_users()
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    session.pop('email', None)
+    return redirect(url_for('start_page'))
 
 def get_gender(email):
     user_gender = anketa.get(email)

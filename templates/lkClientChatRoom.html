@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+      <link rel="stylesheet" href="./static/css/output.css">
+      <link rel="stylesheet" href="./static/css/customStyles.css">
+      <title>Личный кабинет - Клиент</title>
+   </head>
+   <body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto p-4">
+        {% for user in recipient %}
+        {% if user.chat_id == chat_id %}
+        <h1 class="text-2xl font-bold mb-4">Chat with {{ user.name }}</h1>
+        {% endif %}
+        {% endfor %}
+        <a href="/chat" onclick="leaveChat(event);" class="text-blue-500 hover:underline">Back to Chats</a>
+
+        <!-- Список сообщений -->
+        <ul id="messages" class="mt-6 space-y-3 bg-white p-4 rounded-lg shadow overflow-y-auto h-96">
+            {% for message in messages %}
+            <li class="p-2 border-b border-gray-200">
+                <strong class="text-blue-600">{{ message.name }}:</strong> <span>{{ message.message }}</span>
+                <div class="text-sm text-gray-500">{{ message.timestamp }}</div>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Форма отправки сообщения -->
+        <form id="messageForm" class="mt-4 flex">
+            <input type="text" id="messageInput" placeholder="Type a message" class="flex-1 p-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring focus:ring-blue-200" required>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-r-lg hover:bg-blue-600">Send</button>
+        </form>
+    </div>
+
+    <script>
+        const socket = io();
+        const chatId = "{{ chat_id }}";
+        const username = "{{ username }}";
+
+        const messagesList = document.getElementById('messages');
+        const messageForm = document.getElementById('messageForm');
+        const messageInput = document.getElementById('messageInput');
+
+        socket.emit('join_chat', { chat_id: chatId });
+
+        socket.on('receive_message', (data) => {
+            const li = document.createElement('li');
+            li.className = "p-2 border-b border-gray-200";
+            li.innerHTML = '<strong class="text-blue-600">${data.sender}:</strong> <span>${data.text}</span><div class="text-sm text-gray-500">${data.timestamp}</div>';
+            messagesList.appendChild(li);
+        });
+
+        messageForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const message = messageInput.value;
+            socket.emit('send_message', { chat_id: chatId, message });
+            messageInput.value = '';
+        });
+
+        socket.on('status', (data) => {
+            const li = document.createElement('li');
+            li.className = "text-gray-500 italic";
+            li.textContent = data.msg;
+            messagesList.appendChild(li);
+        });
+
+        window.addEventListener('beforeunload', () => {
+            socket.emit('leave_chat', { chat_id: chatId });
+        });
+
+        function leaveChat(event) {
+            socket.emit('leave_chat', { chat_id: chatId });
+        }
+    </script>
+</body>
+    </html>
