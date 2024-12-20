@@ -6,6 +6,7 @@ import db
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
 socketio = SocketIO(app)
+anketa = {}
 
 @app.route('/') # Индекс
 def start_page():
@@ -73,7 +74,7 @@ def registrationCL_page():
                 db.add_user_params(height, weight, chest_size, ass_size, waist_size, clothes_size, email)
 
                 print('Регистрация успешна!')
-                
+                session['email'] = email
                 return redirect(url_for('anket_gender'))  # Редирект на страницу выбра пола анкета
            #else:
                 #flash(message='Пароли не совпадают')
@@ -115,6 +116,13 @@ def registrationST_page():
 
 @app.route('/anket-gender', methods = ['POST', 'GET']) # выбор пола для анкеты
 def anket_gender():
+    email = session['email']
+    if request.method == 'POST':
+        gender = request.form.get('gender')
+        print(gender)
+        # anketa[email]['gender'] = gender
+    # if 'email' not in session:
+    #     return redirect(url_for('start_page'))
     return render_template('gender.html') # after that target woman
 
 @app.route('/anket-purpose', methods = ['POST', 'GET']) # первая страниц анкеты(цели)
@@ -122,6 +130,26 @@ def anket_purpose():
     if request.method == 'POST':
         print(request.args.get('home1'))
     return render_template('targetWoman.html')
+
+@app.route('/anket-style') # выбор стиля 2
+def anket_style():
+    return render_template('/chooseStyle.html')
+
+@app.route('/season') # сезон 5
+def season():
+    return render_template('season.html')
+
+@app.route('/anket-confirmStyle') # выбор стиля 4
+def confirmStyle():
+    return render_template('confirmStyle.html')
+
+@app.route('/skin1') # 6
+def skin1():
+    return render_template('skin1.html')
+
+@app.route('/wrkEDC') # выбор стиля 3
+def wrkEDC():
+    return render_template('workOrEducation.html')
 
 @app.route('/users')
 def users():

@@ -3,8 +3,8 @@
    <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link rel="stylesheet" href="/css/output.css">
-      <link rel="stylesheet" href="/css/customStyles.css">
+      <link rel="stylesheet" href="./static/css/output.css">
+      <link rel="stylesheet" href="./static/css/customStyles.css">
       <title>Выбор пола</title>
    </head>
    <body class="bg-gray-200">
@@ -13,30 +13,35 @@
          <!-- Main Section -->
          <div class="flex flex-col md:flex-row items-center bg-gray-100 shadow-lg rounded-lg p-6 space-x-0 md:space-x-12">
             <!-- Form Section -->
+            
             <div class="w-full md:w-1/2">
                <h2 class="text-2xl font-bold mb-6 text-center">Выберите ваш пол</h2>
                <!-- Кнопки выбора пола -->
                <div class="flex flex-col space-y-6">
                   <!-- Радиокнопка для Мужского пола -->
+                  <form method="post">
                   <label for="male" class="w-full">
-                     <input type="radio" id="male" name="gender" class="hidden peer">
+                     <input type="radio" id="male" name="gender" class="hidden peer" value="1">
                      <div class="w-full px-6 py-3 bg-gray-300 text-gray-800 font-bold rounded-lg text-center peer-checked:bg-black peer-checked:text-white transition duration-300 cursor-pointer">
                         Мужской
                      </div>
                   </label>
                   <!-- Радиокнопка для Женского пола -->
                   <label for="female" class="w-full">
-                     <input type="radio" id="female" name="gender" class="hidden peer">
+                     <input type="radio" id="female" name="gender" class="hidden peer" value="0">
                      <div class="w-full px-6 py-3 bg-gray-300 text-gray-800 font-bold rounded-lg text-center peer-checked:bg-black peer-checked:text-white transition duration-300 cursor-pointer">
                         Женский
                      </div>
                   </label>
+                  <button type="submit">gfn</button>
+               </form>
                </div>
             </div>
+            
             <!-- Assistant Section -->
             <div class="w-full md:w-1/2 flex justify-center">
                <div class="relative">
-                  <img src="/assets/img/png/janna-hello.png" alt="Иконка" class="w-48 h-48 object-cover rounded-full">
+                  <img src="./static/assets/img/png/janna-hello.png" alt="Иконка" class="w-48 h-48 object-cover rounded-full">
                   <div class="absolute top-0 mx-auto -mt-12 mr-4 bg-white p-4 rounded-lg shadow-md text-center">
                      <p class="text-sm font-bold">Выбери пол и продолжим!</p>
                   </div>
