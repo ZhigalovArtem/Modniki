@@ -238,7 +238,7 @@ def lkST():
    return render_template('lkStilist.html', user_info = user_info) 
 
 ######################## СОКЕТЫ ###################################################################
-
+################## !!обновление последнего сообщения!! ############################
 @socketio.on('send_message')
 def handle_send_message(data):
     user_email = session.get('email')
@@ -269,6 +269,10 @@ def handle_send_message(data):
     date = f'{datetime.now()}'
     unreaded_messages_chat = get_unreaded(second_user_id)
     update_unreaded(unreaded_messages_chat)
+    try:
+        update_last_message(message, chat_id)
+    except Exception as e:
+        print('ne emit')
     print(f'\nSecond user unreaded: {unreaded_messages_chat}\n')
     emit('receive_message', {'sender': user_name, 'text': message, 'timestamp': date,}, room=room)
     
@@ -319,6 +323,10 @@ def handle_leave_chat(data):
 def update_unreaded(unreaded_messages_chat):
      # Обновление количества непрочитанных сообщений
     socketio.emit('update_unreaded', { 'unreaded': unreaded_messages_chat })
+
+def update_last_message(message, chat_id):
+     # Обновление количества последнего сообщения
+    socketio.emit('last_message', { 'last_message': message, 'chat_id': chat_id })
 
 def get_unreaded(userID):
     print('\nGets ureaded')

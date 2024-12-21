@@ -30,7 +30,7 @@
                         <span class="block text-sm text-gray-500">Unread messages: <span id="unreaded_{{ cht.chat_id }}">{{ unreaded.unreaded }}</span></span>
                         {% for last in last_message %}
                         {% if last.chat_id == cht.chat_id %}
-                        <span class="block text-sm text-gray-500" id="unreaded_{{ cht.chat_id }}">{{ last.message }}</span>
+                        <span class="block text-sm text-gray-500" id="last_message_{{ cht.chat_id }}">{{ last.message }}</span>
                         {% endif %}
                         {% endfor %}
                     </a>
@@ -60,9 +60,16 @@
             const socket = io();
     
             socket.on('update_unreaded', (data) => {
-                const unreadedElement = document.getElementById('unreaded_${data.unreaded.chat_id}');
+                const unreadedElement = document.getElementById(`unreaded_${data.unreaded.chat_id}`);
                 if (unreadedElement) {
                     unreadedElement.innerHTML = data.unreaded.unreaded;
+                }
+            });
+
+            socket.on('last_message', (data) => {
+                const lastMessage = document.getElementById(`last_message_${data.chat_id}`);
+                if (lastMessage) {
+                    lastMessage.innerHTML = data.last_message;
                 }
             });
         </script>

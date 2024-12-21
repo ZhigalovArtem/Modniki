@@ -3,8 +3,14 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="./static/css/output.css">
-        <link rel="stylesheet" href="./static/css/customStyles.css">
+        <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='/css/output.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='/css/customStyles.css') }}"
+    />
         <title>Document</title>
      </head>
      <body class="bg-customGray">
@@ -14,54 +20,54 @@
             <div class="w-full max-w-4xl">
 
                 <div class="w-full max-w-4xl flex justify-start items-start pb-5">
-                    <img src="./static/assets/img/svg/logo.svg" alt="">
+                    <img src="{{ url_for('static', filename= 'assets/img/svg/logo.svg') }}" alt="">
                 </div>
                 <!-- Card Selection Section -->
                 <div class="bg-customWhite p-8 shadow-md relative">
 
                     <div class="flex justify-center items-center">
-                        <img src="./static/assets/img/png/edick1.png" alt="Логотип" class="max-w-full h-auto">
+                        <img src="{{ url_for('static', filename= 'assets/img/png/edick1.png') }}" alt="Логотип" class="max-w-full h-auto">
                     </div>
 
                     <div class="absolute top-80 right-96">
-                        <img src="./static/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox1" onclick="toggleCheckboxImage('likeCheckbox1')">
+                        <img src="{{ url_for('static', filename= 'assets/img/svg/likeWhite.svg') }}" alt="Like" class="checkbox-image" id="likeCheckbox1" onclick="toggleCheckboxImage('likeCheckbox1')">
                     </div>
 
                     <div class="absolute top-10 left-64">
-                        <img src="./static/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox2" onclick="toggleCheckboxImage('likeCheckbox2')">
+                        <img src="{{ url_for('static', filename= 'assets/img/svg/likeWhite.svg') }}" alt="Like" class="checkbox-image" id="likeCheckbox2" onclick="toggleCheckboxImage('likeCheckbox2')">
                     </div>
 
                     <div class="absolute top-56 left-72">
-                        <img src="./static/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox3" onclick="toggleCheckboxImage('likeCheckbox3')">
+                        <img src="{{ url_for('static', filename= 'assets/img/svg/likeWhite.svg') }}" alt="Like" class="checkbox-image" id="likeCheckbox3" onclick="toggleCheckboxImage('likeCheckbox3')">
                     </div>
 
                     <div class="absolute top-52 right-96">
-                        <img src="./static/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox4" onclick="toggleCheckboxImage('likeCheckbox4')">
+                        <img src="{{ url_for('static', filename= 'assets/img/svg/likeWhite.svg') }}" alt="Like" class="checkbox-image" id="likeCheckbox4" onclick="toggleCheckboxImage('likeCheckbox4')">
                     </div>
 
                     <div class="absolute top-52 right-96">
-                        <img src="./static/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox5" onclick="toggleCheckboxImage('likeCheckbox5')">
+                        <img src="{{ url_for('static', filename= 'assets/img/svg/likeWhite.svg') }}" alt="Like" class="checkbox-image" id="likeCheckbox5" onclick="toggleCheckboxImage('likeCheckbox5')">
                     </div>
 
                     <div class="absolute top-44 right-72">
-                        <img src="./static/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox6" onclick="toggleCheckboxImage('likeCheckbox6')">
+                        <img src="{{ url_for('static', filename= 'assets/img/svg/likeWhite.svg') }}" alt="Like" class="checkbox-image" id="likeCheckbox6" onclick="toggleCheckboxImage('likeCheckbox6')">
                     </div>
 
                     <div class="absolute top-72 right-64">
-                        <img src="./static/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox7" onclick="toggleCheckboxImage('likeCheckbox7')">
+                        <img src="{{ url_for('static', filename= 'assets/img/svg/likeWhite.svg') }}" alt="Like" class="checkbox-image" id="likeCheckbox7" onclick="toggleCheckboxImage('likeCheckbox7')">
                     </div>
 
                     <div class="flex justify-end mt-6">
                         <div class="border-2 border-customBlack rounded-full py-1 px-2 flex items-center">
                             <button onclick="window.location.href='previousPage.html'">
-                                <img src="./static/assets/img/png/prev.png" alt="">
+                                <img src="{{ url_for('static', filename= 'assets/img/png/prev.png') }}" alt="">
                             </button>
                             
                             <!-- Separator -->
                             <div class="w-1 h-8 bg-customBlack mx-2"></div>
                             
                             <button onclick="window.location.href='skin2man.html'">
-                                <img src="./static/assets/img/png/next.png" alt="">
+                                <img src="{{ url_for('static', filename= 'assets/img/png/next.png') }}" alt="">
                             </button>
                         </div>
                     </div>
@@ -69,7 +75,7 @@
                 </div>
 
                 <div class="absolute right-28 top-72">
-                    <img src="./static/assets/img/png/edick-skin1.png" alt="">
+                    <img src="{{ url_for('static', filename= 'assets/img/png/edick-skin1.png') }}" alt="">
                 </div>
 
                 <!-- Green and Black Stripes -->

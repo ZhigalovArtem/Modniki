@@ -79,7 +79,7 @@
               </div>
               <p class="text-customBlack">{{ message.message }}</p>
               <div class="text-xs text-gray-500 mt-1">
-                {{ message.timestamp }}
+                {{ message.timestamp.split(' ')[1][:5] }}
               </div>
             </div>
           </li>
@@ -91,13 +91,13 @@
               alt="Мария"
               class="w-8 h-8 rounded-full mt-1"
             />
-            <div class="bg-customBlack text-white rounded-lg p-3 max-w-[80%]">
+            <div class="bg-customBlack text-white rounded-lg p-3 max-w-[80%] justify-end">
               <div class="font-medium mb-1">
                 {{ message.first_name }}
               </div>
-              <p class="text-customBlack">{{ message.message }}</p>
+              <p class="text-white">{{ message.message }}</p>
               <div class="text-xs opacity-75 mt-1">
-                {{ message.timestamp }}
+                {{ message.timestamp.split(' ')[1][:5] }}
               </div>
             </div>
           </li>
@@ -133,38 +133,35 @@
       const messageForm = document.getElementById("messageForm");
       const messageInput = document.getElementById("messageInput");
 
+      // Добавляем прокрутку при загрузке страницы
+      window.onload = function() {
+        messagesList.scrollTop = messagesList.scrollHeight;
+      };
+
       socket.emit("join_chat", { chat_id: chatId });
 
       socket.on("receive_message", (data) => {
         const li = document.createElement("li");
         const isOwnMessage = data.sender === username;
-        console.log(data.sender);
-        console.log(username);
-        console.log(isOwnMessage);
         li.className = `flex items-start gap-3 ${
           isOwnMessage ? "justify-end" : ""
         }`;
         li.innerHTML = `
-                ${
-                  !isOwnMessage
-                    ? `<img src="https://ui-avatars.com/api/?name=${data.sender}" alt="${data.sender}" class="w-8 h-8 rounded-full mt-1">`
-                    : ""
-                }
-                <div class="${
-                  isOwnMessage ? "bg-customBlack text-white" : "bg-gray-100"
-                } rounded-lg p-3 max-w-[80%]">
-                    <div class="font-medium mb-1">${data.sender}</div>
-                    <p>${data.text}</p>
-                    <div class="text-xs ${
-                      isOwnMessage ? "opacity-75" : "text-gray-500"
-                    } mt-1">${data.timestamp}</div>
-                </div>
-                ${
-                  isOwnMessage
-                    ? `<img src="/assets/img/png/avatarClient.png" alt="You" class="w-8 h-8 rounded-full mt-1">`
-                    : ""
-                }
-            `;
+          <img 
+            src="${isOwnMessage ? '/assets/img/png/avatarClient.png' : `https://ui-avatars.com/api/?name=${data.sender}`}" 
+            alt="${isOwnMessage ? 'You' : data.sender}" 
+            class="w-8 h-8 rounded-full mt-1"
+          />
+          <div class="${
+            isOwnMessage ? "bg-customBlack text-white" : "bg-gray-100"
+          } rounded-lg p-3 max-w-[80%]">
+            <div class="font-medium mb-1">${data.sender}</div>
+            <p>${data.text}</p>
+            <div class="text-xs ${
+              isOwnMessage ? "opacity-75" : "text-gray-500"
+            } mt-1">${data.timestamp.split(' ')[1].slice(0,5)}</div>
+          </div>
+        `;
         messagesList.appendChild(li);
         messagesList.scrollTop = messagesList.scrollHeight;
       });
