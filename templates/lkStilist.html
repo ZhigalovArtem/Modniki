@@ -7,7 +7,7 @@
       <link rel="stylesheet" href="./static/css/customStyles.css">
       <title>Личный кабинет - Клиент</title>
    </head>
-   <body class="bg-gray-100 font-sans">
+   <body class="bg-customGray font-sans">
 
     <!-- Header -->
     <header class="flex items-center justify-between p-3 bg-customWhite shadow-md">
@@ -30,43 +30,181 @@
     <div class="grid grid-cols-1 gap-8">
   
       <!-- Объединенный блок профиля -->
-      <div class="bg-white p-6 rounded-lg shadow-lg">
+      <div class="bg-white p-6 rounded-t-lg shadow-lg">
+
         <div class="flex gap-8">
   
           <!-- Profile Info + Parameters -->
-          <div class="flex flex-col bg-gray-50 p-4 rounded-lg flex-1">
+          <div class="flex flex-col bg-customWhite border-2 border-customBlack p-4 rounded-lg flex-1">
+            
             <!-- Profile Info -->
             <div class="flex items-center gap-6 mb-6">
               <!-- Фото профиля -->
-              <img src="./static/assets/img/png/avatarStilist.png" alt="Фото профиля" class="w-32 h-32 rounded-full">
+              <img src="./static/assets/img/png/avatarStilist.png" alt="Фото профиля" class="w-32 h-32 rounded-full border-2 border-customBlack">
   
               <!-- Имя, Фамилия и Возраст -->
               <div>
-                <h2 class="text-2xl font-bold">{{user_info.first_name}}</h2>
-                <p class="text-2xl">{{user_info.last_name}}</p>
-                <a href="/logout">logout</a>
+
+                <div>
+                  <img src="./static/assets/img/png/level-7.png" alt="" class="w-10 h-10 rounded-full border-2 border-customBlack p-1">
+                </div>
+
+                <h2 class="text-2xl oswald-weight-medium">{{user_info.first_name}}</h2>
+                <p class="text-2xl oswald-weight-medium">{{user_info.last_name}}</p>
+              </div>
+            </div>
+            
+            <!-- Отзывы -->
+            <div class="mt-4">
+              <h3 class="text-xl oswald-weight-medium mb-4">Отзывы клиентов</h3>
+              <div class="relative">
+                <!-- Контейнер для отзывов -->
+                <div id="reviewsContainer" class="overflow-hidden">
+
+                  <div id="reviewsSlider" class="flex transition-transform duration-300">
+                    <!-- Отзыв 1 -->
+                    <div class="border-2 border-customGreen rounded-lg px-10 py-4 w-full flex-shrink-0">
+                      <div class="flex items-center gap-3 mb-2">
+                        <img src="./static/assets/img/png/avatarClient.png" alt="Фото клиента" class="w-10 h-10 rounded-full">
+                        <div>
+                          <p class="font-medium">Анна Петрова</p>
+                          <div class="flex gap-1">
+                            <img src="./static/assets/img/svg/star.svg" alt="★" class="w-4 h-4">
+                            <img src="./static/assets/img/svg/star.svg" alt="★" class="w-4 h-4">
+                            <img src="./static/assets/img/svg/star.svg" alt="★" class="w-4 h-4">
+                            <img src="./static/assets/img/svg/star.svg" alt="★" class="w-4 h-4">
+                            <img src="./static/assets/img/svg/star.svg" alt="★" class="w-4 h-4">
+                          </div>
+                        </div>
+                      </div>
+                      <p class="text-customBlack">Впервые решил обратиться за помощью к стилисту. По итогу работа с Еленой превзошла все ожидания. Было очень легко и приятно работать.</p>
+                    </div>
+
+                    <!-- Отзыв 2 -->
+                    <div class="border-2 border-customGreen rounded-lg px-10 py-4 w-full flex-shrink-0">
+                      <div class="flex items-center gap-3 mb-2">
+                        <img src="/assets/img/png/avatarClient.png" alt="Фото клиента" class="w-10 h-10 rounded-full">
+                        <div>
+                          <p class="font-medium">Мария Иванова</p>
+                          <div class="flex gap-1">
+                            <img src="./static/assets/img/svg/star.svg" alt="★" class="w-4 h-4">
+                            <img src="./static/assets/img/svg/star.svg" alt="★" class="w-4 h-4">
+                            <img src="./static/assets/img/svg/star.svg" alt="★" class="w-4 h-4">
+                            <img src="./static/assets/img/svg/star.svg" alt="★" class="w-4 h-4">
+                            <img src="./static/assets/img/svg/star.svg" alt="★" class="w-4 h-4">
+                          </div>
+                        </div>
+                      </div>
+                      <p class="text-customBlack">Елена - профессионал своего дела! Помогла мне полностью обновить гардероб.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Кнопки навигации -->
+                <button onclick="prevSlide()" class="absolute left-0 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-r">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                </button>
+                <button onclick="nextSlide()" class="absolute right-0 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-l">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                </button>
               </div>
             </div>
             
           </div>
-          
+
           <!-- Action Buttons -->
-          <div class="flex flex-col flex-1">
-            <h2 class="text-2xl font-bold mb-6">Выберите действие:</h2>
+          <div class="flex flex-col flex-1 border-2 border-customBlack rounded-lg p-4">
+
+            <h2 class="text-2xl font-bold mb-6 oswald-weight-medium">Выберите действие:</h2>
+
             <div class="space-y-4">
-              <button class="w-full bg-black text-white py-3 rounded-full hover:bg-gray-800">Разобрать гардероб</button>
-              <button class="w-full bg-black text-white py-3 rounded-full hover:bg-gray-800">Составить капсулу</button>
-              <a href="/chats"><button class="w-full bg-black text-white py-3 rounded-full hover:bg-gray-800">Чат со стилистом</button></a>
-              <button class="w-full bg-black text-white py-3 rounded-full hover:bg-gray-800">Видеозвонок стилисту</button>
+              <button class="w-full oswald-weight-medium bg-black text-white py-3 rounded-full hover:bg-customGreen hover:text-black border-2 border-transparent hover:border-black transition-colors">Чат с клиентом</button>
+              <button class="w-full oswald-weight-medium bg-black text-white py-3 rounded-full hover:bg-customGreen hover:text-black border-2 border-transparent hover:border-black transition-colors" onclick="openVideoModal()">Видеозвонок клиенту</button>
+              <button class="w-full oswald-weight-medium bg-black text-white py-3 rounded-full hover:bg-customGreen hover:text-black border-2 border-transparent hover:border-black transition-colors">Просмотреть резюме</button>
+              <button class="w-full oswald-weight-medium bg-black text-white py-3 rounded-full hover:bg-customGreen hover:text-black border-2 border-transparent hover:border-black transition-colors">Изменить резюме</button>
             </div>
+            
           </div>
   
         </div>
       </div>
-  
+
     </div>
+
   </main>
+
+<!-- Зеленая линия -->
+<div class="container mx-auto px-4">
+  <div class="w-full h-3 bg-customGreen mt-0"></div>
+  <div class="w-full h-6 bg-customBlack mt-0 rounded-b-lg"></div>
+</div>
   
+  <!-- Модальное окно для видеозвонка -->
+  <dialog id="videoModal" class="fixed inset-0 w-full h-full bg-customBlack rounded-xl p-0 overflow-hidden">
+    <!-- Зеленая полоска -->
+    <div class="w-full h-6 bg-customGreen">
+      <button class="absolute right-4 top-2" onclick="closeVideoModal()">
+        <img src="./static/assets/img/svg/close-modal.svg" alt="">
+      </button>
+    </div>
+
+    <div class="w-full h-full flex flex-col items-center justify-center">
+        <!-- Аватар и имя -->
+        <div class="flex flex-col items-center mb-8">
+            <img src="./static/assets/img/png/avatarStilist.png" alt="Фото профиля" class="w-auto h-auto rounded-full mb-4">
+            <h3 class="text-white text-2xl">Екатерина</h3>
+        </div>
+        
+        <!-- Кнопки управления -->
+        <div class="flex gap-8">
+
+            <button class="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center hover:bg-gray-700">
+              <img src="./static/assets/img/svg/camera.svg" class="w-auto h-auto" alt="">
+            </button>
+
+            <button onclick="closeVideoModal()" class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700">
+              <img src="./static/assets/img/svg/end-call.svg" class="w-auto h-auto" alt="">
+            </button>
+
+            <button class="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center hover:bg-gray-700">
+              <img src="./static/assets/img/svg/mic.svg" class="w-auto h-auto" alt="">
+            </button>
+
+        </div>
+    </div>
+  </dialog>
+  
+  <script>
+    function openVideoModal() {
+        document.getElementById('videoModal').showModal();
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeVideoModal() {
+        document.getElementById('videoModal').close();
+        document.body.style.overflow = 'auto';
+    }
+
+    let currentSlide = 0;
+    const slider = document.getElementById('reviewsSlider');
+    const slides = slider.children;
+    
+    function showSlide(index) {
+      currentSlide = index;
+      const offset = -currentSlide * 100;
+      slider.style.transform = `translateX(${offset}%)`;
+    }
+    
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+    
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      showSlide(currentSlide);
+    }
+  </script>
   
   
   

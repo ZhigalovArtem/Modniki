@@ -7,7 +7,7 @@
       <link rel="stylesheet" href="./static/css/customStyles.css">
       <title>Личный кабинет - Клиент</title>
    </head>
-   <body class="bg-gray-100 font-sans">
+   <body class="bg-customGray font-sans">
 
     <!-- Header -->
     <header class="flex items-center justify-between p-3 bg-customWhite shadow-md">
@@ -30,77 +30,154 @@
     <div class="grid grid-cols-1 gap-8">
   
       <!-- Объединенный блок профиля -->
-      <div class="bg-white p-6 rounded-lg shadow-lg">
+      <div class="bg-white p-6 rounded-t-lg shadow-lg">
+
         <div class="flex gap-8">
   
           <!-- Profile Info + Parameters -->
-          <div class="flex flex-col bg-gray-50 p-4 rounded-lg flex-1">
+          <div class="flex flex-col bg-customWhite border-2 border-customBlack p-4 rounded-lg flex-1">
+            
             <!-- Profile Info -->
-            <div class="flex items-center gap-6 mb-6">
-              <!-- Фото профиля -->
-              <img src="./static/assets/img/png/avatarClient.png" alt="Фото профиля" class="w-32 h-32 rounded-full">
-  
-              <!-- Имя, Фамилия и Возраст -->
-              <div>
-                <h2 class="text-2xl font-bold">{{user_info.last_name}}</h2>
-                <p class="text-2xl">{{user_info.first_name}}</p>
-                <p class="text-gray-600 text-xl">{{ user_years }} лет</p>
-                <a href="/logout">logout</a>
-              </div>
+  <div class="flex items-center gap-6 mb-6">
+    <!-- Фото профиля -->
+    <img src="./static/assets/img/png/avatarClient.png" alt="Фото профиля" class="w-32 h-32 rounded-full">
+
+    <!-- Имя, Фамилия и Возраст -->
+    <div>
+      <h2 class="text-2xl oswald-weight-medium">{{user_info.last_name}}</h2>
+      <p class="text-2xl oswald-weight-medium">{{user_info.first_name}}</p>
+      <p class="text-customBlack text-xl oswald-weight-medium">{{ user_years }} лет</p>
+    </div>
+  </div>
+
+  <!-- Parameters -->
+  {%for p in params%}
+<div class="bg-white p-4 rounded-lg w-full oswald-weight-medium">
+  <h3 class="mb-3 text-2xl">Параметры</h3>
+  <div class="space-y-2">
+    <div class="flex justify-between text-xl">
+      <span>Рост</span>
+      <span>{{ p.height }}</span>
+    </div>
+    <div class="flex justify-between text-xl">
+      <span>Объем талии</span>
+      <span>{{ p.waist_size }}</span>
+    </div>
+    <div class="flex justify-between text-xl">
+      <span>Объем груди</span>
+      <span>{{ p.chest_size }}</span>
+    </div>
+    <div class="flex justify-between text-xl">
+      <span>Размер одежды</span>
+      <span>{{ p.clothes_size }}</span>
+    </div>
+    <div class="flex justify-between text-xl">
+      <span>Объем бедер</span>
+      <span>{{ p.ass_size }}</span>
+    </div>
+    <div class="flex justify-between text-xl">
+      <span>Вес</span>
+      <span>{{ p.weight }}</span>
+    </div>
+  </div>
+</div>
+{%endfor%}
+            
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-col flex-1 border-2 border-customBlack rounded-lg p-4">
+
+            <h2 class="text-2xl font-bold mb-6 oswald-weight-medium">Выберите действие:</h2>
+
+            <div class="space-y-4 text-lg">
+              <a href="/chats"><button class="w-full oswald-weight-medium bg-black text-white py-3 rounded-full hover:bg-customGreen hover:text-black border-2 border-transparent hover:border-black transition-colors">Чат с клиентом</button></a>
+              <button class="w-full oswald-weight-medium bg-black text-white py-3 rounded-full hover:bg-customGreen hover:text-black border-2 border-transparent hover:border-black transition-colors" onclick="openVideoModal()">Видеозвонок стилисту</button>
+              <button class="w-full oswald-weight-medium bg-black text-white py-3 rounded-full hover:bg-customGreen hover:text-black border-2 border-transparent hover:border-black transition-colors">Просмотреть резюме</button>
+              <button class="w-full oswald-weight-medium bg-black text-white py-3 rounded-full hover:bg-customGreen hover:text-black border-2 border-transparent hover:border-black transition-colors">Изменить резюме</button>
             </div>
             
-            <!-- Parameters -->
-             {%for p in params%}
-            <div class="bg-white p-4 rounded-lg w-full">
-              <h3 class="font-bold mb-3">Параметры</h3>
-              <div class="space-y-2">
-                <div class="flex justify-between">
-                  <span>Рост</span>
-                  <span>{{ p.height }}</span>
-                </div>
-                <div class="flex justify-between">
-                  <span>Объем талии</span>
-                  <span>{{ p.waist_size }}</span>
-                </div>
-                <div class="flex justify-between">
-                  <span>Объем груди</span>
-                  <span>{{ p.chest_size }}</span>
-                </div>
-                <div class="flex justify-between">
-                  <span>Размер одежды</span>
-                  <span>{{ p.clothes_size }}</span>
-                </div>
-                <div class="flex justify-between">
-                  <span>Объем бедер</span>
-                  <span>{{ p.ass_size }}</span>
-                </div>
-                <div class="flex justify-between">
-                  <span>Вес</span>
-                  <span>{{ p.weight }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          {%endfor%}
-          <!-- Action Buttons -->
-          <div class="flex flex-col flex-1">
-            <h2 class="text-2xl font-bold mb-6">Выберите действие:</h2>
-            <div class="space-y-4">
-              <button class="w-full bg-black text-white py-3 rounded-full hover:bg-gray-800">Разобрать гардероб</button>
-              <button class="w-full bg-black text-white py-3 rounded-full hover:bg-gray-800">Составить капсулу</button>
-              <a href="/chats"><button class="w-full bg-black text-white py-3 rounded-full hover:bg-gray-800">Чат со стилистом</button></a>
-              <button class="w-full bg-black text-white py-3 rounded-full hover:bg-gray-800">Видеозвонок стилисту</button>
-            </div>
           </div>
   
         </div>
       </div>
-  
+
     </div>
+
   </main>
+
+<!-- Зеленая линия -->
+<div class="container mx-auto px-4">
+  <div class="w-full h-3 bg-customGreen mt-0"></div>
+  <div class="w-full h-6 bg-customBlack mt-0 rounded-b-lg"></div>
+</div>
   
+  <!-- Модальное окно для видеозвонка -->
+  <dialog id="videoModal" class="fixed inset-0 w-full h-full bg-customBlack rounded-xl p-0 overflow-hidden">
+    <!-- Зеленая полоска -->
+    <div class="w-full h-6 bg-customGreen">
+      <button class="absolute right-4 top-2" onclick="closeVideoModal()">
+        <img src="./static/assets/img/svg/close-modal.svg" alt="">
+      </button>
+    </div>
+
+    <div class="w-full h-full flex flex-col items-center justify-center">
+        <!-- Аватар и имя -->
+        <div class="flex flex-col items-center mb-8">
+            <img src="./static/assets/img/png/avatarStilist.png" alt="Фото профиля" class="w-auto h-auto rounded-full mb-4">
+            <h3 class="text-white text-2xl">Екатерина</h3>
+        </div>
+        
+        <!-- Кнопки управления -->
+        <div class="flex gap-8">
+
+            <button class="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center hover:bg-gray-700">
+              <img src="./static/assets/img/svg/camera.svg" class="w-auto h-auto" alt="">
+            </button>
+
+            <button onclick="closeVideoModal()" class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700">
+              <img src="./static/assets/img/svg/end-call.svg" class="w-auto h-auto" alt="">
+            </button>
+
+            <button class="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center hover:bg-gray-700">
+              <img src="./static/assets/img/svg/mic.svg" class="w-auto h-auto" alt="">
+            </button>
+
+        </div>
+    </div>
+  </dialog>
   
-  
+  <script>
+    function openVideoModal() {
+        document.getElementById('videoModal').showModal();
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeVideoModal() {
+        document.getElementById('videoModal').close();
+        document.body.style.overflow = 'auto';
+    }
+
+    let currentSlide = 0;
+    const slider = document.getElementById('reviewsSlider');
+    const slides = slider.children;
+    
+    function showSlide(index) {
+      currentSlide = index;
+      const offset = -currentSlide * 100;
+      slider.style.transform = `translateX(${offset}%)`;
+    }
+    
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+    
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      showSlide(currentSlide);
+    }
+  </script>
   
   </body>
 </html>
