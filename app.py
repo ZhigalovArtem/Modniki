@@ -21,6 +21,7 @@ def start_page():
 def chooseClientOrStyle():
     return render_template('chooseClientOrStyle.html')
 
+
 @app.route('/auth', methods=['POST', 'GET']) # авторизация
 def auth_page():
     if request.method == 'POST':
