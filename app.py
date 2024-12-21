@@ -233,9 +233,12 @@ def chat_room(chat_id, recipient_id):
 
 @app.route('/lkST')
 def lkST():
-   email = session['email']
-   user_info = db.get_user_info_by_email(email)
-   return render_template('lkStilist.html', user_info = user_info) 
+    feedbacks = [{'id': 1, 'creator_id': 2, 'stylist_id': 2, 'score': 5, 'text': 'Хороший стилист'},
+    {'id': 2, 'creator_id': 2, 'stylist_id': 2, 'score': 4, 'text': 'Замечательный стилист'}, 
+    {'id': 3, 'creator_id': 3, 'stylist_id': 2, 'score': 3, 'text': 'Чудесный стилист'}]
+    email = session['email']
+    user_info = db.get_user_info_by_email(email)
+    return render_template('lkStilist.html', user_info = user_info, feedbacks = feedbacks) 
 
 ######################## СОКЕТЫ ###################################################################
 ################## !!обновление последнего сообщения!! ############################

@@ -63,40 +63,24 @@
 
                   <div id="reviewsSlider" class="flex transition-transform duration-300">
                     <!-- Отзыв 1 -->
+                     {% for feedback in feedbacks %}
                     <div class="border-2 border-customGreen rounded-lg px-10 py-4 w-full flex-shrink-0">
                       <div class="flex items-center gap-3 mb-2">
                         <img src="./static/assets/img/png/avatarClient.png" alt="Фото клиента" class="w-10 h-10 rounded-full">
                         <div>
-                          <p class="font-medium">Анна Петрова</p>
+                          <p class="font-medium">{{feedback.creator_id}}</p>
                           <div class="flex gap-1">
-                            <img src="./static/assets/img/svg/star.svg" alt="★" class="w-4 h-4">
-                            <img src="./static/assets/img/svg/star.svg" alt="★" class="w-4 h-4">
-                            <img src="./static/assets/img/svg/star.svg" alt="★" class="w-4 h-4">
-                            <img src="./static/assets/img/svg/star.svg" alt="★" class="w-4 h-4">
-                            <img src="./static/assets/img/svg/star.svg" alt="★" class="w-4 h-4">
+                            <ul class="flex space-x-1">
+                              {% for i in range(feedback.score) %}
+                              <li><img src="./static/assets/img/svg/star.svg" alt="★" class="w-4 h-4"></li>
+                              {% endfor %}
+                            </ul>
                           </div>
                         </div>
                       </div>
-                      <p class="text-customBlack">Впервые решил обратиться за помощью к стилисту. По итогу работа с Еленой превзошла все ожидания. Было очень легко и приятно работать.</p>
+                      <p class="text-customBlack">{{feedback.text}}</p>
                     </div>
-
-                    <!-- Отзыв 2 -->
-                    <div class="border-2 border-customGreen rounded-lg px-10 py-4 w-full flex-shrink-0">
-                      <div class="flex items-center gap-3 mb-2">
-                        <img src="/assets/img/png/avatarClient.png" alt="Фото клиента" class="w-10 h-10 rounded-full">
-                        <div>
-                          <p class="font-medium">Мария Иванова</p>
-                          <div class="flex gap-1">
-                            <img src="./static/assets/img/svg/star.svg" alt="★" class="w-4 h-4">
-                            <img src="./static/assets/img/svg/star.svg" alt="★" class="w-4 h-4">
-                            <img src="./static/assets/img/svg/star.svg" alt="★" class="w-4 h-4">
-                            <img src="./static/assets/img/svg/star.svg" alt="★" class="w-4 h-4">
-                            <img src="./static/assets/img/svg/star.svg" alt="★" class="w-4 h-4">
-                          </div>
-                        </div>
-                      </div>
-                      <p class="text-customBlack">Елена - профессионал своего дела! Помогла мне полностью обновить гардероб.</p>
-                    </div>
+                    {% endfor %}
                   </div>
                 </div>
 

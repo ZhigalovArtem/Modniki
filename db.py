@@ -91,7 +91,17 @@ def create_tables():
     );
     ''')
 
-
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS feedbacks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            creator_id INTEGER NOT NULL,
+            stylist_id INTEGER NOT NULL
+            score INTEGER,
+            text TEXT,
+            FOREIGN KEY (creator_id) REFERENCES users(user_id)
+            FOREIGN KEY (stylist_id) REFERENCES users(user_id);
+        );
+        ''')
 
     conn.commit()
     conn.close()
