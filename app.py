@@ -14,6 +14,9 @@ def start_page():
     db.create_tables()
     return render_template('index.html')
 
+##################################################################################################
+############################ РЕГИСТРАЦИЯ\ АВТОРИЗАЦИЯ ############################################
+
 @app.route('/chooseClientOrStyle') # выбор роли (стилист\клиент)
 def chooseClientOrStyle():
     return render_template('chooseClientOrStyle.html')
@@ -117,6 +120,163 @@ def registrationST_page(): ###### исправить №№№№№№№№№
             print('Эта почта уже используется')
 
     return render_template('registrationStilist.html')  # Возвращаем форму регистрации для GET-запроса
+
+##################################################################################################
+############################ ЛИЧНЫЙ КАБИНЕТ\ ЧАТЫ ################################################
+
+@app.route('/lkCL')
+def lkCL():
+    email = session['email']
+    user_info = db.get_user_info_by_email(email)
+
+    return render_template('lkClient.html', user_info=user_info)
+
+@app.route('/chats')
+def chats():
+    email = session['email']
+    user_info = db.get_user_info_by_email(email)
+    if user_info['stylist'] == 0:
+        users = db.get_ST_list()
+    else:
+        users = db.get_CL_list()
+
+    return render_template('lkClientChat.html', users = users)
+
+####### ДОДЕЛАТЬ СОЗДАНИЕ ЧАТОВ, ОТОБРАЖЕНИЕ СУЩЕСТВУЮЩИХ ЧАТОВ, СОХРАНЕНИЕ И ОТПРАВКА СООБЩЕНИЙ
+
+@app.route('/create_chat_with_user/<int:user_id>', methods = ['GET', 'POST']) # Создание чата
+def create_chat_with_user(user_id):
+    if 'email' not in session:
+        return redirect(url_for('start_page'))  # Если нет, отправляем на index
+    
+    current_user = session['email']
+    user_info = db.get_user_info_by_email(current_user) # Получение инфомарци о пользователе
+
+    if not user_info:
+        flash('Ошибка авторизации')
+        return redirect(url_for('start_page'))
+    
+    current_user_id = user_info['user_id']
+
+    chat_between_users = db.get_chat_between_users(current_user_id, user_id) # Получении информации о чатах между пользов.
+    print(f'Chat between users: {chat_between_users}')
+
+    if not chat_between_users: # Проверка на существование чата между пользователями
+        db.create_chat(user_ids=[current_user_id, user_id]) # Создание чата
+
+    return redirect(url_for('chats')) # Обновление страницы по завершении
+
+@app.route('/chatRoom')
+def chat_room():
+   return render_template('lkClientChatRoom.html') 
+
+@app.route('/lkST')
+def lkST():
+   email = session['email']
+   user_info = db.get_user_info_by_email(email)
+   return render_template('lkStilist.html', user_info = user_info) 
+
+######################## СОКЕТЫ ###################################################################
+
+@socketio.on('send_message')
+def handle_send_message(data):
+    user_email = session.get('email')
+    chat_id = data.get('chat_id')
+    message = data.get('message')
+
+    if not user_email or not chat_id or not message:
+        emit('error', {'msg': 'Invalid data: sender, chat_id, or message missing'})
+        return
+
+    user_info = db.get_user_info(user_email)
+    if not user_info:
+        emit('error', {'msg': 'Sender not found in the database'})
+        return
+
+    user_id = user_info['user_id']
+    user_name = user_info['name']
+    chat_info = db.get_chats(chat_id)
+
+    for chat in chat_info:
+        if chat['user_id'] != user_id:
+            second_user_id = chat['user_id']
+    # Сохраняем сообщение в БД
+    db.save_message(chat_id, user_id, message) # Сохранение сообщения в базу данных
+
+    # Отправляем сообщение в комнату чата
+    room = f"chat_{chat_id}"
+    date = f'{datetime.now()}'
+    unreaded_messages_chat = get_unreaded(second_user_id)
+    update_unreaded(unreaded_messages_chat)
+    print(f'\nSecond user unreaded: {unreaded_messages_chat}\n')
+    emit('receive_message', {'sender': user_name, 'text': message, 'timestamp': date,}, room=room)
+    
+
+@socketio.on('join_chat') # Выводит сообщение о подключении
+def handle_join_chat(data):
+    user_email = session.get('email')
+    chat_id = data.get('chat_id')
+
+    if not user_email or not chat_id:
+        emit('error', {'msg': 'Invalid data: sender or chat_id missing'})
+        return
+
+    user_info = db.get_user_info(user_email)
+
+    if not user_info:
+        emit('error', {'msg': 'Sender not found in the database'})
+        return
+
+    user_id = db.get_user_info_by_email(user_email)['user_id']
+    db.mark_chat_as_read(chat_id, user_id) # Отметка о последнем входе в чат
+
+    room = f"chat_{chat_id}"
+    join_room(room)
+    emit('status', {'msg': f"{user_info['first_name']} joined the chat."}, room=room)
+
+@socketio.on('leave_chat') # Выводит сообщение о выходе пользователя поменять но обновление времени просмотра?
+def handle_leave_chat(data):
+    print('leave_chat')
+    user_email = session.get('email')
+    chat_id = data.get('chat_id')
+
+    if not user_email or not chat_id:
+        emit('error', {'msg': 'Invalid data: sender or chat_id missing'})
+        return
+
+    user_info = db.get_user_info(user_email)
+    if not user_info:
+        emit('error', {'msg': 'Sender not found in the database'})
+        return
+
+    user_id = db.get_user_info_by_email(user_email)['user_id']
+    db.mark_chat_as_read(chat_id, user_id) # Отметка о последнем входе в чат
+
+    room = f"chat_{chat_id}"
+    leave_room(room)
+    emit('status', {'msg': f"{user_info['first_name']} left the chat."}, room=room)
+
+def update_unreaded(unreaded_messages_chat):
+     # Обновление количества непрочитанных сообщений
+    socketio.emit('update_unreaded', { 'unreaded': unreaded_messages_chat })
+
+def get_unreaded(userID):
+    print('\nGets ureaded')
+    user_unread_messages = db.get_user_unread_messages(userID) # Получение всех непрочитанных сообщений пользователя
+    print(f'\nUnread messsages: {user_unread_messages}')
+
+    unreaded_messages_chat = {} # Словарь непрочитанных сообщений
+    number_unreaded_messsages = 0
+
+    for message in user_unread_messages:
+        if message['message'] != None:
+            number_unreaded_messsages += 1
+            unreaded_messages_chat = {'chat_id': message['chat_id'], 'unreaded': number_unreaded_messsages}
+    
+    return unreaded_messages_chat
+
+################# АНКЕТА ########################################### АНКЕТА ###################################
+########################################### АНКЕТА ############################################################
 
 @app.route('/anket-gender', methods = ['POST', 'GET']) # выбор пола для анкеты
 def anket_gender():
@@ -328,6 +488,9 @@ def skin10():
 def wrkEDC():
     return render_template('workOrEducation.html')
 
+##################################################################################################
+####################################### ЛЕНДИНГИ #################################################
+
 @app.route('/stylistam')
 def stylistam():
     return render_template('stilistam.html')
@@ -335,58 +498,6 @@ def stylistam():
 @app.route('/capsula')
 def capsula():
     return render_template('capsula.html')
-
-@app.route('/lkCL')
-def lkCL():
-    email = session['email']
-    user_info = db.get_user_info_by_email(email)
-
-    return render_template('lkClient.html', user_info=user_info)
-
-@app.route('/chats')
-def chats():
-    email = session['email']
-    user_info = db.get_user_info_by_email(email)
-    if user_info['stylist'] == 0:
-        users = db.get_ST_list()
-    else:
-        users = db.get_CL_list()
-
-    return render_template('lkClientChat.html', users = users)
-
-####### ДОДЕЛАТЬ СОЗДАНИЕ ЧАТОВ, ОТОБРАЖЕНИЕ СУЩЕСТВУЮЩИХ ЧАТОВ, СОХРАНЕНИЕ И ОТПРАВКА СООБЩЕНИЙ
-
-@app.route('/create_chat_with_user/<int:user_id>', methods = ['GET', 'POST']) # Создание чата
-def create_chat_with_user(user_id):
-    if 'email' not in session:
-        return redirect(url_for('start_page'))  # Если нет, отправляем на логин
-    
-    current_user = session['email']
-    user_info = db.get_user_info_by_email(current_user) # Получение инфомарци о пользователе
-
-    if not user_info:
-        flash('Ошибка авторизации')
-        return redirect(url_for('start_page'))
-    
-    current_user_id = user_info['user_id']
-
-    chat_between_users = db.get_chat_between_users(current_user_id, user_id) # Получении информации о чатах между пользов.
-    print(f'Chat between users: {chat_between_users}')
-
-    if not chat_between_users: # Проверка на существование чата между пользователями
-        db.create_chat(user_ids=[current_user_id, user_id]) # Создание чата
-
-    return redirect(url_for('chat')) # Обновление страницы по завершении
-
-@app.route('/chatRoom')
-def chat_room():
-   return render_template('lkClientChatRoom.html') 
-
-@app.route('/lkST')
-def lkST():
-   email = session['email']
-   user_info = db.get_user_info_by_email(email)
-   return render_template('lkStilist.html', user_info = user_info) 
 
 @app.route('/users')
 def users():
