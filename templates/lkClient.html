@@ -3,8 +3,8 @@
    <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link rel="stylesheet" href="./static/css/output.css">
-      <link rel="stylesheet" href="./static/css/customStyles.css">
+      <link rel="stylesheet" href="{{ url_for('static', filename='/css/output.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='/css/customStyles.css') }}">
       <title>Личный кабинет - Клиент</title>
    </head>
    <body class="bg-customGray font-sans">
@@ -14,13 +14,13 @@
       <!-- Logo -->
       <div class="ml-20">
         <a href="index.html">
-          <img src="./static/assets/img/svg/logoHead.svg" alt="">
+          <img src="../static/assets/img/svg/logoHead.svg" alt="">
         </a>
       </div>
   
       <!-- Menu Icon -->
       <div class="text-3xl cursor-pointer mr-10">
-        <img src="./static/assets/img/svg/burger-menu.svg" alt="">
+        <img src="../static/assets/img/svg/burger-menu.svg" alt="">
       </div>
       
     </header>
@@ -40,7 +40,7 @@
             <!-- Profile Info -->
   <div class="flex items-center gap-6 mb-6">
     <!-- Фото профиля -->
-    <img src="./static/assets/img/png/avatarClient.png" alt="Фото профиля" class="w-32 h-32 rounded-full">
+    <img src="../static/assets/img/png/avatarClient.png" alt="Фото профиля" class="w-32 h-32 rounded-full">
 
     <!-- Имя, Фамилия и Возраст -->
     <div>
@@ -117,14 +117,14 @@
     <!-- Зеленая полоска -->
     <div class="w-full h-6 bg-customGreen">
       <button class="absolute right-4 top-2" onclick="closeVideoModal()">
-        <img src="./static/assets/img/svg/close-modal.svg" alt="">
+        <img src="../static/assets/img/svg/close-modal.svg" alt="">
       </button>
     </div>
 
     <div class="w-full h-full flex flex-col items-center justify-center">
         <!-- Аватар и имя -->
         <div class="flex flex-col items-center mb-8">
-            <img src="./static/assets/img/png/avatarStilist.png" alt="Фото профиля" class="w-auto h-auto rounded-full mb-4">
+            <img src="../static/assets/img/png/avatarStilist.png" alt="Фото профиля" class="w-auto h-auto rounded-full mb-4">
             <h3 class="text-white text-2xl">Екатерина</h3>
         </div>
         
@@ -132,15 +132,15 @@
         <div class="flex gap-8">
 
             <button class="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center hover:bg-gray-700">
-              <img src="./static/assets/img/svg/camera.svg" class="w-auto h-auto" alt="">
+              <img src="../static/assets/img/svg/camera.svg" class="w-auto h-auto" alt="">
             </button>
 
             <button onclick="closeVideoModal()" class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700">
-              <img src="./static/assets/img/svg/end-call.svg" class="w-auto h-auto" alt="">
+              <img src="../static/assets/img/svg/end-call.svg" class="w-auto h-auto" alt="">
             </button>
 
             <button class="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center hover:bg-gray-700">
-              <img src="./static/assets/img/svg/mic.svg" class="w-auto h-auto" alt="">
+              <img src="../static/assets/img/svg/mic.svg" class="w-auto h-auto" alt="">
             </button>
 
         </div>

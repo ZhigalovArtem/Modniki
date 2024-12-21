@@ -9,14 +9,14 @@
 @import url(/assets/fonts/Oswald-ExtraLight.ttf);
 @import url(/assets/fonts/Oswald-Light.ttf);
 @import url(/assets/fonts/Oswald-Regular.ttf);
-@import url(/assets/fonts/Oswald-Medium.ttf);
+@import url(../assets/fonts/Oswald-Medium.ttf);
 @import url(/assets/fonts/Oswald-SemiBold.ttf);
 @import url(/assets/fonts/Oswald-bold.ttf);
 @import url(/assets/fonts/Oswald-VariableFont_wght.ttf);
 
 @font-face {
     font-family: oswald-f;
-    src: url(/assets/fonts/Oswald-ExtraLight.ttf);
+    src: url(../static/assets/fonts/Oswald-ExtraLight.ttf);
     font-weight: 200;
 }
 
@@ -34,7 +34,7 @@
 
 @font-face {
     font-family: oswald-f;
-    src: url(/assets/fonts/Oswald-Medium.ttf);
+    src: url(../assets/fonts/Oswald-Medium.ttf);
     font-weight: 500;
 }
 
