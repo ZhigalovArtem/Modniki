@@ -325,6 +325,17 @@ def get_chat_messages(chat_id,): # Работает
     conn.close()
     return [dict(row) for row in rows]
 
+# Функция для сохранения нового сообщения
+def save_message(chat_id, sender_id, message): # Вроде должно работать
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    INSERT INTO messages (chat_id, creator_id, message, timestamp)
+    VALUES (?, ?, ?, datetime('now', 'localtime'))
+    ''', (chat_id, sender_id, message))
+    conn.commit()
+    conn.close()
 
 
 

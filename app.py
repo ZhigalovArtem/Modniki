@@ -160,7 +160,8 @@ def chats():
     else:
         users = db.get_CL_list()
 
-    return render_template('lkClientChat.html', users = users, chats = user_chats, user_id=user_info['user_id'], unreaded=0 ) ### исправить непрочитанные
+    return render_template('lkClientChat.html', users = users, chats = user_chats,
+                            user_id=user_info['user_id'], unreaded=0, stylist = user_info['stylist'] ) ### исправить непрочитанные
 
 ####### ДОДЕЛАТЬ СОЗДАНИЕ ЧАТОВ, ОТОБРАЖЕНИЕ СУЩЕСТВУЮЩИХ ЧАТОВ, СОХРАНЕНИЕ И ОТПРАВКА СООБЩЕНИЙ
 

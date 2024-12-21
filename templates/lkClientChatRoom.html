@@ -21,7 +21,7 @@
         <ul id="messages" class="mt-6 space-y-3 bg-white p-4 rounded-lg shadow overflow-y-auto h-96">
             {% for message in messages %}
             <li class="p-2 border-b border-gray-200">
-                <strong class="text-blue-600">{{ message.fisrt_name }}:</strong> <span>{{ message.message }}</span>
+                <strong class="text-blue-600">{{ message.first_name }}:</strong> <span>{{ message.message }}</span>
                 <div class="text-sm text-gray-500">{{ message.timestamp }}</div>
             </li>
             {% endfor %}
@@ -48,7 +48,8 @@
         socket.on('receive_message', (data) => {
             const li = document.createElement('li');
             li.className = "p-2 border-b border-gray-200";
-            li.innerHTML = '<strong class="text-blue-600">${data.sender}:</strong> <span>${data.text}</span><div class="text-sm text-gray-500">${data.timestamp}</div>';
+            li.innerHTML = `<strong class="text-blue-600">${data.sender}:</strong> <span>${data.text}</span><div class="text-sm text-gray-500">${data.timestamp}</div>`;
+            // li.innerHTML = `<strong>${data.sender}:</strong> ${data.text}<br>${data.timestamp}`;
             messagesList.appendChild(li);
         });
 
