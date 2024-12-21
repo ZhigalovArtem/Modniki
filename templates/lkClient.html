@@ -50,37 +50,38 @@
             </div>
             
             <!-- Parameters -->
+             {%for p in params%}
             <div class="bg-white p-4 rounded-lg w-full">
               <h3 class="font-bold mb-3">Параметры</h3>
               <div class="space-y-2">
                 <div class="flex justify-between">
                   <span>Рост</span>
-                  <span>180 см</span>
+                  <span>{{ p.height }}</span>
                 </div>
                 <div class="flex justify-between">
                   <span>Объем талии</span>
-                  <span>70 см</span>
+                  <span>{{ p.waist_size }}</span>
                 </div>
                 <div class="flex justify-between">
                   <span>Объем груди</span>
-                  <span>90 см</span>
+                  <span>{{ p.chest_size }}</span>
                 </div>
                 <div class="flex justify-between">
                   <span>Размер одежды</span>
-                  <span>S (44)</span>
+                  <span>{{ p.clothes_size }}</span>
                 </div>
                 <div class="flex justify-between">
                   <span>Объем бедер</span>
-                  <span>90 см</span>
+                  <span>{{ p.ass_size }}</span>
                 </div>
                 <div class="flex justify-between">
                   <span>Вес</span>
-                  <span>55 кг</span>
+                  <span>{{ p.weight }}</span>
                 </div>
               </div>
             </div>
           </div>
-  
+          {%endfor%}
           <!-- Action Buttons -->
           <div class="flex flex-col flex-1">
             <h2 class="text-2xl font-bold mb-6">Выберите действие:</h2>

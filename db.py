@@ -160,6 +160,18 @@ def get_ST_list():
     conn.close()
     return [dict(row) for row in rows]
 
+def get_user_params(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM user_parameters WHERE user_id = ?', (user_id,))
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+##################################################################################################
+############################ ЧАТЫ ################################################################
+
 def get_chat_between_users(user1_id, user2_id): # 
     conn = get_db_connection()
     cursor = conn.cursor()

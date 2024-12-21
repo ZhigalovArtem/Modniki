@@ -129,8 +129,10 @@ def registrationST_page(): ###### исправить №№№№№№№№№
 def lkCL():
     email = session['email']
     user_info = db.get_user_info_by_email(email)
+    user_params = db.get_user_params(user_info['user_id'])
+    print(f'user params {user_params}')
 
-    return render_template('lkClient.html', user_info=user_info)
+    return render_template('lkClient.html', user_info=user_info, params = user_params)
 
 @app.route('/chats')
 def chats():
