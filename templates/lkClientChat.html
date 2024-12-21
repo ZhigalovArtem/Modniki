@@ -28,6 +28,11 @@
                     <a href="{{ url_for('chat_room', chat_id=cht['chat_id'],recipient_id=cht['user_id']) }}" class="block bg-white p-4 rounded-lg shadow hover:bg-gray-50">
                         <strong class="text-lg">Chat with {{ cht.first_name }}</strong>
                         <span class="block text-sm text-gray-500">Unread messages: <span id="unreaded_{{ cht.chat_id }}">{{ unreaded.unreaded }}</span></span>
+                        {% for last in last_message %}
+                        {% if last.chat_id == cht.chat_id %}
+                        <span class="block text-sm text-gray-500" id="unreaded_{{ cht.chat_id }}">{{ last.message }}</span>
+                        {% endif %}
+                        {% endfor %}
                     </a>
                 </li>
                 {% endif %}

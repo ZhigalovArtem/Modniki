@@ -349,6 +349,24 @@ def save_message(chat_id, sender_id, message): # Вроде должно раб�
     conn.commit()
     conn.close()
 
+# Функция для получения последнего сообщений в чате
+def get_last_message(chat_id,): # Работает
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    SELECT message
+    FROM messages
+    JOIN users ON messages.creator_id = users.user_id
+    WHERE messages.chat_id = ?
+    ORDER BY messages.timestamp DESC LIMIT 1;
+    ''', (chat_id,))
+    message = cursor.fetchone()
+    conn.close()
+    if message != None:
+        return dict(message)['message']
+    else:
+        return 'Нет сообщений'
 
 
 

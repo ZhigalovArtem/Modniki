@@ -21,7 +21,6 @@ def start_page():
 def chooseClientOrStyle():
     return render_template('chooseClientOrStyle.html')
 
-
 @app.route('/auth', methods=['POST', 'GET']) # авторизация
 def auth_page():
     if request.method == 'POST':
@@ -48,7 +47,7 @@ def auth_page():
     return render_template('auth.html')
 
 @app.route('/registrationCL', methods=['GET', 'POST'])  # регистрация клиента
-def registrationCL_page(): ########### ИСПРАВИТЬ #################
+def registrationCL_page(): ########### ИСПРАВИТЬ на анкету #################
     if request.method == 'POST':
         #данные регистрации
         email = request.form.get('email')
@@ -92,7 +91,7 @@ def registrationCL_page(): ########### ИСПРАВИТЬ #################
     return render_template('registration.html')  # Возвращаем форму регистрации для GET-запроса
 
 @app.route('/registrationST', methods=['GET', 'POST'])  # регистрация стилиста
-def registrationST_page(): ###### исправить №№№№№№№№№
+def registrationST_page(): ###### исправить на анкету№№№№№№№№№
     if request.method == 'POST':
         #данные регистрации
         email = request.form.get('email')
@@ -130,7 +129,6 @@ def lkCL():
     email = session['email']
     user_info = db.get_user_info_by_email(email)
     user_params = db.get_user_params(user_info['user_id'])
-    print(f'user params {user_params}')
 
     return render_template('lkClient.html', user_info=user_info, params = user_params)
 
@@ -140,7 +138,7 @@ def chats():
     user_info = db.get_user_info_by_email(email)
 
     current_user_chats = db.get_user_chats(user_id=user_info['user_id'])
-    print(f'chats {chats}')
+    #print(f'chats {chats}')
 
     # Получение информации о пользователях с которыми есть чат, для получения имён
     if current_user_chats:
@@ -151,12 +149,21 @@ def chats():
         user_chats = [] # Список чатов (информ. о других пользов.)
         for id in chat_ids:
             user_chats.append(db.get_chats(id)) # добавление записи в список пользователей
-
     else:
         user_chats = None
 
     users = db.get_users() # Получение всех пользователей
     print(f'user chats: {user_chats}')
+
+    last_messages = []
+
+    if user_chats != None:
+        id = 0
+        for chats in current_user_chats:
+            id+=1
+            print(chats['chat_id'])
+            last_messages.append({'chat_id': chats['chat_id'], 'message': db.get_last_message(chats['chat_id'])})
+    print(last_messages)
 
     if user_info['stylist'] == 0:
         users = db.get_ST_list()
@@ -164,7 +171,7 @@ def chats():
         users = db.get_CL_list()
 
     return render_template('lkClientChat.html', users = users, chats = user_chats,
-                            user_id=user_info['user_id'], unreaded=0, stylist = user_info['stylist'] ) ### исправить непрочитанные
+                            user_id=user_info['user_id'], unreaded=0, stylist = user_info['stylist'], last_message = last_messages) ### исправить непрочитанные  
 
 ####### ДОДЕЛАТЬ СОЗДАНИЕ ЧАТОВ, ОТОБРАЖЕНИЕ СУЩЕСТВУЮЩИХ ЧАТОВ, СОХРАНЕНИЕ И ОТПРАВКА СООБЩЕНИЙ
 
