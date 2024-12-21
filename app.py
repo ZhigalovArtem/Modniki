@@ -194,7 +194,7 @@ def handle_send_message(data):
         return
 
     user_id = user_info['user_id']
-    user_name = user_info['name']
+    user_name = user_info['first_name']
     chat_info = db.get_chats(chat_id)
 
     for chat in chat_info:
