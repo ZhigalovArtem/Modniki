@@ -226,7 +226,7 @@ def chat_room(chat_id, recipient_id):
         messages = db.get_chat_messages(chat_id) # Получеие сообщений чата
         print(f'Open chat\nchat_id--{chat_id}\nchat messages:\n{messages}')
         return render_template('lkClientChatRoom.html', user = current_user_chats, chat_id = chat_id,
-                                recipient = recipient_info, messages = messages, )
+                                recipient = recipient_info, messages = messages, username = user_info['first_name'])
 
     #users = db.get_users()
     return redirect(url_for('chats'))
