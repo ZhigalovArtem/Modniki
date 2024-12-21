@@ -343,8 +343,8 @@ def lkCL():
 
     return render_template('lkClient.html', user_info=user_info)
 
-@app.route('/chatsCL')
-def chatsCL():
+@app.route('/chats')
+def chats():
     email = session['email']
     user_info = db.get_user_info_by_email(email)
     if user_info['stylist'] == 0:
@@ -359,14 +359,14 @@ def chatsCL():
 @app.route('/create_chat_with_user/<int:user_id>', methods = ['GET', 'POST']) # Создание чата
 def create_chat_with_user(user_id):
     if 'email' not in session:
-        return redirect(url_for('home'))  # Если нет, отправляем на логин
+        return redirect(url_for('start_page'))  # Если нет, отправляем на логин
     
     current_user = session['email']
-    user_info = db.get_user_info(current_user) # Получение инфомарци о пользователе
+    user_info = db.get_user_info_by_email(current_user) # Получение инфомарци о пользователе
 
     if not user_info:
         flash('Ошибка авторизации')
-        return redirect(url_for('home'))
+        return redirect(url_for('start_page'))
     
     current_user_id = user_info['user_id']
 
@@ -391,6 +391,10 @@ def lkST():
 @app.route('/users')
 def users():
     return db.get_users()
+
+@app.route('/stylists')
+def stylists():
+    return db.get_stylists()
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():

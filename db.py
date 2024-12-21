@@ -160,11 +160,84 @@ def get_ST_list():
     conn.close()
     return [dict(row) for row in rows]
 
+def get_chat_between_users(user1_id, user2_id): # 
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    SELECT uc.chat_id, uc.user_id
+    FROM user_chats uc
+    WHERE uc.user_id = ? 
+    AND EXISTS (
+        SELECT 1 
+        FROM user_chats uc2
+        WHERE uc2.chat_id = uc.chat_id
+        AND uc2.user_id = ?
+    )
+    ''', (user1_id, user2_id))
+
+    chat = cursor.fetchone()
+    conn.close()
+    return dict(chat) if chat else None
+
+# Функция для создания чата
+def create_chat(user_ids):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    chat_id = get_chat_last_id()
+    print(f'Last chat id: {chat_id}')
+    if chat_id is None or chat_id == 0:
+            chat_id = 1
+    try:
+        # Создаем чат с первым участником для получения chat_id
+        cursor.execute('''
+        INSERT INTO user_chats (chat_id, user_id)
+        VALUES (?, ?);
+        ''', (chat_id, user_ids[0],))
+        
+
+        cursor.execute('''
+        INSERT INTO user_chats (chat_id, user_id)
+        VALUES (?, ?);
+        ''', (chat_id, user_ids[1]))
+
+        # Завершаем транзакцию
+        conn.commit()
+        conn.close()
+
+        return chat_id
+
+    except Exception as e:
+        # В случае ошибки откатываем все изменения
+        conn.rollback()
+        conn.close()
+        raise e
+
+def get_chat_last_id():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT COUNT(chat_id) FROM user_chats')
+    chat_id = cursor.fetchone()[0]
+    print(f'Last chat id: {chat_id}')
+    conn.close()
+    return chat_id
+
 def get_users():
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    cursor.execute('SELECT * FROM users JOIN user_parameters ON users.user_id = user_parameters.user_id')
+    cursor.execute('SELECT * FROM users JOIN user_parameters ON users.user_id = user_parameters.user_id WHERE stylist = 0')
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+def get_stylists():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM users WHERE stylist = 1') #JOIN stylist_docs ON users.user_id = stylist_docs.user_id
     rows = cursor.fetchall()
     conn.close()
     return [dict(row) for row in rows]

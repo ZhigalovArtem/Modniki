@@ -50,7 +50,7 @@
             const socket = io();
     
             socket.on('update_unreaded', (data) => {
-                const unreadedElement = document.getElementById(unreaded_${data.unreaded.chat_id});
+                const unreadedElement = document.getElementById('unreaded_${data.unreaded.chat_id}');
                 if (unreadedElement) {
                     unreadedElement.innerHTML = data.unreaded.unreaded;
                 }
