@@ -224,6 +224,111 @@ def get_chat_last_id():
     conn.close()
     return chat_id
 
+# Функция для получения чатов пользователя по user_id
+def get_user_chats(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    SELECT * from user_chats JOIN users on user_chats.user_id = users.user_id WHERE users.user_id = ?''',(user_id,))
+
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows] if rows else None
+
+# Функция для получения чатов и пользовтелей в этом чате по chat_id
+def get_chats(chat_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    SELECT * from user_chats JOIN users on user_chats.user_id = users.user_id WHERE user_chats.chat_id = ?''',(chat_id,)) # Возвращает список чатов
+
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows] if rows else None
+
+# Функция для отправки сообщения
+def send_message(chat_id, recipient_id, creator_id, message): # Под вопросом
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    INSERT INTO messages (chat_id, creator_id, recipient_id, message)
+    VALUES (?, ?, ?);
+    ''', (chat_id, creator_id, recipient_id, message))
+    conn.commit()
+    conn.close()
+
+# Функция для обновления времени последнего прочтения чата
+def mark_chat_as_read(chat_id, user_id): # Вроде должно работать
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    INSERT INTO chat_read_status (chat_id, user_id, last_read)
+    VALUES (?, ?, datetime('now', 'localtime'))
+    ON CONFLICT (chat_id, user_id) DO UPDATE SET
+        last_read = datetime('now', 'localtime');
+    ''', (chat_id, user_id,))
+    conn.commit()
+    conn.close()
+
+# Функция для получения непрочитанных сообщений
+def get_unread_messages(chat_id, user_id): # Под вопросом
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    SELECT *
+    FROM messages m
+    LEFT JOIN chat_read_status crs ON crs.chat_id = m.chat_id AND crs.user_id = ?
+    WHERE m.chat_id = ?
+    AND (crs.last_read IS NULL OR m.timestamp > crs.last_read)
+    ORDER BY m.timestamp;
+    ''', (user_id, chat_id))
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+# Функция для получения непрочинных сообщений пользователя
+def get_user_unread_messages(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    SELECT *
+    FROM chat_read_status crs
+    LEFT JOIN messages m ON m.chat_id = crs.chat_id
+    AND (crs.last_read IS NULL OR m.timestamp > crs.last_read)
+    WHERE crs.user_id = ? AND m.creator_id IS NOT ? 
+    ORDER BY m.timestamp;
+    ''',(user_id, user_id)) # Возвращает непрочитанные сообщения, где пользователь не автор
+
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+# Функция для получения сообщений в чате
+def get_chat_messages(chat_id,): # Работает
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    SELECT *
+    FROM messages
+    JOIN users ON messages.creator_id = users.user_id
+    WHERE messages.chat_id = ?
+    ORDER BY messages.timestamp ASC
+    ''', (chat_id,))
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+
+
+
+
 def get_users():
     conn = get_db_connection()
     cursor = conn.cursor()

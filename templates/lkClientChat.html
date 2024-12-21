@@ -18,10 +18,10 @@
                 {% if chats != None %}
                 {% for chat in chats %}
                 {% for cht in chat %}
-                {% if cht.name != username %}
+                {% if cht.user_id != user_id %}
                 <li>
-                    <a href="{{ url_for('chat_with_user', chat_id=cht['chat_id'],recipient_id=cht['user_id']) }}" class="block bg-white p-4 rounded-lg shadow hover:bg-gray-50">
-                        <strong class="text-lg">Chat with {{ cht.name }}</strong>
+                    <a href="{{ url_for('chat_room', chat_id=cht['chat_id'],recipient_id=cht['user_id']) }}" class="block bg-white p-4 rounded-lg shadow hover:bg-gray-50">
+                        <strong class="text-lg">Chat with {{ cht.first_name }}</strong>
                         <span class="block text-sm text-gray-500">Unread messages: <span id="unreaded_{{ cht.chat_id }}">{{ unreaded.unreaded }}</span></span>
                     </a>
                 </li>

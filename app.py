@@ -135,12 +135,32 @@ def lkCL():
 def chats():
     email = session['email']
     user_info = db.get_user_info_by_email(email)
+
+    current_user_chats = db.get_user_chats(user_id=user_info['user_id'])
+    print(f'chats {chats}')
+
+    # Получение информации о пользователях с которыми есть чат, для получения имён
+    if current_user_chats:
+        chat_ids = [] # Получение списка id чатов
+        for chat in current_user_chats:
+            chat_ids.append(chat['chat_id'])
+        print(f'Current user chats: {chat_ids}')
+        user_chats = [] # Список чатов (информ. о других пользов.)
+        for id in chat_ids:
+            user_chats.append(db.get_chats(id)) # добавление записи в список пользователей
+
+    else:
+        user_chats = None
+
+    users = db.get_users() # Получение всех пользователей
+    print(f'user chats: {user_chats}')
+
     if user_info['stylist'] == 0:
         users = db.get_ST_list()
     else:
         users = db.get_CL_list()
 
-    return render_template('lkClientChat.html', users = users)
+    return render_template('lkClientChat.html', users = users, chats = user_chats, user_id=user_info['user_id'], unreaded=0 ) ### исправить непрочитанные
 
 ####### ДОДЕЛАТЬ СОЗДАНИЕ ЧАТОВ, ОТОБРАЖЕНИЕ СУЩЕСТВУЮЩИХ ЧАТОВ, СОХРАНЕНИЕ И ОТПРАВКА СООБЩЕНИЙ
 
@@ -162,13 +182,43 @@ def create_chat_with_user(user_id):
     print(f'Chat between users: {chat_between_users}')
 
     if not chat_between_users: # Проверка на существование чата между пользователями
+        print(f'\n\n user ids \n{current_user_id} - current\t {user_id} - second user')
         db.create_chat(user_ids=[current_user_id, user_id]) # Создание чата
 
     return redirect(url_for('chats')) # Обновление страницы по завершении
 
-@app.route('/chatRoom')
-def chat_room():
-   return render_template('lkClientChatRoom.html') 
+@app.route('/chatRoom/<int:chat_id>/<int:recipient_id>')
+def chat_room(chat_id, recipient_id):
+    if 'email' not in session:
+        return redirect(url_for('home'))
+
+    current_user = session['email']
+    user_info = db.get_user_info_by_email(current_user) # Получение инфомарци о пользователе
+
+    if not user_info:
+        flash('Ошибка авторизации')
+        return redirect(url_for('home'))
+    
+    user_id = user_info['user_id']
+    current_user_chats = db.get_user_chats(user_id) # Получение информации о чатах пользователя
+    # Получение информации о получателе втрором пользователе
+    recipient_info = db.get_user_chats(recipient_id)
+    #chat = db.get_user_chats(user1_id= user_id, user2_id=recipient_id)
+    print(f'Recipient info:\n{recipient_info}')
+    if current_user_chats:
+        #db.create_chat(user_ids=[user_id, recipient_id]) # Создание чата
+        
+        #chat = db.get_chat_between_users(user1_id= user_id, user2_id=recipient_id)
+
+        #recipient = db.get_user_info_by_id(recipient_id)
+        print(f'\nUnread messages: {db.get_unread_messages(user_id, chat_id)}\n')
+        messages = db.get_chat_messages(chat_id) # Получеие сообщений чата
+        print(f'Open chat\nchat_id--{chat_id}\nchat messages:\n{messages}')
+        return render_template('lkClientChatRoom.html', user = current_user_chats, chat_id = chat_id,
+                                recipient = recipient_info, messages = messages, )
+
+    #users = db.get_users()
+    return redirect(url_for('chats'))
 
 @app.route('/lkST')
 def lkST():
@@ -188,7 +238,7 @@ def handle_send_message(data):
         emit('error', {'msg': 'Invalid data: sender, chat_id, or message missing'})
         return
 
-    user_info = db.get_user_info(user_email)
+    user_info = db.get_user_info_by_email(user_email)
     if not user_info:
         emit('error', {'msg': 'Sender not found in the database'})
         return
@@ -211,7 +261,6 @@ def handle_send_message(data):
     print(f'\nSecond user unreaded: {unreaded_messages_chat}\n')
     emit('receive_message', {'sender': user_name, 'text': message, 'timestamp': date,}, room=room)
     
-
 @socketio.on('join_chat') # Выводит сообщение о подключении
 def handle_join_chat(data):
     user_email = session.get('email')
@@ -221,7 +270,7 @@ def handle_join_chat(data):
         emit('error', {'msg': 'Invalid data: sender or chat_id missing'})
         return
 
-    user_info = db.get_user_info(user_email)
+    user_info = db.get_user_info_by_email(user_email)
 
     if not user_info:
         emit('error', {'msg': 'Sender not found in the database'})
@@ -244,7 +293,7 @@ def handle_leave_chat(data):
         emit('error', {'msg': 'Invalid data: sender or chat_id missing'})
         return
 
-    user_info = db.get_user_info(user_email)
+    user_info = db.get_user_info_by_email(user_email)
     if not user_info:
         emit('error', {'msg': 'Sender not found in the database'})
         return
