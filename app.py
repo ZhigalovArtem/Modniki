@@ -130,7 +130,11 @@ def lkCL():
     user_info = db.get_user_info_by_email(email)
     user_params = db.get_user_params(user_info['user_id'])
 
-    return render_template('lkClient.html', user_info=user_info, params = user_params)
+    birth_date= user_info['birth_date']
+    format = '%d.%m.%Y'
+    years_old = (datetime.now() - datetime.strptime(birth_date, format)).days // 365
+
+    return render_template('lkClient.html', user_info=user_info, params = user_params, user_years = years_old)
 
 @app.route('/chats')
 def chats():
@@ -155,23 +159,19 @@ def chats():
     users = db.get_users() # Получение всех пользователей
     print(f'user chats: {user_chats}')
 
-    last_messages = []
-
     if user_chats != None:
-        id = 0
+        last_messages = []
         for chats in current_user_chats:
-            id+=1
-            print(chats['chat_id'])
-            last_messages.append({'chat_id': chats['chat_id'], 'message': db.get_last_message(chats['chat_id'])})
-    print(last_messages)
+            last_messages.append({'chat_id': chats['chat_id'], 'message': db.get_last_message(chats['chat_id'])}) # список последних сообщений 
 
-    if user_info['stylist'] == 0:
+
+    if user_info['stylist'] == 0: # клиент только стилисту и наоборот
         users = db.get_ST_list()
     else:
         users = db.get_CL_list()
 
     return render_template('lkClientChat.html', users = users, chats = user_chats,
-                            user_id=user_info['user_id'], unreaded=0, stylist = user_info['stylist'], last_message = last_messages) ### исправить непрочитанные  
+                            user_id=user_info['user_id'], unreaded=0, stylist = user_info['stylist'], last_message = last_messages)
 
 ####### ДОДЕЛАТЬ СОЗДАНИЕ ЧАТОВ, ОТОБРАЖЕНИЕ СУЩЕСТВУЮЩИХ ЧАТОВ, СОХРАНЕНИЕ И ОТПРАВКА СООБЩЕНИЙ
 
