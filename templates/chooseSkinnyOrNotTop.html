@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./static/css/output.css">
-    <link rel="stylesheet" href="./static/css/customStyles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/customStyles.css') }}">
     <title>Document</title>
 </head>
 <body>
@@ -13,7 +13,7 @@
 
         <!-- Logo Section -->
         <div class="w-full max-w-4xl flex justify-start items-start pb-5">
-            <img src="./static/assets/img/svg/logo.svg" alt="">
+            <img src="{{ url_for('static', filename='assets/img/svg/logo.svg') }}" alt="">
         </div>
 
         <!-- Wrapper for Container and Stripes -->
@@ -21,47 +21,46 @@
 
             <!-- Main Container -->
             <div class="bg-customWhite p-8 shadow-md">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- First Column with Custom Checkboxes -->
-                    <div>
-                        <form class="space-y-2">
-                            <div class="checkbox-container" onclick="toggleCheckbox('everyday1')">
-                                <input type="checkbox" id="everyday1" name="everyday1">
-                                <img src="./static/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-everyday1">
-                                <label for="everyday1">Облегающе</label>
-                            </div>
-                    
-                            <div class="checkbox-container" onclick="toggleCheckbox('everyday2')">
-                                <input type="checkbox" id="everyday2" name="everyday2">
-                                <img src="./static/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-everyday2">
-                                <label for="everyday2">По размеру</label>
-                            </div>
+                <form method="post" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <div class="space-y-2">
+                                <div class="checkbox-container" onclick="toggleCheckbox('everyday1')">
+                                    <input type="checkbox" id="everyday1" name="everyday1" value="skinny">
+                                    <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-everyday1">
+                                    <label for="everyday1">Облегающе</label>
+                                </div>
+                            
+                                <div class="checkbox-container" onclick="toggleCheckbox('everyday2')">
+                                    <input type="checkbox" id="everyday2" name="everyday2" value="regular">
+                                    <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-everyday2">
+                                    <label for="everyday2">По размеру</label>
+                                </div>
 
-                            <div class="checkbox-container" onclick="toggleCheckbox('everyday3')">
-                                <input type="checkbox" id="everyday3" name="everyday3">
-                                <img src="./static/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-everyday3">
-                                <label for="everyday2">Свободно</label>
+                                <div class="checkbox-container" onclick="toggleCheckbox('everyday3')">
+                                    <input type="checkbox" id="everyday3" name="everyday3" value="loose">
+                                    <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-everyday3">
+                                    <label for="everyday3">Свободно</label>
+                                </div>
                             </div>
-
-                        </form>
+                        </div>
                     </div>
-                </div>
 
-                <div class="flex justify-end mt-6">
-                    <div class="border-2 border-customBlack rounded-full py-1 px-2 flex items-center">
-                        <button onclick="window.location.href='chooseKabluck.html'">
-                            <img src="./static/assets/img/png/prev.png" alt="">
-                        </button>
-                        
-                        <!-- Separator -->
-                        <div class="w-1 h-8 bg-customBlack mx-2"></div>
-                        
-                        <button onclick="window.location.href='chooseSkinnyOrNotBottom.html'">
-                            <img src="./static/assets/img/png/next.png" alt="">
-                        </button>
+                    <div class="flex justify-end mt-6">
+                        <div class="border-2 border-customBlack rounded-full py-1 px-2 flex items-center">
+                            <button type="submit" name="action" value="prev">
+                                <img src="{{ url_for('static', filename='assets/img/png/prev.png') }}" alt="">
+                            </button>
+                            
+                            <!-- Separator -->
+                            <div class="w-1 h-8 bg-customBlack mx-2"></div>
+                            
+                            <button type="submit" name="action" value="next">
+                                <img src="{{ url_for('static', filename='assets/img/png/next.png') }}" alt="">
+                            </button>
+                        </div>
                     </div>
-                </div>
-                
+                </form>
             </div>
 
             <!-- Green and Black Stripes -->
@@ -70,7 +69,7 @@
         </div>
 
         <div class="absolute right-28 top-72">
-            <img src="./static/assets/img/png/janna-full.png" alt="">
+            <img src="{{ url_for('static', filename='assets/img/png/janna-full.png') }}" alt="">
         </div>
 
     </div>

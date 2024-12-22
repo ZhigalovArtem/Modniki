@@ -430,6 +430,132 @@ def season(): # исправить под два пола
         anketa[email]['season'] = season
     return render_template('season.html')
 
+@app.route('/anket-chooseWork', methods=['POST', 'GET'])  # 17
+def anket_chooseWork():
+    email = session['email']
+    if request.method == 'POST':
+        # Получаем список выбранных профессий
+        selected_professions = request.form.getlist('professions')
+        # Сохраняем в анкету
+        anketa[email]['work'] = selected_professions
+        # Здесь можно добавить редирект на следующую страницу
+        return redirect(url_for('next_page'))  # Замените 'next_page' на нужный маршрут
+    return render_template('chooseWork.html')
+
+@app.route('/anket-chooseHairColor', methods=['POST', 'GET'])  # 18
+def anket_chooseHairColor():
+    email = session['email']
+    if request.method == 'POST':
+        # Получаем список выбранных профессий
+        selected_hair_color = request.form.getlist('hair_color')
+        # Сохраняем в анкету
+        anketa[email]['hair_color'] = selected_hair_color
+        # Здесь можно добавить редирект на следующую страницу
+        return redirect(url_for('next_page'))  # Замените 'next_page' на нужный маршрут
+    return render_template('chooseHairColor.html')
+
+@app.route('/anket-chooseSizeTopWoman', methods=['POST', 'GET'])  # 19
+def anket_chooseSizeTopWoman():
+    email = session['email']
+    if request.method == 'POST':
+        # Получаем список выбранных профессий
+        selected_size_top = request.form.getlist('size')
+        # Сохраняем в анкету
+        anketa[email]['size_top'] = selected_size_top
+        # Здесь можно добавить редирект на следующую страницу
+        return redirect(url_for('next_page'))  # Замените 'next_page' на нужный маршрут
+    return render_template('chooseSizeTopWoman.html')
+
+@app.route('/anket-chooseSizeBottomWoman', methods=['POST', 'GET'])  # 20
+def anket_chooseSizeBottomWoman():
+    email = session['email']
+    if request.method == 'POST':
+        selected_size_bottom = request.form.getlist('size')
+        anketa[email]['size_bottom'] = selected_size_bottom
+        return redirect(url_for('next_page'))
+    return render_template('chooseSizeBottomWoman.html')
+
+@app.route('/anket-chooseKabluck', methods=['POST', 'GET'])  # 21
+def anket_chooseKabluck():
+    email = session['email']
+    if request.method == 'POST':
+        selected_kabluck = request.form.getlist('kabluck')
+        anketa[email]['kabluck'] = selected_kabluck
+        return redirect(url_for('next_page'))
+    return render_template('chooseKabluck.html')
+
+@app.route('/anket-chooseSkinnyOrNotTop', methods=['POST', 'GET'])  # 22
+def anket_chooseSkinnyOrNotTop():
+    email = session['email']
+    if request.method == 'POST':
+        selected_skinny_or_not_top = request.form.getlist('skinny_or_not_top')
+        anketa[email]['skinny_or_not_top'] = selected_skinny_or_not_top
+        return redirect(url_for('next_page'))
+    return render_template('chooseSkinnyOrNotTop.html')
+
+@app.route('/anket-chooseSkinnyOrNotBottom', methods=['POST', 'GET'])  # 23
+def anket_chooseSkinnyOrNotBottom():
+    email = session['email']
+    if request.method == 'POST':
+        selected_skinny_or_not_bottom = request.form.getlist('skinny_or_not_bottom')
+        anketa[email]['skinny_or_not_bottom'] = selected_skinny_or_not_bottom
+        return redirect(url_for('next_page'))
+    return render_template('chooseSkinnyOrNotBottom.html')
+
+@app.route('/anket-chooseJeansForm', methods=['POST', 'GET'])  # 24
+def anket_chooseJeansForm():
+    email = session['email']
+    if request.method == 'POST':
+        action = request.form.get('action')
+        selected_jeans = request.form.get('selectedJeans')
+        
+        if selected_jeans:
+            anketa[email]['jeans_type'] = selected_jeans
+            
+        if action == 'next':
+            return redirect(url_for('next_page'))
+        elif action == 'prev':
+            return redirect(url_for('prev_page'))
+            
+    return render_template('chooseJeansForm.html')
+
+@app.route('/anket-choosePosadka', methods=['POST', 'GET'])  # 25
+def anket_choosePosadka():
+    email = session['email']
+    if request.method == 'POST':
+        selected_posadka = request.form.getlist('posadka')
+        anketa[email]['posadka'] = selected_posadka
+        return redirect(url_for('next_page'))
+    return render_template('choosePosadka.html')
+
+@app.route('/anket-chooseJeansLength', methods=['POST', 'GET'])  # 26
+def anket_chooseJeansLength():
+    email = session['email']
+    if request.method == 'POST':
+        selected_jeans_length = request.form.getlist('jeans_length')
+        anketa[email]['jeans_length'] = selected_jeans_length
+        return redirect(url_for('next_page'))
+    return render_template('chooseJeansLength.html')
+
+@app.route('/anket-chooseLength', methods=['POST', 'GET'])  # 27
+def anket_chooseLength():
+    email = session['email']
+    if request.method == 'POST':
+        action = request.form.get('action')
+        selected_length = request.form.get('selectedLength')
+        
+        if selected_length:
+            anketa[email]['length'] = selected_length.split(',')
+            
+        if action == 'next':
+            return redirect(url_for('next_page'))
+        elif action == 'previous':
+            return redirect(url_for('prev_page'))
+            
+    return render_template('chooseLenght.html')
+
+
+
 @app.route('/skin1', methods = ['POST', 'GET']) # 6
 def skin1():
     email = session['email']
