@@ -1,7 +1,9 @@
 from datetime import datetime
-from flask import Flask, json, jsonify, render_template, request, redirect, url_for, session, flash
+import os
+from flask import Flask, json, jsonify, render_template, request, redirect, send_file, url_for, session, flash
 from flask_socketio import SocketIO, emit, join_room, leave_room
 import db
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
@@ -11,8 +13,12 @@ anketa = {}
 @app.route('/') # Индекс
 def start_page():
     print(session)
+    if 'email' in session:
+        user_session = 1
+    else:
+        user_session = 0
     db.create_tables()
-    return render_template('index.html')
+    return render_template('index.html', user_session = user_session)
 
 ##################################################################################################
 ############################ РЕГИСТРАЦИЯ\ АВТОРИЗАЦИЯ ############################################
@@ -102,7 +108,23 @@ def registrationST_page(): ###### исправить на анкету№№№�
         isStylist = True
         level = 1
 
-        #Тут надо сделать загрузку файлов## на хуй посланы
+        resume = request.files['resume']
+        print(resume)
+        certificate = request.files['certificate']
+        print(certificate)
+        # Сохранение резюме
+        if resume:
+            resume_filename = secure_filename(resume.filename)
+            print(resume_filename)
+            resume_path = os.path.join('./static/uploads/resumes', resume_filename)
+            resume.save(resume_path)
+            
+        # Сохранение сертификата    
+        if certificate:
+            cert_filename = secure_filename(certificate.filename)
+            print(cert_filename)
+            cert_path = os.path.join('./static/uploads/certificates', cert_filename)
+            certificate.save(cert_path)
 
         #retypedPassword = request.form.get('retypedPassword')
         userInfo = db.get_user_info_by_email(email)
@@ -111,6 +133,8 @@ def registrationST_page(): ###### исправить на анкету№№№�
             #if password == retypedPassword:
                 db.add_user(first_name= first_name, last_name= last_name, email= email, 
                              birth_date='NULL', password= password, level= level, photo_path= '', stylist= isStylist)
+                user_id = db.get_user_info_by_email(email)['user_id']
+                db.save_stylist_docs(user_id=user_id, resume_path=resume_path, certificate_path=cert_path)
                 flash('Регистрация успешна!')
                 return redirect(url_for('auth_page'))
                 #return redirect(url_for('start_page'))  # Редирект на страницу входа после регистрации ???
@@ -173,7 +197,36 @@ def chats():
     return render_template('lkClientChat.html', users = users, chats = user_chats,
                             user_id=user_info['user_id'], unreaded=0, stylist = user_info['stylist'], last_message = last_messages)
 
-####### ДОДЕЛАТЬ СОЗДАНИЕ ЧАТОВ, ОТОБРАЖЕНИЕ СУЩЕСТВУЮЩИХ ЧАТОВ, СОХРАНЕНИЕ И ОТПРАВКА СООБЩЕНИЙ
+@app.route('/lkST')
+def lkST():
+    feedbacks = [{'id': 1, 'creator_id': 2, 'stylist_id': 2, 'score': 5, 'text': 'Хороший стилист'},
+    {'id': 2, 'creator_id': 2, 'stylist_id': 2, 'score': 4, 'text': 'Замечательный стилист'}, 
+    {'id': 3, 'creator_id': 3, 'stylist_id': 2, 'score': 3, 'text': 'Чудесный стилист'}]
+    email = session['email']
+    user_info = db.get_user_info_by_email(email)
+    return render_template('lkStilist.html', user_info = user_info, feedbacks = feedbacks) 
+
+@app.route('/download_resume/<int:user_id>')
+def download_resume(user_id):
+    resume_path = db.get_resume_path(user_id)
+    return send_file(resume_path, as_attachment=True)
+
+@app.route('/upload_resume/<int:user_id>', methods=['POST'])
+def upload_resume(user_id):
+    if request.method == 'POST':
+        resume = request.files['resume']
+        resume_path = os.path.join('./static/uploads/resumes', resume.filename)
+        resume.save(resume_path)
+
+    db.update_resume(user_id, resume_path)
+    return 'Резюме успешно загружено'
+
+@app.route('/lkOrders')
+def lkOrders():
+    users = db.get_users_without_chats()
+    return render_template('lkOrders.html', users = users)
+
+####### ДОДЕЛАТЬ СОЗДАНИЕ ЧАТОВ, ОТОБРАЖЕНИЕ СУЩЕСТВУЮЩИХ ЧАТОВ, СОХРАНЕНИЕ И ОТ��РАВКА СООБЩЕНИЙ
 
 @app.route('/create_chat_with_user/<int:user_id>', methods = ['GET', 'POST']) # Создание чата
 def create_chat_with_user(user_id):
@@ -195,6 +248,8 @@ def create_chat_with_user(user_id):
     if not chat_between_users: # Проверка на существование чата между пользователями
         print(f'\n\n user ids \n{current_user_id} - current\t {user_id} - second user')
         db.create_chat(user_ids=[current_user_id, user_id]) # Создание чата
+    else:
+        print(f'\n\nChat exsists\n\n')
 
     return redirect(url_for('chats')) # Обновление страницы по завершении
 
@@ -230,15 +285,6 @@ def chat_room(chat_id, recipient_id):
 
     #users = db.get_users()
     return redirect(url_for('chats'))
-
-@app.route('/lkST')
-def lkST():
-    feedbacks = [{'id': 1, 'creator_id': 2, 'stylist_id': 2, 'score': 5, 'text': 'Хороший стилист'},
-    {'id': 2, 'creator_id': 2, 'stylist_id': 2, 'score': 4, 'text': 'Замечательный стилист'}, 
-    {'id': 3, 'creator_id': 3, 'stylist_id': 2, 'score': 3, 'text': 'Чудесный стилист'}]
-    email = session['email']
-    user_info = db.get_user_info_by_email(email)
-    return render_template('lkStilist.html', user_info = user_info, feedbacks = feedbacks) 
 
 ######################## СОКЕТЫ ###################################################################
 ################## !!обновление последнего сообщения!! ############################

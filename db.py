@@ -45,7 +45,7 @@ def create_tables():
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
         resume_path TEXT,
-        diploma_path TEXT,
+        certificate_path TEXT,
         FOREIGN KEY (user_id) REFERENCES users (user_id)
     )
     ''')
@@ -161,7 +161,36 @@ def save_user_anketa(user_id, anketa):
     conn.commit()
     conn.close()
 
-# получение информации о пользователе по email
+def save_stylist_docs(user_id, resume_path, certificate_path):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    INSERT INTO stylist_docs (user_id, resume_path, certificate_path)
+    VALUES (?, ?, ?)
+    ''', (user_id, resume_path, certificate_path))
+
+    conn.commit()
+    conn.close()
+    
+def get_resume_path(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT resume_path FROM stylist_docs WHERE user_id = ?', (user_id,))
+    resume_path = cursor.fetchone()[0]
+    conn.close()
+    return resume_path
+
+def update_resume(user_id, resume_path):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('UPDATE stylist_docs SET resume_path = ? WHERE user_id = ?', (resume_path, user_id))
+    conn.commit()
+    conn.close()
+
+# плучение информации о пользователе по email
 def get_user_info_by_email(email):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -376,7 +405,7 @@ def get_chat_messages(chat_id,): # Работает
     conn.close()
     return [dict(row) for row in rows]
 
-# Функция для сохранения нового сообщения
+# Функция для сохр��нения нового сообщения
 def save_message(chat_id, sender_id, message): # Вроде должно работать
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -414,6 +443,24 @@ def get_users():
     cursor = conn.cursor()
 
     cursor.execute('SELECT * FROM users JOIN user_parameters ON users.user_id = user_parameters.user_id WHERE stylist = 0')
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+def get_users_without_chats():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    SELECT DISTINCT u.*, up.*
+    FROM users u
+    JOIN user_parameters up ON u.user_id = up.user_id
+    WHERE u.stylist = 0
+    AND u.user_id NOT IN (
+        SELECT user_id 
+        FROM user_chats
+    )
+    ''')
     rows = cursor.fetchall()
     conn.close()
     return [dict(row) for row in rows]

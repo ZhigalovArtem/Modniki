@@ -26,7 +26,7 @@
       </nav>
   
       <!-- Menu Icon -->
-      <div class="text-3xl cursor-pointer mr-10">
+      <div class="text-3xl cursor-pointer mr-10" onclick="toggleMenu()">
         <img src="./static/assets/img/svg/burger-menu.svg" alt="">
       </div>
     </header>
@@ -59,6 +59,44 @@
        </a>
 
     </main>
+
+    <script>
+      function toggleMenu() {
+          const menu = document.getElementById('sideMenu');
+          const isOpen = menu.classList.contains('translate-x-0');
+          
+          if (isOpen) {
+              menu.classList.remove('translate-x-0');
+              menu.classList.add('translate-x-full');
+              document.body.style.overflow = 'auto';
+          } else {
+              menu.classList.remove('translate-x-full');
+              menu.classList.add('translate-x-0');
+              document.body.style.overflow = 'hidden';
+          }
+      }
+      
+      // ... другие функции для работы с видео и слайдером ...
+  </script>
+
+  <!-- Боковое меню -->
+  <div id="sideMenu" class="fixed top-0 right-0 h-full w-80 bg-customWhite transform translate-x-full transition-transform duration-300 ease-in-out shadow-lg z-50">
+    <!-- Кнопка закрытия -->
+    <button onclick="toggleMenu()" class="absolute top-6 right-6">
+      <img src="{{ url_for('static', filename='assets/img/svg/close-modal.svg') }}" alt="Закрыть" class="w-6 h-6">
+    </button>
+    
+    <!-- Содержимое меню -->
+    <div class="p-8 mt-16">
+      <nav class="space-y-4">
+        <a href="{{ url_for('lkST') }}" class="block oswald-weight-medium text-2xl hover:text-customGreen flex items-center gap-3">
+          <img src="{{ url_for('static', filename='assets/img/svg/profile.svg') }}" alt="" class="w-12 h-12">
+          Профиль
+        </a>
+        <!-- ... остальные пункты меню ... -->
+      </nav>
+    </div>
+  </div>
   
   </body>
 </html>
