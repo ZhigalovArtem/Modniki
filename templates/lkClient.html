@@ -100,7 +100,7 @@
             <h2 class="text-2xl font-bold mb-6 oswald-weight-medium">Выберите действие:</h2>
 
             <div class="space-y-4 text-lg">
-              <a href="/chats"><button class="w-full oswald-weight-medium bg-black text-white py-3 rounded-full hover:bg-customGreen hover:text-black border-2 border-transparent hover:border-black transition-colors">Чат с клиентом</button></a>
+              <a href="/chats"><button class="w-full oswald-weight-medium bg-black text-white py-3 rounded-full hover:bg-customGreen hover:text-black border-2 border-transparent hover:border-black transition-colors">Чат со стилистом</button></a>
               <button class="w-full oswald-weight-medium bg-black text-white py-3 rounded-full hover:bg-customGreen hover:text-black border-2 border-transparent hover:border-black transition-colors" onclick="openVideoModal()">Видеозвонок стилисту</button>
               <button class="w-full oswald-weight-medium bg-black text-white py-3 rounded-full hover:bg-customGreen hover:text-black border-2 border-transparent hover:border-black transition-colors">Просмотреть резюме</button>
               <button class="w-full oswald-weight-medium bg-black text-white py-3 rounded-full hover:bg-customGreen hover:text-black border-2 border-transparent hover:border-black transition-colors">Изменить резюме</button>
@@ -178,6 +178,7 @@
               <div class="space-y-2">
                 <h3 class="text-xl oswald-weight-medium">{{ order.stylist_name }}</h3>
                 <p class="text-lg text-customBlack oswald-weight-medium">
+                  {% if order.average_score and order.average_score is not none %}
                   {% if order.average_score >= 4.5 %}
                   senior
                   {% elif order.average_score >= 3.5 %}
@@ -185,26 +186,43 @@
                   {% elif order.average_score > 0 %}
                   junior
                   {% endif %}
+                  {% else %}
+                  {% endif %}
                 </p>
                 <div class="flex items-center gap-2">
                   <div class="flex">
+                    {%if order.average_score is not none%}
                     {%for i in range(order.average_score|round|int)%}
                     <img src="{{ url_for('static', filename='assets/img/svg/star.svg') }}" alt="star" class="w-5 h-5">
                     {%endfor%}
+                    {%else%}
+                    {%endif%}
                   </div>
+                  {%if order.average_score is not none%}
                   <span class="text-customBlack oswald-weight-medium">{{ order.average_score }}</span>
+                  {%else%}
+                  {%endif%}
                 </div>
               </div>
             </div>
-            {%for comment in current_user_comments%}
-              {%if comment.stylist_id == order.stylist_id%}
+            {% set comment_exists = false %}
+            {% for comment in current_user_comments %}
+              {% if comment.stylist_id == order.stylist_id %}
+                {% set comment_exists = true %}
                 <p class="text-lg text-customBlack oswald-weight-medium">Отзыв оставлен</p>
-              {%else%}
-                <div class="flex flex-col space-y-2">
-                  <button onclick="openReviewModal()" class="bg-customBlack oswald-weight-medium text-white px-4 py-2 rounded-xl hover:bg-customGreen hover:text-black border-2 hover:border-customBlack border-transparent">Оставить отзыв</button>
-                </div>
-              {%endif%}
-            {%endfor%}
+              {% endif %}
+            {% endfor %}
+            
+            {% if not comment_exists %}
+              <div class="flex flex-col space-y-2">
+                <button 
+                  onclick="openReviewModal('{{ order.stylist_id }}')" 
+                  class="bg-customBlack oswald-weight-medium text-white px-4 py-2 rounded-xl hover:bg-customGreen hover:text-black border-2 hover:border-customBlack border-transparent"
+                >
+                  Оставить отзыв
+                </button>
+              </div>
+            {% endif %}
           </li>
           {%endfor%}
         </ul>
@@ -216,6 +234,9 @@
   <dialog id="reviewModal" class="p-8 rounded-lg w-[500px]">
     <div class="flex flex-col gap-6">
       <h2 class="text-2xl oswald-weight-medium">Оставить отзыв</h2>
+      
+      <!-- Добавляем скрытое поле для stylistId -->
+      <input type="hidden" id="stylistId" value="">
       
       <!-- Заменяем кнопки на input -->
       <div class="flex flex-col gap-2">
@@ -302,9 +323,10 @@
         }
     }
   
-    function openReviewModal() {
+    function openReviewModal(stylistId) {
       document.getElementById('reviewModal').showModal();
       document.body.style.overflow = 'hidden';
+      document.getElementById('stylistId').value = stylistId;
     }
   
     function closeReviewModal() {
@@ -323,7 +345,38 @@
     function submitReview() {
       const rating = document.getElementById('rating').value;
       const review = document.querySelector('textarea').value;
-      // Здесь будет логика отправки отзыв��
+      // Здесь будет логика отправки отзыва
+      // Получаем ID стилиста из скрытого поля
+      const stylistId = document.getElementById('stylistId').value;
+      
+      // Отправляем POST запрос на сервер
+      fetch('/submit_review', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          stylist_id: stylistId,
+          score: rating,
+          text: review
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if(data.success) {
+          // Если успешно - показываем сообщение
+          alert('Отзыв успешно отправлен');
+          // Обновляем страницу для отображения нового отзыва
+          location.reload();
+        } else {
+          // Если ошибка - показываем сообщение об ошибке
+          alert('Ошибка при отправке отзыва');
+        }
+      })
+      .catch(error => {
+        console.error('Ошибка:', error);
+        alert('Произошла ошибка при отправке отзыва');
+      });
       console.log('Рейтинг:', rating, 'Отзыв:', review);
       closeReviewModal();
     }

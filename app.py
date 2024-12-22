@@ -168,16 +168,28 @@ def lkCL():
     format = '%d.%m.%Y'
     years_old = (datetime.now() - datetime.strptime(birth_date, format)).days // 365
 
-    orders = db.get_completed_orders(user_info['user_id'])
+    orders = db.get_completed_orders_client(user_info['user_id'])
     completed_orders = []
     for order in orders:
         completed_orders.append({'stylist_id': order['stylist_id'], 'stylist_name': order['stylist_name'],
                                   'average_score': db.get_average_score(order['stylist_id'])})
-
+    print(f'completed_orders: {completed_orders}')
     current_user_comments = db.get_comments(user_info['user_id'])
+    print(f'current_user_comments: {current_user_comments}')
 
     return render_template('lkClient.html', user_info=user_info, params = user_params,
     user_years = years_old, completed_orders = completed_orders, current_user_comments = current_user_comments)
+
+@app.route('/submit_review', methods=['POST'])
+def submit_review():
+    data = request.json
+    # Получаем email текущего пользователя из сессии
+    email = session['email']
+    # Получаем информацию о пользователе из БД
+    user_info = db.get_user_info_by_email(email)
+    # Добавляем отзыв с ID пользователя
+    db.add_feedback(stylist_id=data['stylist_id'], user_id=user_info['user_id'], score=data['score'], text=data['text'])
+    return jsonify({'success': True})
 
 @app.route('/chats')
 def chats():
@@ -205,7 +217,7 @@ def chats():
     if user_chats != None:
         last_messages = []
         for chats in current_user_chats:
-            last_messages.append({'chat_id': chats['chat_id'], 'message': db.get_last_message(chats['chat_id'])}) # список последних сообщений 
+            last_messages.append({'chat_id': chats['chat_id'], 'message': db.get_last_message(chats['chat_id'])}) # сп��сок последних сообщений 
     else:
         last_messages = None
 
@@ -220,25 +232,29 @@ def chats():
 
 @app.route('/lkST')
 def lkST(): ## добавить получение отзывов из бд
-    feedbacks = [{'id': 1, 'creator_id': 2, 'stylist_id': 2, 'score': 5, 'text': 'Хороший стилист'},
+    feedbacks_test = [{'id': 1, 'creator_id': 2, 'stylist_id': 2, 'score': 5, 'text': 'Хороший стилист'},
     {'id': 2, 'creator_id': 2, 'stylist_id': 2, 'score': 4, 'text': 'Замечательный стилист'}, 
     {'id': 3, 'creator_id': 3, 'stylist_id': 2, 'score': 5, 'text': 'Чудесный стилист'}, 
     {'id': 4, 'creator_id': 5, 'stylist_id': 2, 'score': 0, 'text': 'Еблан'}, 
     {'id': 5, 'creator_id': 6, 'stylist_id': 2, 'score': 0, 'text': 'Криворукий'}]
+    email = session['email']
+    user_info = db.get_user_info_by_email(email)
+    feedbacks = db.get_feedbacks(user_info['user_id'])
+
+    print(f'feedbacks: {feedbacks}')
+    print(f'user_info: {user_info}')
 
     #### мотьемотическая д'модьель ####
     sum_scores = 0
     for feedback in feedbacks:
         sum_scores += feedback['score']
-    average_score = sum_scores / len(feedbacks) 
-
-    email = session['email']
-    user_info = db.get_user_info_by_email(email)
+    average_score = sum_scores / (len(feedbacks) if len(feedbacks) > 0 else 1) 
 
     # Получение заказов
-    completed_orders = db.get_completed_orders(user_info['user_id']) # завершенные заказы
+    completed_orders = db.get_completed_orders_stylist(user_info['user_id']) # завершенные заказы
     current_orders = db.get_current_orders(user_info['user_id']) # активные заказы
-
+    print(f'completed_orders: {completed_orders}')
+    print(f'current_orders: {current_orders}')
     # Получение пользователей без чатов
     avaible_users = db.get_users_without_chats() # доступные клиенты
 
@@ -271,7 +287,7 @@ def lkOrders():
     current_orders = db.get_current_orders(user_info['user_id'])
     return render_template('lkOrders.html', completed_orders = completed_orders, user_info = user_info, stylist = user_info['stylist'], current_orders = current_orders)
 
-####### ДОДЕЛАТЬ СОЗДАНИЕ ЧАТОВ, ОТОБРАЖЕНИЕ СУЩЕСТВУЮЩИХ ЧАТОВ, СОХРАНЕНИЕ И ОТ��РАВКА СООБЩЕНИЙ
+####### ДОДЕЛАТЬ СОЗДАНИЕ ЧАТОВ, ОТОБРАЖЕНИЕ СУЩЕСТВУЮЩИХ ЧАТОВ, СОХРАНЕНИЕ И ОТРАВКА СООБЩЕНИЙ
 
 @app.route('/create_chat_with_user/<int:user_id>', methods = ['GET', 'POST']) # Создание чата
 def create_chat_with_user(user_id):
@@ -296,7 +312,7 @@ def create_chat_with_user(user_id):
     else:
         print(f'\n\nChat exsists\n\n')
 
-    return redirect(url_for('chats')) # Обновление страницы по завершении
+    return redirect(url_for('chats')) # Обновление стра��ицы по завершении
 
 @app.route('/chatRoom/<int:chat_id>/<int:recipient_id>')
 def chat_room(chat_id, recipient_id):
@@ -355,7 +371,7 @@ def handle_send_message(data):
     for chat in chat_info:
         if chat['user_id'] != user_id:
             second_user_id = chat['user_id']
-    # Сохраняем сообщение в БД
+    # Сохраняем ��ообщение в БД
     db.save_message(chat_id, user_id, message) # Сохранение сообщения в базу данных
 
     # Отправляем сообщение в комнату чата

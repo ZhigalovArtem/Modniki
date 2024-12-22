@@ -86,25 +86,30 @@
                 <div id="reviewsContainer" class="overflow-hidden">
 
                   <div id="reviewsSlider" class="flex transition-transform duration-300">
-                    <!-- Отзыв 1 -->
-                     {% for feedback in feedbacks %}
-                    <div class="border-2 border-customGreen rounded-lg px-10 py-4 w-full flex-shrink-0">
-                      <div class="flex items-center gap-3 mb-2">
-                        <img src="{{ url_for('static', filename='assets/img/png/avatarClient.png') }}" alt="Фото клиента" class="w-10 h-10 rounded-full">
-                        <div>
-                          <p class="font-medium">{{feedback.creator_id}}</p>
-                          <div class="flex gap-1">
-                            <ul class="flex space-x-1">
-                              {% for i in range(feedback.score) %}
-                              <li><img src="{{ url_for('static', filename='assets/img/svg/star.svg') }}" alt="★" class="w-4 h-4"></li>
-                              {% endfor %}
-                            </ul>
+                    {% if feedbacks %}
+                      {% for feedback in feedbacks %}
+                      <div class="border-2 border-customGreen rounded-lg px-10 py-4 w-full flex-shrink-0">
+                        <div class="flex items-center gap-3 mb-2">
+                          <img src="{{ url_for('static', filename='assets/img/png/avatarClient.png') }}" alt="Фото клиента" class="w-10 h-10 rounded-full">
+                          <div>
+                            <p class="font-medium">{{feedback.first_name}} {{feedback.last_name}}</p>
+                            <div class="flex gap-1">
+                              <ul class="flex space-x-1">
+                                {% for i in range(feedback.score) %}
+                                <li><img src="{{ url_for('static', filename='assets/img/svg/star.svg') }}" alt="★" class="w-4 h-4"></li>
+                                {% endfor %}
+                              </ul>
+                            </div>
                           </div>
                         </div>
+                        <p class="text-customBlack">{{feedback.text}}</p>
                       </div>
-                      <p class="text-customBlack">{{feedback.text}}</p>
-                    </div>
-                    {% endfor %}
+                      {% endfor %}
+                    {% else %}
+                      <div class="border-2 border-customGreen rounded-lg px-10 py-4 w-full flex-shrink-0">
+                        <p class="text-center text-gray-500">Пока нет отзывов</p>
+                      </div>
+                    {% endif %}
                   </div>
                 </div>
 
@@ -130,7 +135,7 @@
               <button class="w-full oswald-weight-medium bg-black text-white py-3 rounded-full hover:bg-customGreen hover:text-black border-2 border-transparent hover:border-black transition-colors" onclick="openVideoModal()">Видеозвонок клиенту</button>
               <button onclick="window.location.href='{{ url_for('download_resume', user_id=user_info.user_id) }}'" class="w-full oswald-weight-medium bg-black text-white py-3 rounded-full hover:bg-customGreen hover:text-black border-2 border-transparent hover:border-black transition-colors">Просмотреть резюме</button>
               <input type="file" id="resumeUpload" style="display: none" accept=".pdf,.doc,.docx">
-              <button onclick="document.getElementById('resumeUpload').click()" class="w-full oswald-weight-medium bg-black text-white py-3 rounded-full hover:bg-customGreen hover:text-black border-2 border-transparent hover:border-black transition-colors">И��менить резюме</button>
+              <button onclick="document.getElementById('resumeUpload').click()" class="w-full oswald-weight-medium bg-black text-white py-3 rounded-full hover:bg-customGreen hover:text-black border-2 border-transparent hover:border-black transition-colors">Именить резюме</button>
               </div>
             
           </div>

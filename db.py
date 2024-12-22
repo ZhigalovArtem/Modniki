@@ -186,6 +186,15 @@ def save_stylist_docs(user_id, resume_path, certificate_path):
     conn.commit()
     conn.close()
 
+# добавление отзыва
+def add_feedback(stylist_id, user_id, score, text):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('INSERT INTO feedbacks (stylist_id, score, text, creator_id) VALUES (?, ?, ?, ?)', (stylist_id, score, text, user_id))
+    conn.commit()
+    conn.close()
+
 # получение резюме стилиста
 def get_resume_path(user_id):
     conn = get_db_connection()
@@ -256,7 +265,7 @@ def get_user_params(user_id):
     return [dict(row) for row in rows]
 
 # получение истории заказов
-def get_completed_orders(user_id):
+def get_completed_orders_client(user_id):
     conn = get_db_connection()
     cursor = conn.cursor()
 
@@ -267,9 +276,28 @@ def get_completed_orders(user_id):
     FROM completed_orders co
     JOIN users u1 ON co.client_id = u1.user_id
     JOIN users u2 ON co.stylist_id = u2.user_id
-    WHERE co.client_id = ? OR co.stylist_id = ?
+    WHERE co.client_id = ?
     AND co.order_status = 'completed'
-    ''', (user_id, user_id))
+    ''', (user_id,))
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+# получение заказов стилиста
+def get_completed_orders_stylist(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    SELECT DISTINCT co.*, 
+           u1.first_name as client_name, 
+           u2.first_name as stylist_name
+    FROM completed_orders co
+    JOIN users u1 ON co.client_id = u1.user_id
+    JOIN users u2 ON co.stylist_id = u2.user_id
+    WHERE co.stylist_id = ?
+    AND co.order_status = 'completed'
+    ''', (user_id,))
     rows = cursor.fetchall()
     conn.close()
     return [dict(row) for row in rows]
@@ -279,7 +307,22 @@ def get_comments(user_id):
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    cursor.execute('SELECT * FROM feedbacks WHERE user_id = ?', (user_id,))
+    cursor.execute('SELECT * FROM feedbacks WHERE creator_id = ?', (user_id,))
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+# получение отзывов оставленных стилистом
+def get_feedbacks(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    SELECT f.*, u.*
+    FROM feedbacks f
+    JOIN users u ON f.creator_id = u.user_id
+    WHERE f.stylist_id = ?
+    ''', (user_id,))
     rows = cursor.fetchall()
     conn.close()
     return [dict(row) for row in rows]
@@ -310,13 +353,25 @@ def get_current_orders(user_id):
     cursor = conn.cursor()
 
     cursor.execute('''
-    SELECT DISTINCT co.*, 
-           u1.first_name as client_name, 
-           u2.first_name as stylist_name
+    SELECT DISTINCT 
+           co.id as order_id,
+           co.client_id,
+           co.stylist_id,
+           co.order_status,
+           u1.user_id as client_user_id,
+           u1.first_name as client_first_name,
+           u1.last_name as client_last_name,
+           u1.email as client_email,
+           u1.photo_path as client_photo,
+           u2.user_id as stylist_user_id,
+           u2.first_name as stylist_first_name,
+           u2.last_name as stylist_last_name,
+           u2.email as stylist_email,
+           u2.photo_path as stylist_photo
     FROM completed_orders co
     JOIN users u1 ON co.client_id = u1.user_id
     JOIN users u2 ON co.stylist_id = u2.user_id
-    WHERE co.client_id = ? OR co.stylist_id = ?
+    WHERE (co.client_id = ? OR co.stylist_id = ?)
     AND co.order_status = 'active'
     ''', (user_id, user_id))
     rows = cursor.fetchall()
@@ -437,7 +492,7 @@ def create_order(client_id, stylist_id):
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    cursor.execute('INSERT INTO completed_orders (client_id, stylist_id, order_status) VALUES (?, ?, ?)', (client_id, stylist_id, 'active'))
+    cursor.execute('INSERT INTO completed_orders (client_id, stylist_id, order_status) VALUES (?, ?, ?)', (stylist_id, client_id, 'active'))
     conn.commit()
     conn.close()
 
@@ -573,7 +628,7 @@ def save_message(chat_id, sender_id, message): # Вроде должно раб�
     conn.commit()
     conn.close()
 
-# Функция для получения последнего сообщений в чате
+# Функция для получения последнего сообщения в чате
 def get_last_message(chat_id,): # Работает
     conn = get_db_connection()
     cursor = conn.cursor()
