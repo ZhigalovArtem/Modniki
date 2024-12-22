@@ -361,6 +361,10 @@ def anket_gender():
 
     if request.method == 'POST':
         gender = request.form.get('gender')
+        if gender == 'male':
+            gender = 1
+        elif gender == 'female':
+            gender = 0
         print(f'email {email}\ngender {gender}')
         anketa[email]= {'gender': gender}
         return redirect(url_for('anket_purpose'))

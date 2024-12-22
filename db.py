@@ -102,6 +102,17 @@ def create_tables():
             FOREIGN KEY (stylist_id) REFERENCES users(user_id);
         );
         ''')
+    
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS user_anketa (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            anketa_purpose TEXT,
+            anketa_style TEXT,
+            anketa_season TEXT,
+            FOREIGN KEY (user_id) REFERENCES users(user_id)
+        );
+        ''')
 
     conn.commit()
     conn.close()
@@ -129,6 +140,24 @@ def add_user_params(height, weight, chest_size, ass_size, waist_size, clothes_si
     VALUES(?, ?, ?, ?, ?, ?, ?) 
     ''',(user_id, height, weight, chest_size, ass_size, waist_size, clothes_size))
 
+    conn.commit()
+    conn.close()
+
+def save_user_anketa(user_id, anketa):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    INSERT INTO user_anketa (user_id, anketa_purpose, anketa_style, anketa_season)
+    VALUES (?, ?, ?, ?)
+    ''', (user_id, anketa['purpose'], anketa['style'], anketa['season']))
+
+    for i in range(1, 10):
+        skin = f'skin{i}'
+        cursor.execute('''
+        INSERT INTO shmotki (user_id, shmotka_id)
+        VALUES (?, ?)
+        ''', (user_id, anketa[skin]))
     conn.commit()
     conn.close()
 
