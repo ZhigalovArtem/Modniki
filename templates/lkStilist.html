@@ -3,24 +3,28 @@
    <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link rel="stylesheet" href="./static/css/output.css">
-      <link rel="stylesheet" href="./static/css/customStyles.css">
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/customStyles.css') }}">
       <title>Личный кабинет - Клиент</title>
    </head>
    <body class="bg-customGray font-sans">
 
     <!-- Header -->
     <header class="flex items-center justify-between p-3 bg-customWhite shadow-md">
-      <!-- Logo -->
-      <div class="ml-20">
-        <a href="index.html">
-          <img src="./static/assets/img/svg/logoHead.svg" alt="">
+      <!-- Logo and Orders Button Container -->
+      <div class="flex items-center gap-6 ml-20">
+        <a href="{{ url_for('index') }}">
+          <img src="{{ url_for('static', filename='assets/img/svg/logoHead.svg') }}" alt="">
         </a>
+        <button class="oswald-weight-medium bg-black text-white px-6 py-2 rounded-full hover:bg-customGreen hover:text-black border-2 border-transparent hover:border-black transition-colors flex items-center gap-2 group">
+          <img src="{{ url_for('static', filename='assets/img/svg/myOrders.svg') }}" alt="" class="group-hover:invert">
+          Мои заказы
+        </button>
       </div>
   
       <!-- Menu Icon -->
       <div class="text-3xl cursor-pointer mr-10">
-        <img src="./static/assets/img/svg/burger-menu.svg" alt="">
+        <img src="{{ url_for('static', filename='assets/img/svg/burger-menu.svg') }}" alt="">
       </div>
       
     </header>
@@ -40,13 +44,13 @@
             <!-- Profile Info -->
             <div class="flex items-center gap-6 mb-6">
               <!-- Фото профиля -->
-              <img src="./static/assets/img/png/avatarStilist.png" alt="Фото профиля" class="w-32 h-32 rounded-full border-2 border-customBlack">
+              <img src="{{ url_for('static', filename='assets/img/png/avatarStilist.png') }}" alt="Фото профиля" class="w-32 h-32 rounded-full border-2 border-customBlack">
   
               <!-- Имя, Фамилия и Возраст -->
               <div>
 
                 <div>
-                  <img src="./static/assets/img/png/level-7.png" alt="" class="w-10 h-10 rounded-full border-2 border-customBlack p-1">
+                  <img src="{{ url_for('static', filename='assets/img/png/level-7.png') }}" alt="" class="w-10 h-10 rounded-full border-2 border-customBlack p-1">
                 </div>
 
                 <h2 class="text-2xl oswald-weight-medium">{{user_info.first_name}}</h2>
@@ -66,13 +70,13 @@
                      {% for feedback in feedbacks %}
                     <div class="border-2 border-customGreen rounded-lg px-10 py-4 w-full flex-shrink-0">
                       <div class="flex items-center gap-3 mb-2">
-                        <img src="./static/assets/img/png/avatarClient.png" alt="Фото клиента" class="w-10 h-10 rounded-full">
+                        <img src="{{ url_for('static', filename='assets/img/png/avatarClient.png') }}" alt="Фото клиента" class="w-10 h-10 rounded-full">
                         <div>
                           <p class="font-medium">{{feedback.creator_id}}</p>
                           <div class="flex gap-1">
                             <ul class="flex space-x-1">
                               {% for i in range(feedback.score) %}
-                              <li><img src="./static/assets/img/svg/star.svg" alt="★" class="w-4 h-4"></li>
+                              <li><img src="{{ url_for('static', filename='assets/img/svg/star.svg') }}" alt="★" class="w-4 h-4"></li>
                               {% endfor %}
                             </ul>
                           </div>
@@ -128,14 +132,14 @@
     <!-- Зеленая полоска -->
     <div class="w-full h-6 bg-customGreen">
       <button class="absolute right-4 top-2" onclick="closeVideoModal()">
-        <img src="./static/assets/img/svg/close-modal.svg" alt="">
+        <img src="{{ url_for('static', filename='assets/img/svg/close-modal.svg') }}" alt="">
       </button>
     </div>
 
     <div class="w-full h-full flex flex-col items-center justify-center">
         <!-- Аватар и имя -->
         <div class="flex flex-col items-center mb-8">
-            <img src="./static/assets/img/png/avatarStilist.png" alt="Фото профиля" class="w-auto h-auto rounded-full mb-4">
+            <img src="{{ url_for('static', filename='assets/img/png/avatarStilist.png') }}" alt="Фото профиля" class="w-auto h-auto rounded-full mb-4">
             <h3 class="text-white text-2xl">Екатерина</h3>
         </div>
         
@@ -143,15 +147,15 @@
         <div class="flex gap-8">
 
             <button class="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center hover:bg-gray-700">
-              <img src="./static/assets/img/svg/camera.svg" class="w-auto h-auto" alt="">
+              <img src="{{ url_for('static', filename='assets/img/svg/camera.svg') }}" class="w-auto h-auto" alt="">
             </button>
 
             <button onclick="closeVideoModal()" class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700">
-              <img src="./static/assets/img/svg/end-call.svg" class="w-auto h-auto" alt="">
+              <img src="{{ url_for('static', filename='assets/img/svg/end-call.svg') }}" class="w-auto h-auto" alt="">
             </button>
 
             <button class="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center hover:bg-gray-700">
-              <img src="./static/assets/img/svg/mic.svg" class="w-auto h-auto" alt="">
+              <img src="{{ url_for('static', filename='assets/img/svg/mic.svg') }}" class="w-auto h-auto" alt="">
             </button>
 
         </div>
@@ -188,7 +192,41 @@
       currentSlide = (currentSlide - 1 + slides.length) % slides.length;
       showSlide(currentSlide);
     }
+
+    function toggleMenu() {
+        const menu = document.getElementById('sideMenu');
+        const isOpen = menu.classList.contains('translate-x-0');
+        
+        if (isOpen) {
+            menu.classList.remove('translate-x-0');
+            menu.classList.add('translate-x-full');
+            document.body.style.overflow = 'auto';
+        } else {
+            menu.classList.remove('translate-x-full');
+            menu.classList.add('translate-x-0');
+            document.body.style.overflow = 'hidden';
+        }
+    }
   </script>
+  
+  <!-- Боковое меню -->
+  <div id="sideMenu" class="fixed top-0 right-0 h-full w-80 bg-customWhite transform translate-x-full transition-transform duration-300 ease-in-out shadow-lg z-50">
+    <!-- Кнопка закрытия -->
+    <button onclick="toggleMenu()" class="absolute top-6 right-6">
+      <img src="{{ url_for('static', filename='assets/img/svg/close-modal.svg') }}" alt="Закрыть" class="w-6 h-6">
+    </button>
+    
+    <!-- Содержимое меню -->
+    <div class="p-8 mt-16">
+      <nav class="space-y-4">
+        <a href="#" class="block oswald-weight-medium text-2xl hover:text-customGreen flex items-center gap-3">
+          <img src="{{ url_for('static', filename='assets/img/svg/profile.svg') }}" alt="" class="w-12 h-12">
+          Профиль
+        </a>
+        <!-- ... остальные пункты меню ... -->
+      </nav>
+    </div>
+  </div>
   
   
   

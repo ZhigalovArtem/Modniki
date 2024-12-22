@@ -25,48 +25,49 @@
 
             <!-- Question Section -->
             <div class="bg-customWhite p-8 shadow-md">
-                <div class="space-y-6">
-                    <!-- Option 1: Новый стиль -->
-                    <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer">
-                        <h3 class="text-xl font-semibold text-gray-700 text-start">Лето</h3>
+                <form method="POST">
+                    <div class="space-y-6">
+                        <!-- Option 1: Лето -->
+                        <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer">
+                            <h3 class="text-xl font-semibold text-gray-700 text-start">Лето</h3>
+                        </div>
+
+                        <!-- Option 2: Зима -->
+                        <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer">
+                            <h3 class="text-xl font-semibold text-gray-700 text-start">Зима</h3>
+                        </div>
+
+                        <!-- Option 3: Осень -->
+                        <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer">
+                            <h3 class="text-xl font-semibold text-gray-700 text-start">Осень</h3>
+                        </div>
+
+                        <!-- Option 4: Весна -->
+                        <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer">
+                            <h3 class="text-xl font-semibold text-gray-700 text-start">Весна</h3>
+                        </div>
+
+                        <!-- Option 5: Демисезон -->
+                        <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer">
+                            <h3 class="text-xl font-semibold text-gray-700 text-start">Демисезон</h3>
+                        </div>
                     </div>
 
-                    <!-- Option 2: 50/50 -->
-                    <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer">
-                        <h3 class="text-xl font-semibold text-gray-700 text-start">Зима</h3>
+                    <div class="flex justify-end mt-10">
+                        <div class="border-2 border-customBlack rounded-full py-1 px-2 flex items-center">
+                            <button type="submit" name="action" value="previous">
+                                <img src="{{ url_for('static', filename= 'assets/img/png/prev.png') }}" alt="">
+                            </button>
+                            
+                            <!-- Separator -->
+                            <div class="w-1 h-8 bg-customBlack mx-2"></div>
+                            
+                            <button type="submit" name="action" value="next">
+                                <img src="{{ url_for('static', filename= 'assets/img/png/next.png') }}" alt="">
+                            </button>
+                        </div>
                     </div>
-
-                    <!-- Option 3: Сохранить стиль -->
-                    <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer">
-                        <h3 class="text-xl font-semibold text-gray-700 text-start">Осень</h3>
-                    </div>
-
-                    <!-- Option 4: Сохранить стиль -->
-                    <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer">
-                        <h3 class="text-xl font-semibold text-gray-700 text-start">Весна</h3>
-                    </div>
-
-                    <!-- Option 4: Сохранить стиль -->
-                    <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer">
-                        <h3 class="text-xl font-semibold text-gray-700 text-start">Демисезон</h3>
-                    </div>
-                </div>
-
-                <div class="flex justify-end mt-10">
-                    <div class="border-2 border-customBlack rounded-full py-1 px-2 flex items-center">
-                        <button onclick="window.location.href='previousPage.html'">
-                            <img src="{{ url_for('static', filename= 'assets/img/png/prev.png') }}" alt="">
-                        </button>
-                        
-                        <!-- Separator -->
-                        <div class="w-1 h-8 bg-customBlack mx-2"></div>
-                        
-                        <button onclick="window.location.href='confirmStyle.html'">
-                            <img src="{{ url_for('static', filename= 'assets/img/png/next.png') }}" alt="">
-                        </button>
-                    </div>
-                </div>
-
+                </form>
             </div>
 
             <!-- Green and Black Stripes -->

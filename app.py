@@ -361,6 +361,7 @@ def anket_gender():
 
     if request.method == 'POST':
         gender = request.form.get('gender')
+        print(gender)
         if gender == 'male':
             gender = 1
         elif gender == 'female':
@@ -378,6 +379,8 @@ def anket_purpose():
     user_gender = get_gender(email)
     print(f'\n\npurpose {user_gender}\n\n')
     if request.method == 'POST': # запись выбранных ответов
+            action = request.form.get('action')
+
             everyday1 = request.form.get('everyday1')
             everyday2 = request.form.get('everyday2')
             everyday3 = request.form.get('everyday3')
@@ -401,7 +404,12 @@ def anket_purpose():
             anketa[email]['purpose'] = {'everyday': everyday_section, 'home': home_section}
             print(f'\n\n{anketa}\n\n')
     
-    if user_gender == '0':
+    if action == 'next':
+            return redirect(url_for('anket_style'))
+    elif action == 'prev':
+            return redirect(url_for('anket_gender'))
+
+    if user_gender == 0:
         return render_template('targetWoman.html')
     else:
         return render_template('man')
@@ -409,102 +417,149 @@ def anket_purpose():
 @app.route('/anket-style', methods = ['POST', 'GET']) # выбор стиля 2
 def anket_style():
     email = session['email']
+
     if request.method == 'POST':
+        action = request.form.get('action')
         style = request.form.get('') # исправить
         anketa[email]['style'] = style
+
+    if action == 'next':
+            return redirect(url_for('confirmStyle'))
+    elif action == 'prev':
+            return redirect(url_for('anket_purpose'))
     return render_template('/chooseStyle.html')
 
 @app.route('/anket-confirmStyle', methods = ['POST', 'GET']) # выбор стиля 4
 def confirmStyle():
     email = session['email']
-    if request.method == 'POST':
+    
+    if request.method == 'POST':   
+        action = request.form.get('action')
         answer = request.form.get('') # исправить
         anketa[email]['answer'] = answer
+
+    if action == 'next':
+            return redirect(url_for('season'))
+    elif action == 'prev':
+            return redirect(url_for('anket_style'))
     return render_template('confirmStyle.html')
 
 @app.route('/season', methods = ['POST', 'GET']) # сезон 5
 def season(): # исправить под два пола
     email = session['email']
     if request.method == 'POST':
+        action = request.form.get('action')
         season = request.form.get('') # исправить
         anketa[email]['season'] = season
+    if action == 'next':
+            return redirect(url_for('anket_chooseWork'))
+    elif action == 'prev':
+            return redirect(url_for('confirmStyle'))
     return render_template('season.html')
 
 @app.route('/anket-chooseWork', methods=['POST', 'GET'])  # 17
 def anket_chooseWork():
     email = session['email']
     if request.method == 'POST':
-        # Получаем список выбранных профессий
+        action = request.form.get('action')
         selected_professions = request.form.getlist('professions')
-        # Сохраняем в анкету
         anketa[email]['work'] = selected_professions
-        # Здесь можно добавить редирект на следующую страницу
-        return redirect(url_for('next_page'))  # Замените 'next_page' на нужный маршрут
+        
+        if action == 'next':
+            return redirect(url_for('anket_chooseHairColor'))
+        elif action == 'prev':
+            return redirect(url_for('season'))
     return render_template('chooseWork.html')
 
 @app.route('/anket-chooseHairColor', methods=['POST', 'GET'])  # 18
 def anket_chooseHairColor():
     email = session['email']
     if request.method == 'POST':
-        # Получаем список выбранных профессий
+        action = request.form.get('action')
         selected_hair_color = request.form.getlist('hair_color')
-        # Сохраняем в анкету
         anketa[email]['hair_color'] = selected_hair_color
-        # Здесь можно добавить редирект на следующую страницу
-        return redirect(url_for('next_page'))  # Замените 'next_page' на нужный маршрут
+        
+        if action == 'next':
+            return redirect(url_for('anket_chooseSizeTopWoman'))
+        elif action == 'prev':
+            return redirect(url_for('anket_chooseWork'))
     return render_template('chooseHairColor.html')
 
 @app.route('/anket-chooseSizeTopWoman', methods=['POST', 'GET'])  # 19
 def anket_chooseSizeTopWoman():
     email = session['email']
     if request.method == 'POST':
-        # Получаем список выбранных профессий
+        action = request.form.get('action')
         selected_size_top = request.form.getlist('size')
-        # Сохраняем в анкету
         anketa[email]['size_top'] = selected_size_top
-        # Здесь можно добавить редирект на следующую страницу
-        return redirect(url_for('next_page'))  # Замените 'next_page' на нужный маршрут
+        
+        if action == 'next':
+            return redirect(url_for('anket_chooseSizeBottomWoman'))
+        elif action == 'prev':
+            return redirect(url_for('anket_chooseHairColor'))
     return render_template('chooseSizeTopWoman.html')
 
 @app.route('/anket-chooseSizeBottomWoman', methods=['POST', 'GET'])  # 20
 def anket_chooseSizeBottomWoman():
     email = session['email']
     if request.method == 'POST':
+        action = request.form.get('action')
         selected_size_bottom = request.form.getlist('size')
         anketa[email]['size_bottom'] = selected_size_bottom
-        return redirect(url_for('next_page'))
+        
+        if action == 'next':
+            return redirect(url_for('anket_chooseKabluck'))
+        elif action == 'prev':
+            return redirect(url_for('anket_chooseSizeTopWoman'))
     return render_template('chooseSizeBottomWoman.html')
 
 @app.route('/anket-chooseKabluck', methods=['POST', 'GET'])  # 21
 def anket_chooseKabluck():
     email = session['email']
     if request.method == 'POST':
+        action = request.form.get('action')
         selected_kabluck = request.form.getlist('kabluck')
         anketa[email]['kabluck'] = selected_kabluck
-        return redirect(url_for('next_page'))
+        
+        if action == 'next':
+            return redirect(url_for('anket_chooseSkinnyOrNotTop'))
+        elif action == 'prev':
+            return redirect(url_for('anket_chooseSizeBottomWoman'))
     return render_template('chooseKabluck.html')
 
 @app.route('/anket-chooseSkinnyOrNotTop', methods=['POST', 'GET'])  # 22
 def anket_chooseSkinnyOrNotTop():
     email = session['email']
     if request.method == 'POST':
+        action = request.form.get('action')
         selected_skinny_or_not_top = request.form.getlist('skinny_or_not_top')
         anketa[email]['skinny_or_not_top'] = selected_skinny_or_not_top
-        return redirect(url_for('next_page'))
+        
+        if action == 'next':
+            return redirect(url_for('anket_chooseSkinnyOrNotBottom'))
+        elif action == 'prev':
+            return redirect(url_for('anket_chooseKabluck'))
     return render_template('chooseSkinnyOrNotTop.html')
 
 @app.route('/anket-chooseSkinnyOrNotBottom', methods=['POST', 'GET'])  # 23
 def anket_chooseSkinnyOrNotBottom():
     email = session['email']
     if request.method == 'POST':
+        action = request.form.get('action')
         selected_skinny_or_not_bottom = request.form.getlist('skinny_or_not_bottom')
         anketa[email]['skinny_or_not_bottom'] = selected_skinny_or_not_bottom
-        return redirect(url_for('next_page'))
+        
+        if action == 'next':
+            return redirect(url_for('skin1'))  # Предполагаю, что следующая страница skin1
+        elif action == 'prev':
+            return redirect(url_for('anket_chooseSkinnyOrNotTop'))
     return render_template('chooseSkinnyOrNotBottom.html')
 
 @app.route('/anket-chooseJeansForm', methods=['POST', 'GET'])  # 24
 def anket_chooseJeansForm():
     email = session['email']
+    user_gender = get_gender(email)
+    
     if request.method == 'POST':
         action = request.form.get('action')
         selected_jeans = request.form.get('selectedJeans')
@@ -513,33 +568,60 @@ def anket_chooseJeansForm():
             anketa[email]['jeans_type'] = selected_jeans
             
         if action == 'next':
-            return redirect(url_for('next_page'))
+            return redirect(url_for('anket_choosePosadka'))
         elif action == 'prev':
-            return redirect(url_for('prev_page'))
+            return redirect(url_for('anket_chooseSkinnyOrNotBottom'))
             
-    return render_template('chooseJeansForm.html')
+    if user_gender == 0:
+        return render_template('chooseJeansForm.html')
+    else:
+        return render_template('chooseJeansFormMan.html')
 
 @app.route('/anket-choosePosadka', methods=['POST', 'GET'])  # 25
 def anket_choosePosadka():
     email = session['email']
+    user_gender = get_gender(email)
+    
     if request.method == 'POST':
+        action = request.form.get('action')
         selected_posadka = request.form.getlist('posadka')
         anketa[email]['posadka'] = selected_posadka
-        return redirect(url_for('next_page'))
-    return render_template('choosePosadka.html')
+        
+        if action == 'next':
+            return redirect(url_for('anket_chooseJeansLength'))
+        elif action == 'prev':
+            return redirect(url_for('anket_chooseJeansForm'))
+            
+    if user_gender == 0:
+        return render_template('choosePosadka.html')
+    else:
+        return render_template('choosePosadkaMan.html')
 
 @app.route('/anket-chooseJeansLength', methods=['POST', 'GET'])  # 26
 def anket_chooseJeansLength():
     email = session['email']
+    user_gender = get_gender(email)
+    
     if request.method == 'POST':
+        action = request.form.get('action')
         selected_jeans_length = request.form.getlist('jeans_length')
         anketa[email]['jeans_length'] = selected_jeans_length
-        return redirect(url_for('next_page'))
-    return render_template('chooseJeansLength.html')
+        
+        if action == 'next':
+            return redirect(url_for('anket_chooseLength'))
+        elif action == 'prev':
+            return redirect(url_for('anket_choosePosadka'))
+            
+    if user_gender == 0:
+        return render_template('chooseJeansLength.html')
+    else:
+        return render_template('chooseJeansLengthMan.html')
 
 @app.route('/anket-chooseLength', methods=['POST', 'GET'])  # 27
 def anket_chooseLength():
     email = session['email']
+    user_gender = get_gender(email)
+    
     if request.method == 'POST':
         action = request.form.get('action')
         selected_length = request.form.get('selectedLength')
@@ -548,11 +630,14 @@ def anket_chooseLength():
             anketa[email]['length'] = selected_length.split(',')
             
         if action == 'next':
-            return redirect(url_for('next_page'))
-        elif action == 'previous':
-            return redirect(url_for('prev_page'))
+            return redirect(url_for('skin1'))
+        elif action == 'prev':
+            return redirect(url_for('anket_chooseJeansLength'))
             
-    return render_template('chooseLenght.html')
+    if user_gender == 0:
+        return render_template('chooseLength.html')
+    else:
+        return render_template('chooseLengthMan.html')
 
 
 
@@ -562,7 +647,7 @@ def skin1():
     user_gender = get_gender(email)
 
     if request.method == 'POST':
-        # Получаем состояния всех чекбоксов
+        action = request.form.get('action')
         checkbox_states = {
             'like1': request.form.get('likeCheckboxState1'),
             'like2': request.form.get('likeCheckboxState2'),
@@ -571,10 +656,12 @@ def skin1():
             'like5': request.form.get('likeCheckboxState5')
         }
         
-        # Сохраняем данные в словарь анкеты
         anketa[email]['skin1_likes'] = checkbox_states
         
-        return redirect(url_for('skin2'))
+        if action == 'next':
+            return redirect(url_for('skin2'))
+        elif action == 'prev':
+            return redirect(url_for('anket_chooseLength'))
 
     if user_gender == 0:
         return render_template('skin1.html')
@@ -587,7 +674,7 @@ def skin2():
     user_gender = get_gender(email)
     
     if request.method == 'POST':
-        # Получаем состояния всех чекбоксов
+        action = request.form.get('action')
         checkbox_states = {
             'like1': request.form.get('likeCheckboxState1'),
             'like2': request.form.get('likeCheckboxState2'),
@@ -596,10 +683,12 @@ def skin2():
             'like5': request.form.get('likeCheckboxState5')
         }
         
-        # Сохраняем данные в словарь анкеты
         anketa[email]['skin2_likes'] = checkbox_states
         
-        return redirect(url_for('skin3'))
+        if action == 'next':
+            return redirect(url_for('skin3'))
+        elif action == 'prev':
+            return redirect(url_for('skin1'))
 
     if user_gender == 0:
         return render_template('skin2.html')
@@ -612,7 +701,7 @@ def skin3():
     user_gender = get_gender(email)
 
     if request.method == 'POST':
-        # Получаем состояния всех чекбоксов
+        action = request.form.get('action')
         checkbox_states = {
             'like1': request.form.get('likeCheckboxState1'),
             'like2': request.form.get('likeCheckboxState2'),
@@ -621,10 +710,12 @@ def skin3():
             'like5': request.form.get('likeCheckboxState5')
         }
         
-        # Сохраняем данные в словарь анкеты
         anketa[email]['skin3_likes'] = checkbox_states
         
-        return redirect(url_for('skin4'))
+        if action == 'next':
+            return redirect(url_for('skin4'))
+        elif action == 'prev':
+            return redirect(url_for('skin2'))
 
     if user_gender == 0:
         return render_template('skin3.html')
@@ -637,7 +728,7 @@ def skin4():
     user_gender = get_gender(email)
 
     if request.method == 'POST':
-        # Получаем состояния всех чекбоксов
+        action = request.form.get('action')
         checkbox_states = {
             'like1': request.form.get('likeCheckboxState1'),
             'like2': request.form.get('likeCheckboxState2'),
@@ -646,10 +737,12 @@ def skin4():
             'like5': request.form.get('likeCheckboxState5')
         }
         
-        # Сохраняем данные в словарь анкеты
         anketa[email]['skin4_likes'] = checkbox_states
         
-        return redirect(url_for('skin5'))
+        if action == 'next':
+            return redirect(url_for('skin5'))
+        elif action == 'prev':
+            return redirect(url_for('skin3'))
 
     if user_gender == 0:
         return render_template('skin4.html')
@@ -662,7 +755,7 @@ def skin5():
     user_gender = get_gender(email)
 
     if request.method == 'POST':
-        # Получаем состояния всех чекбоксов
+        action = request.form.get('action')
         checkbox_states = {
             'like1': request.form.get('likeCheckboxState1'),
             'like2': request.form.get('likeCheckboxState2'),
@@ -671,10 +764,12 @@ def skin5():
             'like5': request.form.get('likeCheckboxState5')
         }
         
-        # Сохраняем данные в словарь анкеты
         anketa[email]['skin5_likes'] = checkbox_states
         
-        return redirect(url_for('skin6'))
+        if action == 'next':
+            return redirect(url_for('skin6'))
+        elif action == 'prev':
+            return redirect(url_for('skin4'))
 
     if user_gender == 0:
         return render_template('skin5.html')
@@ -687,7 +782,7 @@ def skin6():
     user_gender = get_gender(email)
 
     if request.method == 'POST':
-        # Получаем состояния всех чекбоксов
+        action = request.form.get('action')
         checkbox_states = {
             'like1': request.form.get('likeCheckboxState1'),
             'like2': request.form.get('likeCheckboxState2'),
@@ -696,10 +791,12 @@ def skin6():
             'like5': request.form.get('likeCheckboxState5')
         }
         
-        # Сохраняем данные в словарь анкеты
         anketa[email]['skin6_likes'] = checkbox_states
         
-        return redirect(url_for('skin7'))
+        if action == 'next':
+            return redirect(url_for('skin7'))
+        elif action == 'prev':
+            return redirect(url_for('skin5'))
 
     if user_gender == 0:
         return render_template('skin6.html')
@@ -712,6 +809,7 @@ def skin7():
     user_gender = get_gender(email)
 
     if request.method == 'POST':
+        action = request.form.get('action')
         checkbox_states = {
             'like1': request.form.get('likeCheckboxState1'),
             'like2': request.form.get('likeCheckboxState2'),
@@ -722,7 +820,10 @@ def skin7():
         
         anketa[email]['skin7_likes'] = checkbox_states
         
-        return redirect(url_for('skin8'))
+        if action == 'next':
+            return redirect(url_for('skin8'))
+        elif action == 'prev':
+            return redirect(url_for('skin6'))
 
     if user_gender == 0:
         return render_template('skin.7.html')
@@ -735,6 +836,7 @@ def skin8():
     user_gender = get_gender(email)
 
     if request.method == 'POST':
+        action = request.form.get('action')
         checkbox_states = {
             'like1': request.form.get('likeCheckboxState1'),
             'like2': request.form.get('likeCheckboxState2'),
@@ -745,7 +847,10 @@ def skin8():
         
         anketa[email]['skin8_likes'] = checkbox_states
         
-        return redirect(url_for('skin9'))
+        if action == 'next':
+            return redirect(url_for('skin9'))
+        elif action == 'prev':
+            return redirect(url_for('skin7'))
 
     if user_gender == 0:
         return render_template('skin.8.html')
@@ -758,6 +863,7 @@ def skin9():
     user_gender = get_gender(email)
 
     if request.method == 'POST':
+        action = request.form.get('action')
         checkbox_states = {
             'like1': request.form.get('likeCheckboxState1'),
             'like2': request.form.get('likeCheckboxState2'),
@@ -768,7 +874,10 @@ def skin9():
         
         anketa[email]['skin9_likes'] = checkbox_states
         
-        return redirect(url_for('skin10'))
+        if action == 'next':
+            return redirect(url_for('skin10'))
+        elif action == 'prev':
+            return redirect(url_for('skin8'))
 
     if user_gender == 0:
         return render_template('skin9.html')
@@ -781,6 +890,7 @@ def skin10():
     user_gender = get_gender(email)
 
     if request.method == 'POST':
+        action = request.form.get('action')
         checkbox_states = {
             'like1': request.form.get('likeCheckboxState1'),
             'like2': request.form.get('likeCheckboxState2'),
@@ -791,7 +901,10 @@ def skin10():
         
         anketa[email]['skin10_likes'] = checkbox_states
         
-        return redirect(url_for('next_page'))
+        if action == 'next':
+            return redirect(url_for('next_page'))  # Следующая страница после skin10
+        elif action == 'prev':
+            return redirect(url_for('skin9'))
 
     if user_gender == 0:
         return render_template('skin10.html')
