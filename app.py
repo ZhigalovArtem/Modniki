@@ -106,7 +106,7 @@ def registrationST_page():
         password = request.form.get('password')
         #birth_date = request.form.get('birth_date')
         isStylist = True
-        level = 1
+        level = 0
 
         resume = request.files['resume']
         certificate = request.files['certificate']
@@ -172,7 +172,8 @@ def lkCL():
     completed_orders = []
     for order in orders:
         completed_orders.append({'stylist_id': order['stylist_id'], 'stylist_name': order['stylist_name'],
-                                  'average_score': db.get_average_score(order['stylist_id'])})
+                                  'average_score': db.get_average_score(order['stylist_id']), 'order_id': order['id'],
+                                  'level': order['stylist_level']})
     print(f'completed_orders: {completed_orders}')
     current_user_comments = db.get_comments(user_info['user_id'])
     print(f'current_user_comments: {current_user_comments}')
@@ -187,8 +188,12 @@ def submit_review():
     email = session['email']
     # Получаем информацию о пользователе из БД
     user_info = db.get_user_info_by_email(email)
-    # Добавляем отзыв с ID пользователя
-    db.add_feedback(stylist_id=data['stylist_id'], user_id=user_info['user_id'], score=data['score'], text=data['text'])
+    # Добавляем отзыв с ID пользователя и заказа
+    db.add_feedback(stylist_id=data['stylist_id'], 
+                   user_id=user_info['user_id'], 
+                   order_id=data['order_id'],  # Добавляем order_id
+                   score=data['score'], 
+                   text=data['text'])
     return jsonify({'success': True})
 
 @app.route('/chats')
@@ -217,7 +222,7 @@ def chats():
     if user_chats != None:
         last_messages = []
         for chats in current_user_chats:
-            last_messages.append({'chat_id': chats['chat_id'], 'message': db.get_last_message(chats['chat_id'])}) # сп��сок последних сообщений 
+            last_messages.append({'chat_id': chats['chat_id'], 'message': db.get_last_message(chats['chat_id'])}) # спсок последних сообщений 
     else:
         last_messages = None
 
@@ -312,7 +317,7 @@ def create_chat_with_user(user_id):
     else:
         print(f'\n\nChat exsists\n\n')
 
-    return redirect(url_for('chats')) # Обновление стра��ицы по завершении
+    return redirect(url_for('chats')) # Обновление страицы по завершении
 
 @app.route('/chatRoom/<int:chat_id>/<int:recipient_id>')
 def chat_room(chat_id, recipient_id):
@@ -371,7 +376,7 @@ def handle_send_message(data):
     for chat in chat_info:
         if chat['user_id'] != user_id:
             second_user_id = chat['user_id']
-    # Сохраняем ��ообщение в БД
+    # Сохраняем ообщение в БД
     db.save_message(chat_id, user_id, message) # Сохранение сообщения в базу данных
 
     # Отправляем сообщение в комнату чата
@@ -435,7 +440,7 @@ def update_unreaded(unreaded_messages_chat):
     socketio.emit('update_unreaded', { 'unreaded': unreaded_messages_chat })
 
 def update_last_message(message, chat_id):
-     # Обновление количества последнего сообщения
+     # Обновление количества по��леднего сообщения
     socketio.emit('last_message', { 'last_message': message, 'chat_id': chat_id })
 
 def get_unreaded(userID):

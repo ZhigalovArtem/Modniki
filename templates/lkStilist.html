@@ -52,12 +52,12 @@
                 <div>
                   <!-- <img src="{{ url_for('static', filename='assets/img/png/level-7.png') }}" alt="" class="w-10 h-10 rounded-full border-2 border-customBlack p-1"> -->
                   <p class="text-xl oswald-weight-medium">
-                    {% if average_score >= 4.5 %}
-                    senior
-                    {% elif average_score >= 3.5 %}
-                    mid
-                    {% elif average_score > 0 %}
-                    junior
+                    {% if user_info.level == 0 %}
+                    Junior
+                    {% elif user_info.level == 1 %}
+                    Middle
+                    {% elif user_info.level == 2 %}
+                    Senior
                     {% endif %}
                   </p>
                 </div>

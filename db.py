@@ -98,6 +98,7 @@ def create_tables():
             stylist_id INTEGER NOT NULL,
             score INTEGER,
             text TEXT,
+            order_id INTEGER,
             FOREIGN KEY (creator_id) REFERENCES users(user_id)
             FOREIGN KEY (stylist_id) REFERENCES users(user_id)
         );
@@ -187,13 +188,50 @@ def save_stylist_docs(user_id, resume_path, certificate_path):
     conn.close()
 
 # добавление отзыва
-def add_feedback(stylist_id, user_id, score, text):
+def add_feedback(stylist_id, user_id, score, text, order_id):
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    cursor.execute('INSERT INTO feedbacks (stylist_id, score, text, creator_id) VALUES (?, ?, ?, ?)', (stylist_id, score, text, user_id))
+    cursor.execute('INSERT INTO feedbacks (stylist_id, score, text, creator_id, order_id) VALUES (?, ?, ?, ?, ?)', 
+                   (stylist_id, score, text, user_id, order_id))
     conn.commit()
     conn.close()
+
+    update_level(stylist_id)
+
+def update_level(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    average_score = get_average_score(user_id)
+    number_of_completed_orders = count_completed_orders(user_id)
+
+    if number_of_completed_orders >= 5 and average_score * number_of_completed_orders >= 20:
+        level = 'middle'
+    elif number_of_completed_orders >= 10 and average_score * number_of_completed_orders >= 40 and average_score >= 4.5:
+        level = 'senior'
+    else:
+        level = 'junior'
+
+    if level == 'junior':
+        level = 0
+    elif level == 'middle':
+        level = 1
+    elif level == 'senior':
+        level = 2
+
+    cursor.execute('UPDATE users SET level = ? WHERE user_id = ?', (level, user_id))
+    conn.commit()
+    conn.close()
+
+def count_completed_orders(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT COUNT(*) FROM completed_orders WHERE stylist_id = ?', (user_id,))
+    count = cursor.fetchone()[0]
+    conn.close()
+    return count
 
 # получение резюме стилиста
 def get_resume_path(user_id):
@@ -272,7 +310,8 @@ def get_completed_orders_client(user_id):
     cursor.execute('''
     SELECT DISTINCT co.*, 
            u1.first_name as client_name, 
-           u2.first_name as stylist_name
+           u2.first_name as stylist_name,
+           u2.level as stylist_level
     FROM completed_orders co
     JOIN users u1 ON co.client_id = u1.user_id
     JOIN users u2 ON co.stylist_id = u2.user_id
