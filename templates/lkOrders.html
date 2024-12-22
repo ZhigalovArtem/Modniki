@@ -31,18 +31,18 @@
 
         <ul class="space-y-4">
             <!-- Card 1 -->
-             {%for user in users%}
+             {%for order in completed_orders%}
             <li class="bg-white p-4 rounded-lg shadow-md flex items-center justify-between">
                 <div class="flex items-center space-x-4">
                     <img src="{{ url_for('static', filename='assets/img/png/avatarStilist.png') }}" alt="Avatar" class="w-32 h-32 rounded-full object-cover">
                     <div>
-                        <h3 class="text-xl oswald-weight-medium">{{user.first_name}}</h3>
+                        <h3 class="text-xl oswald-weight-medium">{{order.first_name}}</h3>
                     </div>
                 </div>
                 <div class="flex flex-col space-y-2">
-                  <a href="{{ url_for('create_chat_with_user', user_id=user['user_id']) }}">
+                  <!-- <a href="{{ url_for('create_chat_with_user', user_id=user['user_id']) }}"> -->
                     <button class="bg-customBlack oswald-weight-medium text-white px-4 py-2 rounded-lg hover:bg-customWhite hover:text-black border-2 hover:border-customBlack border-transparent">Выбрать</button>
-                  </a>
+                  <!-- </a> -->
                 </div>
             </li>
             {%endfor%}
@@ -57,10 +57,18 @@
         
         <div class="p-8 mt-16">
             <nav class="space-y-4">
+                {% if stylist %}
                 <a href="{{ url_for('lkST') }}" class="block oswald-weight-medium text-2xl hover:text-customGreen flex items-center gap-3">
                     <img src="{{ url_for('static', filename='assets/img/svg/profile.svg') }}" alt="" class="w-12 h-12">
                     Профиль
                 </a>
+                {% endif %}
+                {% if not stylist %}
+                <a href="{{ url_for('lkCL') }}" class="block oswald-weight-medium text-2xl hover:text-customGreen flex items-center gap-3">
+                    <img src="{{ url_for('static', filename='assets/img/svg/profile.svg') }}" alt="" class="w-12 h-12">
+                    Профиль
+                </a>
+                {% endif %}
             </nav>
         </div>
     </div>

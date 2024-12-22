@@ -97,7 +97,7 @@ def registrationCL_page(): ########### ИСПРАВИТЬ на анкету ####
     return render_template('registration.html')  # Возвращаем форму регистрации для GET-запроса
 
 @app.route('/registrationST', methods=['GET', 'POST'])  # регистрация стилиста
-def registrationST_page(): ###### исправить на анкету№№№№№№№№№
+def registrationST_page(): 
     if request.method == 'POST':
         #данные регистрации
         email = request.form.get('email')
@@ -109,9 +109,7 @@ def registrationST_page(): ###### исправить на анкету№№№�
         level = 1
 
         resume = request.files['resume']
-        print(resume)
         certificate = request.files['certificate']
-        print(certificate)
         # Сохранение резюме
         if resume:
             resume_filename = secure_filename(resume.filename)
@@ -145,6 +143,18 @@ def registrationST_page(): ###### исправить на анкету№№№�
 
     return render_template('registrationStilist.html')  # Возвращаем форму регистрации для GET-запроса
 
+# Завершение заказа  и удаление чата
+@app.route('/complete_order/<int:order_id>')
+def complete_order(order_id):
+
+    stylist_id = db.get_stylist_id_by_order_id(order_id)
+    client_id = db.get_client_id_by_order_id(order_id)
+
+    db.delete_chat(stylist_id, client_id)
+
+    db.complete_order(order_id)
+    return redirect(url_for('lkST'))
+
 ##################################################################################################
 ############################ ЛИЧНЫЙ КАБИНЕТ\ ЧАТЫ ################################################
 
@@ -158,7 +168,11 @@ def lkCL():
     format = '%d.%m.%Y'
     years_old = (datetime.now() - datetime.strptime(birth_date, format)).days // 365
 
-    return render_template('lkClient.html', user_info=user_info, params = user_params, user_years = years_old)
+    orders = db.get_completed_orders(user_info['user_id'])
+    completed_orders = []
+    for order in orders:
+        completed_orders.append({'stylist_name': order['stylist_name'], 'average_score': db.get_average_score(order['stylist_id'])})
+    return render_template('lkClient.html', user_info=user_info, params = user_params, user_years = years_old, completed_orders = completed_orders)
 
 @app.route('/chats')
 def chats():
@@ -187,7 +201,8 @@ def chats():
         last_messages = []
         for chats in current_user_chats:
             last_messages.append({'chat_id': chats['chat_id'], 'message': db.get_last_message(chats['chat_id'])}) # список последних сообщений 
-
+    else:
+        last_messages = None
 
     if user_info['stylist'] == 0: # клиент только стилисту и наоборот
         users = db.get_ST_list()
@@ -195,16 +210,36 @@ def chats():
         users = db.get_CL_list()
 
     return render_template('lkClientChat.html', users = users, chats = user_chats,
-                            user_id=user_info['user_id'], unreaded=0, stylist = user_info['stylist'], last_message = last_messages)
+                            user_id=user_info['user_id'], unreaded=0, stylist = user_info['stylist'], last_message = last_messages,
+                            user_info = user_info)
 
 @app.route('/lkST')
-def lkST():
+def lkST(): ## добавить получение отзывов из бд
     feedbacks = [{'id': 1, 'creator_id': 2, 'stylist_id': 2, 'score': 5, 'text': 'Хороший стилист'},
     {'id': 2, 'creator_id': 2, 'stylist_id': 2, 'score': 4, 'text': 'Замечательный стилист'}, 
-    {'id': 3, 'creator_id': 3, 'stylist_id': 2, 'score': 3, 'text': 'Чудесный стилист'}]
+    {'id': 3, 'creator_id': 3, 'stylist_id': 2, 'score': 5, 'text': 'Чудесный стилист'}, 
+    {'id': 4, 'creator_id': 5, 'stylist_id': 2, 'score': 0, 'text': 'Еблан'}, 
+    {'id': 5, 'creator_id': 6, 'stylist_id': 2, 'score': 0, 'text': 'Криворукий'}]
+
+    sum_scores = 0
+    for feedback in feedbacks:
+        sum_scores += feedback['score']
+    average_score = sum_scores / len(feedbacks)
+
     email = session['email']
     user_info = db.get_user_info_by_email(email)
-    return render_template('lkStilist.html', user_info = user_info, feedbacks = feedbacks) 
+
+    # Получение заказов
+    completed_orders = db.get_completed_orders(user_info['user_id'])
+    current_orders = db.get_current_orders(user_info['user_id'])
+
+    # Получение пользователей без чатов
+    avaible_users = db.get_users_without_chats()
+
+    print(f'avaible users: {avaible_users}')
+
+    return render_template('lkStilist.html', user_info = user_info, feedbacks = feedbacks,
+ average_score=average_score, completed_orders = completed_orders, current_orders = current_orders, users = avaible_users) 
 
 @app.route('/download_resume/<int:user_id>')
 def download_resume(user_id):
@@ -223,8 +258,12 @@ def upload_resume(user_id):
 
 @app.route('/lkOrders')
 def lkOrders():
-    users = db.get_users_without_chats()
-    return render_template('lkOrders.html', users = users)
+    email = session['email']
+    user_info = db.get_user_info_by_email(email)
+    completed_orders = db.get_completed_orders(user_info['user_id'])
+
+    current_orders = db.get_current_orders(user_info['user_id'])
+    return render_template('lkOrders.html', completed_orders = completed_orders, user_info = user_info, stylist = user_info['stylist'], current_orders = current_orders)
 
 ####### ДОДЕЛАТЬ СОЗДАНИЕ ЧАТОВ, ОТОБРАЖЕНИЕ СУЩЕСТВУЮЩИХ ЧАТОВ, СОХРАНЕНИЕ И ОТ��РАВКА СООБЩЕНИЙ
 

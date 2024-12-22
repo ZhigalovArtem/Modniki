@@ -720,6 +720,10 @@ video {
   top: 20rem;
 }
 
+.top-8 {
+  top: 2rem;
+}
+
 .z-50 {
   z-index: 50;
 }
@@ -1007,6 +1011,10 @@ video {
   width: 100%;
 }
 
+.w-\[500px\] {
+  width: 500px;
+}
+
 .max-w-2xl {
   max-width: 42rem;
 }
@@ -1073,6 +1081,10 @@ video {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.resize-none {
+  resize: none;
 }
 
 .list-inside {
@@ -1304,6 +1316,11 @@ video {
 .border-white {
   --tw-border-opacity: 1;
   border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
+}
+
+.border-black {
+  --tw-border-opacity: 1;
+  border-color: rgb(0 0 0 / var(--tw-border-opacity, 1));
 }
 
 .bg-black {

@@ -12,7 +12,7 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='/css/customStyles.css') }}"
     />
-    <title>Личный кабинет - Клиент</title>
+    <title>Личный кабинет</title>
   </head>
   <body class="bg-gradient-to-r from-gray-100 to-gray-200 min-h-screen">
     <!-- Header -->
@@ -20,7 +20,7 @@
       class="flex items-center justify-between p-3 bg-customWhite shadow-md"
     >
       <div class="ml-20">
-        <a href="index.html">
+        <a href="{{ url_for('start_page') }}">
           <img
             src="{{ url_for('static', filename= 'assets/img/svg/logoHead.svg') }}"
             alt=""

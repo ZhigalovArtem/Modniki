@@ -113,6 +113,17 @@ def create_tables():
             FOREIGN KEY (user_id) REFERENCES users(user_id)
         );
         ''')
+    
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS completed_orders (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            client_id INTEGER NOT NULL,
+            stylist_id  INTEGER NOT NULL,
+            order_status TEXT,
+            FOREIGN KEY (client_id) REFERENCES users(user_id)
+            FOREIGN KEY (stylist_id) REFERENCES users(user_id)
+        );
+        ''')    
 
     conn.commit()
     conn.close()
@@ -143,6 +154,7 @@ def add_user_params(height, weight, chest_size, ass_size, waist_size, clothes_si
     conn.commit()
     conn.close()
 
+# сохранение анкеты пользователя
 def save_user_anketa(user_id, anketa):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -161,6 +173,7 @@ def save_user_anketa(user_id, anketa):
     conn.commit()
     conn.close()
 
+# сохранение резюме стилиста
 def save_stylist_docs(user_id, resume_path, certificate_path):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -172,7 +185,8 @@ def save_stylist_docs(user_id, resume_path, certificate_path):
 
     conn.commit()
     conn.close()
-    
+
+# получение резюме стилиста
 def get_resume_path(user_id):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -182,6 +196,7 @@ def get_resume_path(user_id):
     conn.close()
     return resume_path
 
+# обновление резюме стилиста
 def update_resume(user_id, resume_path):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -210,6 +225,7 @@ def get_user_info_by_id(user_id):
     conn.close()
     return dict(user_info) if user_info else None
 
+# получение списка клиентов
 def get_CL_list():
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -219,6 +235,7 @@ def get_CL_list():
     conn.close()
     return [dict(row) for row in rows]
 
+# получение списка стилистов
 def get_ST_list():
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -228,6 +245,7 @@ def get_ST_list():
     conn.close()
     return [dict(row) for row in rows]
 
+# получение параметров пользователя
 def get_user_params(user_id):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -237,9 +255,117 @@ def get_user_params(user_id):
     conn.close()
     return [dict(row) for row in rows]
 
+# получение истории заказов
+def get_completed_orders(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    SELECT DISTINCT co.*, 
+           u1.first_name as client_name, 
+           u2.first_name as stylist_name
+    FROM completed_orders co
+    JOIN users u1 ON co.client_id = u1.user_id
+    JOIN users u2 ON co.stylist_id = u2.user_id
+    WHERE co.client_id = ? OR co.stylist_id = ?
+    AND co.order_status = 'completed'
+    ''', (user_id, user_id))
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+# получение id стилиста по id заказа
+def get_stylist_id_by_order_id(order_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT stylist_id FROM completed_orders WHERE id = ?', (order_id,))
+    stylist_id = cursor.fetchone()[0]
+    conn.close()
+    return stylist_id
+
+# получение id клиента по id заказа
+def get_client_id_by_order_id(order_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT client_id FROM completed_orders WHERE id = ?', (order_id,))
+    client_id = cursor.fetchone()[0]
+    conn.close()
+    return client_id
+
+# получение текущих заказов
+def get_current_orders(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    SELECT DISTINCT co.*, 
+           u1.first_name as client_name, 
+           u2.first_name as stylist_name
+    FROM completed_orders co
+    JOIN users u1 ON co.client_id = u1.user_id
+    JOIN users u2 ON co.stylist_id = u2.user_id
+    WHERE co.client_id = ? OR co.stylist_id = ?
+    AND co.order_status = 'active'
+    ''', (user_id, user_id))
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+def get_average_score(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT AVG(score) FROM feedbacks WHERE stylist_id = ?', (user_id,))
+    average_score = cursor.fetchone()[0]
+    conn.close()
+    return average_score
+
+# Завершение заказа
+def complete_order(order_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('UPDATE completed_orders SET order_status = ? WHERE id = ?', ('completed', order_id))
+    conn.commit()
+    conn.close()
+
 ##################################################################################################
 ############################ ЧАТЫ ################################################################
 
+# удаление чата
+def delete_chat(stylist_id, client_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    chat_id = get_chat_between_users(stylist_id, client_id)['chat_id']
+
+    delete_messages(chat_id)
+    delete_chat_read_status(chat_id)
+    cursor.execute('DELETE FROM user_chats WHERE chat_id = ?', (chat_id,))
+    conn.commit()
+    conn.close()
+
+# удаление сообщений
+def delete_messages(chat_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('DELETE FROM messages WHERE chat_id = ?', (chat_id,))
+    conn.commit()
+    conn.close()
+
+# удаление статуса прочтения чата
+def delete_chat_read_status(chat_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('DELETE FROM chat_read_status WHERE chat_id = ?', (chat_id,))
+    conn.commit()
+    conn.close()
+
+# получение чата между двумя пользователями
 def get_chat_between_users(user1_id, user2_id): # 
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -264,6 +390,8 @@ def get_chat_between_users(user1_id, user2_id): #
 def create_chat(user_ids):
     conn = get_db_connection()
     cursor = conn.cursor()
+
+    create_order(user_ids[0], user_ids[1])
 
     chat_id = get_chat_last_id()
     print(f'Last chat id: {chat_id}')
@@ -293,6 +421,24 @@ def create_chat(user_ids):
         conn.rollback()
         conn.close()
         raise e
+
+# создание заказа
+def create_order(client_id, stylist_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('INSERT INTO completed_orders (client_id, stylist_id, order_status) VALUES (?, ?, ?)', (client_id, stylist_id, 'active'))
+    conn.commit()
+    conn.close()
+
+# обновление статуса заказа
+def update_order_status(order_id): ### ??? испошльзовать id пользователя\стилиста
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('UPDATE completed_orders SET order_status = ? WHERE id = ?', ('completed', order_id))
+    conn.commit()
+    conn.close()
 
 def get_chat_last_id():
     conn = get_db_connection()
@@ -405,7 +551,7 @@ def get_chat_messages(chat_id,): # Работает
     conn.close()
     return [dict(row) for row in rows]
 
-# Функция для сохр��нения нового сообщения
+# Функция для сохранения нового сообщения
 def save_message(chat_id, sender_id, message): # Вроде должно работать
     conn = get_db_connection()
     cursor = conn.cursor()

@@ -36,7 +36,7 @@
 
             <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
                 <div class="flex justify-between items-center">
-                    <h1 class="text-3xl font-bold text-customBlack oswald-weight-medium">Добро пожаловать, Анна</h1>
+                    <h1 class="text-3xl font-bold text-customBlack oswald-weight-medium">Добро пожаловать, {{user_info.first_name}}</h1>
                     {% if stylist == 1 %}
                     <a href="/lkST" class="inline-block px-4 py-2 oswald-weight-medium bg-customBlack text-white rounded-lg hover:text-customBlack border-2 border-transparent hover:border-customBlack hover:bg-customGreen transition-colors">
                         В профиль
@@ -64,10 +64,11 @@
                             <div class="flex justify-between items-start">
                                 <div>
                                     <h3 class="text-lg">Чат с {{ cht.first_name }} {{ cht.last_name }}</h3>
+                                    {%if last_message == None%}
+                                    {%endif%}
                                     {% for last in last_message %}
                                     {% if last.chat_id == cht.chat_id %}
                                     <p class="text-base text-customBlack mt-1">Последнее сообщение: <span class="text-base text-customBlack mt-1" id="last_message_{{ cht.chat_id }}">{{ last.message }}</span></p>
-                                    
                                     {% endif %}
                                     {% endfor %}
                                 </div>
@@ -83,7 +84,7 @@
 
 
                 <!-- ��екция доступных пользователей -->
-                <div class="bg-white rounded-xl shadow-lg p-6">
+                <!-- <div class="bg-white rounded-xl shadow-lg p-6">
                     <h2 class="text-2xl font-semibold text-customBlack mb-4 oswald-weight-medium">Доступные пользователи</h2>
                     <ul class="space-y-3 oswald-weight-medium">
                         {% for user in users %}
@@ -99,7 +100,7 @@
                         {% endif %}
                         {% endfor %}
                     </ul>
-                </div>
+                </div> -->
             </div>
         </div>
 
