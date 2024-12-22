@@ -279,10 +279,10 @@
       </div>
     </div>
 
+<!-- Карточки доступных клиентов -->
     <div id="clientsTab" class="tab-content hidden">
       <div class="min-h-screen w-full mt-10">
         <ul class="space-y-4">
-          <!-- Карточки клиентов -->
           {% for user in users %}
           <li class="bg-white p-4 border-2 border-customBlack rounded-lg shadow-md flex items-center justify-between">
             <div class="flex items-center space-x-4">
@@ -304,11 +304,11 @@
       </div>
     </div>
 
+<!-- Карточки активных заказов -->
     <div id="activeTab" class="tab-content">
       <div class="min-h-screen w-full mt-10">
         <ul class="space-y-4">
           {% for order in current_orders %}
-          <!-- Карточки активных заказов -->
           <li class="bg-white p-4 border-2 border-customBlack rounded-lg shadow-md flex items-center justify-between">
             <div class="flex items-center space-x-4">
               <img src="{{ url_for('static', filename= 'assets/img/png/avatarClient.png') }}" alt="Avatar" class="w-32 h-32 rounded-full object-cover">

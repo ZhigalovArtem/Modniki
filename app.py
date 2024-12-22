@@ -171,8 +171,13 @@ def lkCL():
     orders = db.get_completed_orders(user_info['user_id'])
     completed_orders = []
     for order in orders:
-        completed_orders.append({'stylist_name': order['stylist_name'], 'average_score': db.get_average_score(order['stylist_id'])})
-    return render_template('lkClient.html', user_info=user_info, params = user_params, user_years = years_old, completed_orders = completed_orders)
+        completed_orders.append({'stylist_id': order['stylist_id'], 'stylist_name': order['stylist_name'],
+                                  'average_score': db.get_average_score(order['stylist_id'])})
+
+    current_user_comments = db.get_comments(user_info['user_id'])
+
+    return render_template('lkClient.html', user_info=user_info, params = user_params,
+    user_years = years_old, completed_orders = completed_orders, current_user_comments = current_user_comments)
 
 @app.route('/chats')
 def chats():
@@ -221,20 +226,21 @@ def lkST(): ## добавить получение отзывов из бд
     {'id': 4, 'creator_id': 5, 'stylist_id': 2, 'score': 0, 'text': 'Еблан'}, 
     {'id': 5, 'creator_id': 6, 'stylist_id': 2, 'score': 0, 'text': 'Криворукий'}]
 
+    #### мотьемотическая д'модьель ####
     sum_scores = 0
     for feedback in feedbacks:
         sum_scores += feedback['score']
-    average_score = sum_scores / len(feedbacks)
+    average_score = sum_scores / len(feedbacks) 
 
     email = session['email']
     user_info = db.get_user_info_by_email(email)
 
     # Получение заказов
-    completed_orders = db.get_completed_orders(user_info['user_id'])
-    current_orders = db.get_current_orders(user_info['user_id'])
+    completed_orders = db.get_completed_orders(user_info['user_id']) # завершенные заказы
+    current_orders = db.get_current_orders(user_info['user_id']) # активные заказы
 
     # Получение пользователей без чатов
-    avaible_users = db.get_users_without_chats()
+    avaible_users = db.get_users_without_chats() # доступные клиенты
 
     print(f'avaible users: {avaible_users}')
 

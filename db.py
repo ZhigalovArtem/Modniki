@@ -274,6 +274,16 @@ def get_completed_orders(user_id):
     conn.close()
     return [dict(row) for row in rows]
 
+# получение отзывов оставленных клиентом
+def get_comments(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM feedbacks WHERE user_id = ?', (user_id,))
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
 # получение id стилиста по id заказа
 def get_stylist_id_by_order_id(order_id):
     conn = get_db_connection()
