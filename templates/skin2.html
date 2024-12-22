@@ -18,61 +18,50 @@
                 </div>
                 <!-- Card Selection Section -->
                 <div class="bg-customWhite p-8 shadow-md relative">
-
-                    <div class="flex justify-center items-center">
-                        <img src="./static/assets/img/png/skin2.png" alt="Логотип" class="max-w-full h-auto">
-                    </div>
-
-                    <div class="absolute top-10 right-64">
-                        <!-- Картинка с кастомным чекбоксом -->
-                        <img src="./static/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox1" onclick="toggleCheckboxImage('likeCheckbox1')">
-                        <!-- Скрытое поле для хранения состояния чекбокса -->
-                        <input type="hidden" id="likeCheckboxState1" name="likeCheckboxState1" value="false">
-                    </div>
-                    
-                    <div class="absolute top-10 left-72">
-                        <!-- Картинка с кастомным чекбоксом -->
-                        <img src="./static/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox2" onclick="toggleCheckboxImage('likeCheckbox2')">
-                        <!-- Скрытое поле для хранения состояния чекбокса -->
-                        <input type="hidden" id="likeCheckboxState2" name="likeCheckboxState2" value="false">
-                    </div>
-                    
-                    <div class="absolute top-72 left-72">
-                        <!-- Картинка с кастомным чекбоксом -->
-                        <img src="./static/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox3" onclick="toggleCheckboxImage('likeCheckbox3')">
-                        <!-- Скрытое поле для хранения состояния чекбокса -->
-                        <input type="hidden" id="likeCheckboxState3" name="likeCheckboxState3" value="false">
-                    </div>
-                    
-                    <div class="absolute top-52 right-96">
-                        <!-- Картинка с кастомным чекбоксом -->
-                        <img src="./static/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox4" onclick="toggleCheckboxImage('likeCheckbox4')">
-                        <!-- Скрытое поле для хранения состояния чекбокса -->
-                        <input type="hidden" id="likeCheckboxState4" name="likeCheckboxState4" value="false">
-                    </div>
-                    
-                    <div class="absolute top-72 right-64">
-                        <!-- Картинка с кастомным чекбоксом -->
-                        <img src="./static/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox5" onclick="toggleCheckboxImage('likeCheckbox5')">
-                        <!-- Скрытое поле для хранения состояния чекбокса -->
-                        <input type="hidden" id="likeCheckboxState5" name="likeCheckboxState5" value="false">
-                    </div>
-
-                    <div class="flex justify-end mt-6">
-                        <div class="border-2 border-customBlack rounded-full py-1 px-2 flex items-center">
-                            <button onclick="window.location.href='skin1.html'">
-                                <img src="./static/assets/img/png/prev.png" alt="">
-                            </button>
-                            
-                            <!-- Separator -->
-                            <div class="w-1 h-8 bg-customBlack mx-2"></div>
-                            
-                            <button onclick="window.location.href='skin3.html'">
-                                <img src="./static/assets/img/png/next.png" alt="">
-                            </button>
+                    <form method="post">
+                        <div class="flex justify-center items-center">
+                            <img src="./static/assets/img/png/skin2.png" alt="Логотип" class="max-w-full h-auto">
                         </div>
-                    </div>
 
+                        <div class="absolute top-10 right-64">
+                            <img src="./static/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox1" onclick="toggleCheckboxImage('likeCheckbox1')">
+                            <input type="hidden" id="likeCheckboxState1" name="likeCheckboxState1" value="point1">
+                        </div>
+                        
+                        <div class="absolute top-10 left-72">
+                            <img src="./static/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox2" onclick="toggleCheckboxImage('likeCheckbox2')">
+                            <input type="hidden" id="likeCheckboxState2" name="likeCheckboxState2" value="point2">
+                        </div>
+                        
+                        <div class="absolute top-72 left-72">
+                            <img src="./static/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox3" onclick="toggleCheckboxImage('likeCheckbox3')">
+                            <input type="hidden" id="likeCheckboxState3" name="likeCheckboxState3" value="point3">
+                        </div>
+                        
+                        <div class="absolute top-52 right-96">
+                            <img src="./static/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox4" onclick="toggleCheckboxImage('likeCheckbox4')">
+                            <input type="hidden" id="likeCheckboxState4" name="likeCheckboxState4" value="point4">
+                        </div>
+                        
+                        <div class="absolute top-72 right-64">
+                            <img src="./static/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox5" onclick="toggleCheckboxImage('likeCheckbox5')">
+                            <input type="hidden" id="likeCheckboxState5" name="likeCheckboxState5" value="point5">
+                        </div>
+
+                        <div class="flex justify-end mt-6">
+                            <div class="border-2 border-customBlack rounded-full py-1 px-2 flex items-center">
+                                <button onclick="window.location.href='skin1.html'">
+                                    <img src="./static/assets/img/png/prev.png" alt="">
+                                </button>
+                                
+                                <div class="w-1 h-8 bg-customBlack mx-2"></div>
+                                
+                                <button onclick="window.location.href='/skin3'">
+                                    <img src="./static/assets/img/png/next.png" alt="">
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
 
                 <div class="absolute right-28 top-72">
@@ -93,15 +82,14 @@
         <script>
             function toggleCheckboxImage(clickedId) {
     const clickedImage = document.getElementById(clickedId);
-    const checkboxState = document.getElementById('likeCheckboxState');
+    const checkboxState = document.getElementById(clickedId + 'State');
     
-    // Переключаем изображение
     if (clickedImage.src.includes('likeWhite.svg')) {
-        clickedImage.src = './static/assets/img/svg/likeRed.svg';  // Изменяем на красный
-        checkboxState.value = 'true';  // Обновляем состояние чекбокса на "выбрано"
+        clickedImage.src = './static/assets/img/svg/likeRed.svg';
+        checkboxState.value = 'true';
     } else {
-        clickedImage.src = './static/assets/img/svg/likeWhite.svg'; // Изменяем на белый
-        checkboxState.value = 'false';  // Обновляем состояние чекбокса на "не выбрано"
+        clickedImage.src = './static/assets/img/svg/likeWhite.svg';
+        checkboxState.value = 'false';
     }
 }
         </script>

@@ -432,7 +432,19 @@ def skin1():
     user_gender = get_gender(email)
 
     if request.method == 'POST':
-        liked = request.form.get('') # исправить
+        # Получаем состояния всех чекбоксов
+        checkbox_states = {
+            'like1': request.form.get('likeCheckboxState1'),
+            'like2': request.form.get('likeCheckboxState2'),
+            'like3': request.form.get('likeCheckboxState3'),
+            'like4': request.form.get('likeCheckboxState4'),
+            'like5': request.form.get('likeCheckboxState5')
+        }
+        
+        # Сохраняем данные в словарь анкеты
+        anketa[email]['skin1_likes'] = checkbox_states
+        
+        return redirect(url_for('skin2'))
 
     if user_gender == 0:
         return render_template('skin1.html')
@@ -443,8 +455,21 @@ def skin1():
 def skin2():
     email = session['email']
     user_gender = get_gender(email)
+    
     if request.method == 'POST':
-        liked = request.form.get('') # исправить
+        # Получаем состояния всех чекбоксов
+        checkbox_states = {
+            'like1': request.form.get('likeCheckboxState1'),
+            'like2': request.form.get('likeCheckboxState2'),
+            'like3': request.form.get('likeCheckboxState3'),
+            'like4': request.form.get('likeCheckboxState4'),
+            'like5': request.form.get('likeCheckboxState5')
+        }
+        
+        # Сохраняем данные в словарь анкеты
+        anketa[email]['skin2_likes'] = checkbox_states
+        
+        return redirect(url_for('skin3'))
 
     if user_gender == 0:
         return render_template('skin2.html')
@@ -457,98 +482,186 @@ def skin3():
     user_gender = get_gender(email)
 
     if request.method == 'POST':
-        liked = request.form.get('') # исправить
+        # Получаем состояния всех чекбоксов
+        checkbox_states = {
+            'like1': request.form.get('likeCheckboxState1'),
+            'like2': request.form.get('likeCheckboxState2'),
+            'like3': request.form.get('likeCheckboxState3'),
+            'like4': request.form.get('likeCheckboxState4'),
+            'like5': request.form.get('likeCheckboxState5')
+        }
+        
+        # Сохраняем данные в словарь анкеты
+        anketa[email]['skin3_likes'] = checkbox_states
+        
+        return redirect(url_for('skin4'))
 
     if user_gender == 0:
         return render_template('skin3.html')
     else:
         return render_template('skin3man.html')
     
-@app.route('/skin4', methods = ['POST', 'GET']) # 9
+@app.route('/skin4', methods = ['POST', 'GET'])
 def skin4():
     email = session['email']
     user_gender = get_gender(email)
 
     if request.method == 'POST':
-        liked = request.form.get('') # исправить
+        # Получаем состояния всех чекбоксов
+        checkbox_states = {
+            'like1': request.form.get('likeCheckboxState1'),
+            'like2': request.form.get('likeCheckboxState2'),
+            'like3': request.form.get('likeCheckboxState3'),
+            'like4': request.form.get('likeCheckboxState4'),
+            'like5': request.form.get('likeCheckboxState5')
+        }
+        
+        # Сохраняем данные в словарь анкеты
+        anketa[email]['skin4_likes'] = checkbox_states
+        
+        return redirect(url_for('skin5'))
 
     if user_gender == 0:
         return render_template('skin4.html')
     else:
         return render_template('skin4man.html')
 
-@app.route('/skin5', methods = ['POST', 'GET']) # 10
+@app.route('/skin5', methods = ['POST', 'GET'])
 def skin5():
     email = session['email']
     user_gender = get_gender(email)
 
     if request.method == 'POST':
-        liked = request.form.get('') # исправить
+        # Получаем состояния всех чекбоксов
+        checkbox_states = {
+            'like1': request.form.get('likeCheckboxState1'),
+            'like2': request.form.get('likeCheckboxState2'),
+            'like3': request.form.get('likeCheckboxState3'),
+            'like4': request.form.get('likeCheckboxState4'),
+            'like5': request.form.get('likeCheckboxState5')
+        }
+        
+        # Сохраняем данные в словарь анкеты
+        anketa[email]['skin5_likes'] = checkbox_states
+        
+        return redirect(url_for('skin6'))
 
     if user_gender == 0:
         return render_template('skin5.html')
     else:
         return render_template('skin5man.html')
 
-@app.route('/skin6', methods = ['POST', 'GET']) #11
+@app.route('/skin6', methods = ['POST', 'GET'])
 def skin6():
     email = session['email']
     user_gender = get_gender(email)
 
     if request.method == 'POST':
-        liked = request.form.get('') # исправить
+        # Получаем состояния всех чекбоксов
+        checkbox_states = {
+            'like1': request.form.get('likeCheckboxState1'),
+            'like2': request.form.get('likeCheckboxState2'),
+            'like3': request.form.get('likeCheckboxState3'),
+            'like4': request.form.get('likeCheckboxState4'),
+            'like5': request.form.get('likeCheckboxState5')
+        }
+        
+        # Сохраняем данные в словарь анкеты
+        anketa[email]['skin6_likes'] = checkbox_states
+        
+        return redirect(url_for('skin7'))
 
     if user_gender == 0:
         return render_template('skin6.html')
     else:
         return render_template('skin6man.html')
     
-@app.route('/skin7', methods = ['POST', 'GET']) #12
+@app.route('/skin7', methods = ['POST', 'GET'])
 def skin7():
     email = session['email']
     user_gender = get_gender(email)
 
     if request.method == 'POST':
-        liked = request.form.get('') # исправить
+        checkbox_states = {
+            'like1': request.form.get('likeCheckboxState1'),
+            'like2': request.form.get('likeCheckboxState2'),
+            'like3': request.form.get('likeCheckboxState3'),
+            'like4': request.form.get('likeCheckboxState4'),
+            'like5': request.form.get('likeCheckboxState5')
+        }
+        
+        anketa[email]['skin7_likes'] = checkbox_states
+        
+        return redirect(url_for('skin8'))
 
     if user_gender == 0:
         return render_template('skin.7.html')
     else:
         return render_template('skin7man.html')
     
-@app.route('/skin8', methods = ['POST', 'GET']) #13
+@app.route('/skin8', methods = ['POST', 'GET'])
 def skin8():
     email = session['email']
     user_gender = get_gender(email)
 
     if request.method == 'POST':
-        liked = request.form.get('') # исправить
+        checkbox_states = {
+            'like1': request.form.get('likeCheckboxState1'),
+            'like2': request.form.get('likeCheckboxState2'),
+            'like3': request.form.get('likeCheckboxState3'),
+            'like4': request.form.get('likeCheckboxState4'),
+            'like5': request.form.get('likeCheckboxState5')
+        }
+        
+        anketa[email]['skin8_likes'] = checkbox_states
+        
+        return redirect(url_for('skin9'))
 
     if user_gender == 0:
         return render_template('skin.8.html')
     else:
         return render_template('skin8man.html')
     
-@app.route('/skin9', methods = ['POST', 'GET']) #14
+@app.route('/skin9', methods = ['POST', 'GET'])
 def skin9():
     email = session['email']
     user_gender = get_gender(email)
 
     if request.method == 'POST':
-        liked = request.form.get('') # исправить
+        checkbox_states = {
+            'like1': request.form.get('likeCheckboxState1'),
+            'like2': request.form.get('likeCheckboxState2'),
+            'like3': request.form.get('likeCheckboxState3'),
+            'like4': request.form.get('likeCheckboxState4'),
+            'like5': request.form.get('likeCheckboxState5')
+        }
+        
+        anketa[email]['skin9_likes'] = checkbox_states
+        
+        return redirect(url_for('skin10'))
 
     if user_gender == 0:
         return render_template('skin9.html')
     else:
         return render_template('skin9man.html')
     
-@app.route('/skin10', methods = ['POST', 'GET']) #15
+@app.route('/skin10', methods = ['POST', 'GET'])
 def skin10():
     email = session['email']
     user_gender = get_gender(email)
 
     if request.method == 'POST':
-        liked = request.form.get('') # исправить
+        checkbox_states = {
+            'like1': request.form.get('likeCheckboxState1'),
+            'like2': request.form.get('likeCheckboxState2'),
+            'like3': request.form.get('likeCheckboxState3'),
+            'like4': request.form.get('likeCheckboxState4'),
+            'like5': request.form.get('likeCheckboxState5')
+        }
+        
+        anketa[email]['skin10_likes'] = checkbox_states
+        
+        return redirect(url_for('next_page'))
 
     if user_gender == 0:
         return render_template('skin10.html')
