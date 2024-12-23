@@ -1074,10 +1074,12 @@ def get_gender(email):
     print(user_gender['gender'])
     return user_gender['gender']
 
+# АНКЕТЫ
 @app.route('/anketi')
 def anketi():
     return db.get_anketi()
 
+# ШМОТКИ
 @app.route('/skins')
 def skins():
     return db.get_skins()

@@ -174,6 +174,17 @@ def save_user_anketa(user_id, anketa):
     conn = get_db_connection()
     cursor = conn.cursor()
 
+    # Преобразуем словари в JSON строки перед сохранением
+    anketa_data = {
+        key: json.dumps(anketa.get(key))
+        for key in [
+            'purpose', 'style', 'season', 'price_range', 'gender',
+            'work', 'hair_color', 'size_top', 'size_bottom',
+            'kabluck', 'skinny_or_not_top', 'skinny_or_not_bottom',
+            'jeans_type', 'posadka', 'jeans_length', 'length'
+        ]
+    }
+
     cursor.execute('''
     INSERT INTO user_anketa (
         user_id, anketa_purpose, anketa_style, anketa_season, anketa_price_range,
@@ -184,30 +195,35 @@ def save_user_anketa(user_id, anketa):
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ''', (
         user_id,
-        anketa.get('purpose'),
-        anketa.get('style'),
-        anketa.get('season'),
-        anketa.get('price_range'),
-        anketa.get('gender'),
-        json.dumps(anketa.get('work')),
-        json.dumps(anketa.get('hair_color')),
-        json.dumps(anketa.get('size_top')),
-        json.dumps(anketa.get('size_bottom')),
-        json.dumps(anketa.get('kabluck')),
-        json.dumps(anketa.get('skinny_or_not_top')),
-        json.dumps(anketa.get('skinny_or_not_bottom')),
-        anketa.get('jeans_type'),
-        json.dumps(anketa.get('posadka')),
-        json.dumps(anketa.get('jeans_length')),
-        anketa.get('length')
+        anketa_data['purpose'],
+        anketa_data['style'],
+        anketa_data['season'],
+        anketa_data['price_range'],
+        anketa_data['gender'],
+        anketa_data['work'],
+        anketa_data['hair_color'],
+        anketa_data['size_top'],
+        anketa_data['size_bottom'],
+        anketa_data['kabluck'],
+        anketa_data['skinny_or_not_top'],
+        anketa_data['skinny_or_not_bottom'],
+        anketa_data['jeans_type'],
+        anketa_data['posadka'],
+        anketa_data['jeans_length'],
+        anketa_data['length']
     ))
 
     for i in range(1, 11):
         skin = f'skin{i}_likes'
+        skin_value = anketa.get(skin)
+        # Преобразуем в JSON если это словарь
+        if isinstance(skin_value, dict):
+            skin_value = json.dumps(skin_value)
+            
         cursor.execute('''
         INSERT INTO shmotki (user_id, shmotka_id)
         VALUES (?, ?)
-        ''', (user_id, anketa.get(skin)))
+        ''', (user_id, skin_value))
     conn.commit()
     conn.close()
 
@@ -329,7 +345,7 @@ def get_ST_list():
     conn.close()
     return [dict(row) for row in rows]
 
-# получение параметров пользователя
+# получение параметро пользователя
 def get_user_params(user_id):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -378,7 +394,7 @@ def get_completed_orders_stylist(user_id):
     conn.close()
     return [dict(row) for row in rows]
 
-# получение отзывов оставленных клиентом
+# получение отзыв��в оставленных клиентом
 def get_comments(user_id):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -463,7 +479,7 @@ def get_average_score(user_id):
     conn.close()
     return average_score
 
-# Завершение заказа
+# З��вершение заказа
 def complete_order(order_id):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -642,7 +658,7 @@ def mark_chat_as_read(chat_id, user_id): # Вроде должно работа�
     conn.close()
 
 # Функция для получения непрочитанных сообщений
-def get_unread_messages(chat_id, user_id): # Под вопросом
+def get_unread_messages(chat_id, user_id): # ��од вопросом
     conn = get_db_connection()
     cursor = conn.cursor()
 
