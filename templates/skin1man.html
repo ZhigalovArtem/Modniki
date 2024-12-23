@@ -90,10 +90,14 @@
                 const otherImage = document.getElementById(otherId);
     
                 // Toggle the clicked image
-                clickedImage.src = clickedImage.src.includes('likeWhite.svg') ? '/assets/img/svg/likeRed.svg' : '/assets/img/svg/likeWhite.svg';
+                clickedImage.src = clickedImage.src.includes('likeWhite.svg') 
+                    ? "{{ url_for('static', filename='assets/img/svg/likeRed.svg') }}" 
+                    : "{{ url_for('static', filename='assets/img/svg/likeWhite.svg') }}";
     
                 // Change the state of the other image
-                otherImage.src = otherImage.src.includes('likeWhite.svg') ? '/assets/img/svg/likeRed.svg' : '/assets/img/svg/likeWhite.svg';
+                otherImage.src = otherImage.src.includes('likeWhite.svg') 
+                    ? "{{ url_for('static', filename='assets/img/svg/likeRed.svg') }}" 
+                    : "{{ url_for('static', filename='assets/img/svg/likeWhite.svg') }}";
             }
         </script>
 
