@@ -29,22 +29,22 @@
                         </div>
 
                         <div class="absolute top-10 left-72">
-                            <img src="/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox2" onclick="toggleCheckboxImage('likeCheckbox2')">
+                            <img src="{{ url_for('static', filename='assets/img/svg/likeWhite.svg') }}" alt="Like" class="checkbox-image" id="likeCheckbox2" onclick="toggleCheckboxImage('likeCheckbox2')">
                             <input type="hidden" id="likeCheckboxState2" name="likeCheckboxState2" value="like2">
                         </div>
 
                         <div class="absolute top-72 left-72">
-                            <img src="/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox3" onclick="toggleCheckboxImage('likeCheckbox3')">
+                            <img src="{{ url_for('static', filename='assets/img/svg/likeWhite.svg') }}" alt="Like" class="checkbox-image" id="likeCheckbox3" onclick="toggleCheckboxImage('likeCheckbox3')">
                             <input type="hidden" id="likeCheckboxState3" name="likeCheckboxState3" value="like3">
                         </div>
 
                         <div class="absolute top-52 right-96">
-                            <img src="/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox4" onclick="toggleCheckboxImage('likeCheckbox4')">
+                            <img src="{{ url_for('static', filename='assets/img/svg/likeWhite.svg') }}" alt="Like" class="checkbox-image" id="likeCheckbox4" onclick="toggleCheckboxImage('likeCheckbox4')">
                             <input type="hidden" id="likeCheckboxState4" name="likeCheckboxState4" value="like4">
                         </div>
 
                         <div class="absolute top-72 right-64">
-                            <img src="/assets/img/svg/likeWhite.svg" alt="Like" class="checkbox-image" id="likeCheckbox5" onclick="toggleCheckboxImage('likeCheckbox5')">
+                            <img src="{{ url_for('static', filename='assets/img/svg/likeWhite.svg') }}" alt="Like" class="checkbox-image" id="likeCheckbox5" onclick="toggleCheckboxImage('likeCheckbox5')">
                             <input type="hidden" id="likeCheckboxState5" name="likeCheckboxState5" value="like5">
                         </div>
 
@@ -86,10 +86,14 @@
                 const otherImage = document.getElementById(otherId);
     
                 // Toggle the clicked image
-                clickedImage.src = clickedImage.src.includes('likeWhite.svg') ? '/assets/img/svg/likeRed.svg' : '/assets/img/svg/likeWhite.svg';
+                clickedImage.src = clickedImage.src.includes('likeWhite.svg') 
+                    ? "{{ url_for('static', filename='assets/img/svg/likeRed.svg') }}"
+                    : "{{ url_for('static', filename='assets/img/svg/likeWhite.svg') }}";
     
                 // Change the state of the other image
-                otherImage.src = otherImage.src.includes('likeWhite.svg') ? '/assets/img/svg/likeRed.svg' : '/assets/img/svg/likeWhite.svg';
+                otherImage.src = otherImage.src.includes('likeWhite.svg')
+                    ? "{{ url_for('static', filename='assets/img/svg/likeRed.svg') }}"
+                    : "{{ url_for('static', filename='assets/img/svg/likeWhite.svg') }}";
             }
         </script>
 
