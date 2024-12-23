@@ -31,17 +31,17 @@
                                 <label for="everyday1">XXS</label>
                             </div>
                             <div class="checkbox-container" onclick="toggleCheckbox('everyday2')">
-                                <input type="checkbox" name="everyday2" id="everyday2" name="everyday2">
+                                <input type="checkbox" name="size" id="everyday2" value="XS">
                                 <img src="./static/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-everyday2">
                                 <label for="everyday2">XS</label>
                             </div>
                             <div class="checkbox-container" onclick="toggleCheckbox('everyday3')">
-                                <input type="checkbox" name="everyday3" id="everyday3" name="everyday3">
+                                <input type="checkbox" name="size" id="everyday3" value="S">
                                 <img src="./static/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-everyday3">
                                 <label for="everyday3">S</label>
                             </div>
                             <div class="checkbox-container" onclick="toggleCheckbox('everyday4')">
-                                <input type="checkbox" name="everyday4" id="everyday4" name="everyday4">
+                                <input type="checkbox" name="size" id="everyday4" value="M">
                                 <img src="./static/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-everyday4">
                                 <label for="everyday4">M</label>
                             </div>
@@ -55,17 +55,17 @@
                                 <label for="home1">L</label>
                             </div>
                             <div class="checkbox-container" onclick="toggleCheckbox('home2')">
-                                <input type="checkbox" name="home2" id="home2" name="home2">
+                                <input type="checkbox" name="size" id="home2" value="XL">
                                 <img src="./static/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-home2">
                                 <label for="home2">XL</label>
                             </div>
                             <div class="checkbox-container" onclick="toggleCheckbox('home3')">
-                                <input type="checkbox" name="home3" id="home3" name="home3">
+                                <input type="checkbox" name="size" id="home3" value="XXL">
                                 <img src="./static/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-home3">
                                 <label for="home3">XXL</label>
                             </div>
                             <div class="checkbox-container" onclick="toggleCheckbox('home4')">
-                                <input type="checkbox" name="home4" id="home4" name="home4">
+                                <input type="checkbox" name="size" id="home4" value="3XL">
                                 <img src="./static/assets/img/svg/crystall.svg" alt="Unchecked" class="checkbox-image" id="img-home4">
                                 <label for="home4">3XL</label>
                             </div>
@@ -74,14 +74,14 @@
 
                     <div class="flex justify-end mt-6">
                         <div class="border-2 border-customBlack rounded-full py-1 px-2 flex items-center">
-                            <button type="button" onclick="window.location.href='{{ url_for('previous_page') }}'">
+                            <button type="submit" name="action" value="prev">
                                 <img src="{{ url_for('static', filename='assets/img/png/prev.png') }}" alt="">
                             </button>
                             
                             <!-- Separator -->
                             <div class="w-1 h-8 bg-customBlack mx-2"></div>
                             
-                            <button type="submit">
+                            <button type="submit" name="action" value="next">
                                 <img src="{{ url_for('static', filename='assets/img/png/next.png') }}" alt="">
                             </button>
                         </div>

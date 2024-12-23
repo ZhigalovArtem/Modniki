@@ -21,8 +21,8 @@
 
             <!-- Main Container -->
             <div class="bg-customWhite p-8 shadow-md">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <form method="post" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <form method="post" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- First Column -->
                         <div class="space-y-2">
                             <div class="checkbox-container" onclick="toggleCheckbox('everyday1')">
@@ -64,24 +64,23 @@
                                 <label for="home3">Рыжий</label>
                             </div>
                         </div>
-                    </form>
-                </div>
-
-                <div class="flex justify-end mt-6">
-                    <div class="border-2 border-customBlack rounded-full py-1 px-2 flex items-center">
-                        <button type="submit" name="action" value="previous">
-                            <img src="{{ url_for('static', filename='assets/img/png/prev.png') }}" alt="Previous">
-                        </button>
-                        
-                        <!-- Separator -->
-                        <div class="w-1 h-8 bg-customBlack mx-2"></div>
-                        
-                        <button type="submit" name="action" value="next">
-                            <img src="{{ url_for('static', filename='assets/img/png/next.png') }}" alt="Next">
-                        </button>
                     </div>
-                </div>
-                
+
+                    <div class="flex justify-end mt-6">
+                        <div class="border-2 border-customBlack rounded-full py-1 px-2 flex items-center">
+                            <button type="submit" name="action" value="prev">
+                                <img src="{{ url_for('static', filename='assets/img/png/prev.png') }}" alt="Previous">
+                            </button>
+                            
+                            <!-- Separator -->
+                            <div class="w-1 h-8 bg-customBlack mx-2"></div>
+                            
+                            <button type="submit" name="action" value="next">
+                                <img src="{{ url_for('static', filename='assets/img/png/next.png') }}" alt="Next">
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
 
             <!-- Green and Black Stripes -->

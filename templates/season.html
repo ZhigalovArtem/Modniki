@@ -28,34 +28,49 @@
                 <form method="POST">
                     <div class="space-y-6">
                         <!-- Option 1: Лето -->
-                        <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer">
-                            <h3 class="text-xl font-semibold text-gray-700 text-start">Лето</h3>
-                        </div>
+                        <label class="block">
+                            <input type="radio" name="season" value="summer" class="hidden peer">
+                            <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer peer-checked:bg-customGreen peer-checked:text-white">
+                                <h3 class="text-xl font-semibold text-gray-700 peer-checked:text-white">Лето</h3>
+                            </div>
+                        </label>
 
                         <!-- Option 2: Зима -->
-                        <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer">
-                            <h3 class="text-xl font-semibold text-gray-700 text-start">Зима</h3>
-                        </div>
+                        <label class="block">
+                            <input type="radio" name="season" value="winter" class="hidden peer">
+                            <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer peer-checked:bg-customGreen peer-checked:text-white">
+                                <h3 class="text-xl font-semibold text-gray-700 peer-checked:text-white">Зима</h3>
+                            </div>
+                        </label>
 
                         <!-- Option 3: Осень -->
-                        <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer">
-                            <h3 class="text-xl font-semibold text-gray-700 text-start">Осень</h3>
-                        </div>
+                        <label class="block">
+                            <input type="radio" name="season" value="autumn" class="hidden peer">
+                            <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer peer-checked:bg-customGreen peer-checked:text-white">
+                                <h3 class="text-xl font-semibold text-gray-700 peer-checked:text-white">Осень</h3>
+                            </div>
+                        </label>
 
                         <!-- Option 4: Весна -->
-                        <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer">
-                            <h3 class="text-xl font-semibold text-gray-700 text-start">Весна</h3>
-                        </div>
+                        <label class="block">
+                            <input type="radio" name="season" value="spring" class="hidden peer">
+                            <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer peer-checked:bg-customGreen peer-checked:text-white">
+                                <h3 class="text-xl font-semibold text-gray-700 peer-checked:text-white">Весна</h3>
+                            </div>
+                        </label>
 
                         <!-- Option 5: Демисезон -->
-                        <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer">
-                            <h3 class="text-xl font-semibold text-gray-700 text-start">Демисезон</h3>
-                        </div>
+                        <label class="block">
+                            <input type="radio" name="season" value="demiseason" class="hidden peer">
+                            <div class="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer peer-checked:bg-customGreen peer-checked:text-white">
+                                <h3 class="text-xl font-semibold text-gray-700 peer-checked:text-white">Демисезон</h3>
+                            </div>
+                        </label>
                     </div>
 
                     <div class="flex justify-end mt-10">
                         <div class="border-2 border-customBlack rounded-full py-1 px-2 flex items-center">
-                            <button type="submit" name="action" value="previous">
+                            <button type="submit" name="action" value="prev">
                                 <img src="{{ url_for('static', filename= 'assets/img/png/prev.png') }}" alt="">
                             </button>
                             

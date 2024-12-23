@@ -1,5 +1,6 @@
 import sqlite3
 from datetime import datetime
+import json
 
 def get_db_connection():
     conn = sqlite3.connect('project.db')
@@ -111,6 +112,19 @@ def create_tables():
             anketa_purpose TEXT,
             anketa_style TEXT,
             anketa_season TEXT,
+            anketa_price_range TEXT,
+            gender INTEGER,
+            work TEXT,
+            hair_color TEXT,
+            size_top TEXT,
+            size_bottom TEXT,
+            kabluck TEXT,
+            skinny_or_not_top TEXT,
+            skinny_or_not_bottom TEXT,
+            jeans_type TEXT,
+            posadka TEXT,
+            jeans_length TEXT,
+            length TEXT,
             FOREIGN KEY (user_id) REFERENCES users(user_id)
         );
         ''')
@@ -161,16 +175,39 @@ def save_user_anketa(user_id, anketa):
     cursor = conn.cursor()
 
     cursor.execute('''
-    INSERT INTO user_anketa (user_id, anketa_purpose, anketa_style, anketa_season)
-    VALUES (?, ?, ?, ?)
-    ''', (user_id, anketa['purpose'], anketa['style'], anketa['season']))
+    INSERT INTO user_anketa (
+        user_id, anketa_purpose, anketa_style, anketa_season, anketa_price_range,
+        gender, work, hair_color, size_top, size_bottom, kabluck,
+        skinny_or_not_top, skinny_or_not_bottom, jeans_type, posadka,
+        jeans_length, length
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ''', (
+        user_id,
+        anketa.get('purpose'),
+        anketa.get('style'),
+        anketa.get('season'),
+        anketa.get('price_range'),
+        anketa.get('gender'),
+        json.dumps(anketa.get('work')),
+        json.dumps(anketa.get('hair_color')),
+        json.dumps(anketa.get('size_top')),
+        json.dumps(anketa.get('size_bottom')),
+        json.dumps(anketa.get('kabluck')),
+        json.dumps(anketa.get('skinny_or_not_top')),
+        json.dumps(anketa.get('skinny_or_not_bottom')),
+        anketa.get('jeans_type'),
+        json.dumps(anketa.get('posadka')),
+        json.dumps(anketa.get('jeans_length')),
+        anketa.get('length')
+    ))
 
-    for i in range(1, 10):
-        skin = f'skin{i}'
+    for i in range(1, 11):
+        skin = f'skin{i}_likes'
         cursor.execute('''
         INSERT INTO shmotki (user_id, shmotka_id)
         VALUES (?, ?)
-        ''', (user_id, anketa[skin]))
+        ''', (user_id, anketa.get(skin)))
     conn.commit()
     conn.close()
 
@@ -621,7 +658,7 @@ def get_unread_messages(chat_id, user_id): # Под вопросом
     conn.close()
     return [dict(row) for row in rows]
 
-# Функция для получения непрочинных сообщений пользователя
+# Функция для получения нпрочинных сообщений пользователя
 def get_user_unread_messages(user_id):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -687,6 +724,24 @@ def get_last_message(chat_id,): # Работает
         return 'Нет сообщений'
 
 
+
+def get_anketi():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM user_anketa')
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+def get_skins():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM shmotki')
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
 
 def get_users():
     conn = get_db_connection()

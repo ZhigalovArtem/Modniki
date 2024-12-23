@@ -26,19 +26,19 @@
                         <div>
                             <div class="space-y-2">
                                 <div class="checkbox-container" onclick="toggleCheckbox('everyday1')">
-                                    <input type="checkbox" id="everyday1" name="everyday1" value="облегающе">
+                                    <input type="checkbox" id="everyday1" name="skinny_or_not_bottom" value="облегающе">
                                     <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-everyday1">
                                     <label for="everyday1">Облегающе</label>
                                 </div>
                             
                                 <div class="checkbox-container" onclick="toggleCheckbox('everyday2')">
-                                    <input type="checkbox" id="everyday2" name="everyday2" value="по_размеру">
+                                    <input type="checkbox" id="everyday2" name="skinny_or_not_bottom" value="по_размеру">
                                     <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-everyday2">
                                     <label for="everyday2">По размеру</label>
                                 </div>
 
                                 <div class="checkbox-container" onclick="toggleCheckbox('everyday3')">
-                                    <input type="checkbox" id="everyday3" name="everyday3" value="свободно">
+                                    <input type="checkbox" id="everyday3" name="skinny_or_not_bottom" value="свободно">
                                     <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-everyday3">
                                     <label for="everyday2">Свободно</label>
                                 </div>
@@ -48,7 +48,7 @@
 
                     <div class="flex justify-end mt-6">
                         <div class="border-2 border-customBlack rounded-full py-1 px-2 flex items-center">
-                            <button type="submit" name="action" value="previous">
+                            <button type="submit" name="action" value="prev">
                                 <img src="{{ url_for('static', filename='assets/img/png/prev.png') }}" alt="Previous">
                             </button>
                             

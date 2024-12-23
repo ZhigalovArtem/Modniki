@@ -25,56 +25,56 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- First Column with Custom Checkboxes -->
                         <div>
-                            <div class="checkbox-container" onclick="toggleCheckbox('everyday1')">
-                                <input type="checkbox" name="everyday1" id="everyday1" value="XXS">
-                                <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-everyday1">
-                                <label for="everyday1">XXS</label>
+                            <div class="checkbox-container" onclick="toggleCheckbox('size_XXS')">
+                                <input type="checkbox" name="size" id="size_XXS" value="XXS">
+                                <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-size_XXS">
+                                <label for="size_XXS">XXS</label>
                             </div>
                             
-                            <div class="checkbox-container" onclick="toggleCheckbox('everyday2')">
-                                <input type="checkbox" name="everyday2" id="everyday2" value="XS">
-                                <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-everyday2">
-                                <label for="everyday2">XS</label>
+                            <div class="checkbox-container" onclick="toggleCheckbox('size_XS')">
+                                <input type="checkbox" name="size" id="size_XS" value="XS">
+                                <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-size_XS">
+                                <label for="size_XS">XS</label>
                             </div>
                             
-                            <div class="checkbox-container" onclick="toggleCheckbox('everyday3')">
-                                <input type="checkbox" name="everyday3" id="everyday3" value="S">
-                                <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-everyday3">
-                                <label for="everyday3">S</label>
+                            <div class="checkbox-container" onclick="toggleCheckbox('size_S')">
+                                <input type="checkbox" name="size" id="size_S" value="S">
+                                <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-size_S">
+                                <label for="size_S">S</label>
                             </div>
                             
-                            <div class="checkbox-container" onclick="toggleCheckbox('everyday4')">
-                                <input type="checkbox" name="everyday4" id="everyday4" value="M">
-                                <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-everyday4">
-                                <label for="everyday4">M</label>
+                            <div class="checkbox-container" onclick="toggleCheckbox('size_M')">
+                                <input type="checkbox" name="size" id="size_M" value="M">
+                                <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-size_M">
+                                <label for="size_M">M</label>
                             </div>
 
                         </div>
 
                         <!-- Second Column with Custom Checkboxes -->
                         <div>
-                            <div class="checkbox-container" onclick="toggleCheckbox('home1')">
-                                <input type="checkbox" name="home1" id="home1" value="L">
-                                <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-home1">
-                                <label for="home1">L</label>
+                            <div class="checkbox-container" onclick="toggleCheckbox('size_L')">
+                                <input type="checkbox" name="size" id="size_L" value="L">
+                                <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-size_L">
+                                <label for="size_L">L</label>
                             </div>
                             
-                            <div class="checkbox-container" onclick="toggleCheckbox('home2')">
-                                <input type="checkbox" name="home2" id="home2" value="XL">
-                                <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-home2">
-                                <label for="home2">XL</label>
+                            <div class="checkbox-container" onclick="toggleCheckbox('size_XL')">
+                                <input type="checkbox" name="size" id="size_XL" value="XL">
+                                <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-size_XL">
+                                <label for="size_XL">XL</label>
                             </div>
                             
-                            <div class="checkbox-container" onclick="toggleCheckbox('home3')">
-                                <input type="checkbox" name="home3" id="home3" value="XXL">
-                                <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-home3">
-                                <label for="home3">XXL</label>
+                            <div class="checkbox-container" onclick="toggleCheckbox('size_XXL')">
+                                <input type="checkbox" name="size" id="size_XXL" value="XXL">
+                                <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-size_XXL">
+                                <label for="size_XXL">XXL</label>
                             </div>
                             
-                            <div class="checkbox-container" onclick="toggleCheckbox('home4')">
-                                <input type="checkbox" name="home4" id="home4" value="3XL">
-                                <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-home4">
-                                <label for="home4">3XL</label>
+                            <div class="checkbox-container" onclick="toggleCheckbox('size_3XL')">
+                                <input type="checkbox" name="size" id="size_3XL" value="3XL">
+                                <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-size_3XL">
+                                <label for="size_3XL">3XL</label>
                             </div>
 
                         </div>
@@ -111,11 +111,18 @@
 
     <script>
         function toggleCheckbox(id) {
-    const checkbox = document.getElementById(id);
-    const img = document.getElementById(`img-${id}`);
-    checkbox.checked = !checkbox.checked;
-    img.src = checkbox.checked ? '/assets/img/svg/crystallActive.svg' : '/assets/img/svg/crystall.svg';
-}
+            // Сначала снимаем выделение со всех чекбоксов
+            document.querySelectorAll('input[name="size"]').forEach(cb => {
+                cb.checked = false;
+                document.getElementById(`img-${cb.id}`).src = '/assets/img/svg/crystall.svg';
+            });
+            
+            // Затем устанавливаем выбранный чекбокс
+            const checkbox = document.getElementById(id);
+            const img = document.getElementById(`img-${id}`);
+            checkbox.checked = true;
+            img.src = '/assets/img/svg/crystallActive.svg';
+        }
     </script>
 
 </body>

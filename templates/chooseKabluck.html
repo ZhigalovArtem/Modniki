@@ -26,13 +26,13 @@
                         <!-- First Column with Custom Checkboxes -->
                         <div>
                             <div class="checkbox-container" onclick="toggleCheckbox('everyday1')">
-                                <input type="checkbox" id="everyday1" name="everyday1" value="heel">
+                                <input type="checkbox" id="everyday1" name="kabluck" value="heel">
                                 <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-everyday1">
                                 <label for="everyday1">С каблуком</label>
                             </div>
                     
                             <div class="checkbox-container" onclick="toggleCheckbox('everyday2')">
-                                <input type="checkbox" id="everyday2" name="everyday2" value="no_heel">
+                                <input type="checkbox" id="everyday2" name="kabluck" value="no_heel">
                                 <img src="{{ url_for('static', filename='assets/img/svg/crystall.svg') }}" alt="Unchecked" class="checkbox-image" id="img-everyday2">
                                 <label for="everyday2">Без каблука</label>
                             </div>
@@ -41,7 +41,7 @@
 
                     <div class="flex justify-end mt-6">
                         <div class="border-2 border-customBlack rounded-full py-1 px-2 flex items-center">
-                            <button type="submit" name="action" value="previous">
+                            <button type="submit" name="action" value="prev">
                                 <img src="{{ url_for('static', filename='assets/img/png/prev.png') }}" alt="Previous">
                             </button>
                             
