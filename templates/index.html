@@ -89,11 +89,26 @@
     <!-- Содержимое меню -->
     <div class="p-8 mt-16">
       <nav class="space-y-4">
-        <a href="{{ url_for('lkST') }}" class="block oswald-weight-medium text-2xl hover:text-customGreen flex items-center gap-3">
+        <a href="#" class="block oswald-weight-medium text-2xl hover:text-customGreen flex items-center gap-3">
           <img src="{{ url_for('static', filename='assets/img/svg/profile.svg') }}" alt="" class="w-12 h-12">
           Профиль
         </a>
-        <!-- ... остальные пункты меню ... -->
+        <a href="{{ url_for('aboutus') }}" class="block oswald-weight-medium text-2xl hover:text-customGreen flex items-center gap-3">
+          <img src="{{ url_for('static', filename='assets/img/svg/groups.svg') }}" alt="" class="w-12 h-12">
+          О нас
+        </a>
+        <a href="{{ url_for('contacts') }}" class="block oswald-weight-medium text-2xl hover:text-customGreen flex items-center gap-3">
+          <img src="{{ url_for('static', filename='assets/img/svg/contact.svg') }}" alt="" class="w-12 h-12">
+          Контакты
+        </a>
+        <a href="ourteam.html" class="block oswald-weight-medium text-2xl hover:text-customGreen flex items-center gap-3">
+          <img src="{{ url_for('static', filename='assets/img/svg/developers.svg') }}" alt="" class="w-12 h-12">
+          Разработчики
+        </a>
+        <a href="{{ url_for('faq') }}" class="block oswald-weight-medium text-2xl hover:text-customGreen flex items-center gap-3">
+          <img src="{{ url_for('static', filename='assets/img/svg/faq.svg') }}" alt="" class="w-12 h-12">
+          FAQ
+        </a>
       </nav>
     </div>
   </div>

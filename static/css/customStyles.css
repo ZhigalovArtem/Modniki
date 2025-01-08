@@ -9,14 +9,14 @@
 @import url(/assets/fonts/Oswald-ExtraLight.ttf);
 @import url(/assets/fonts/Oswald-Light.ttf);
 @import url(/assets/fonts/Oswald-Regular.ttf);
-@import url(../assets/fonts/Oswald-Medium.ttf);
+@import url(/assets/fonts/Oswald-Medium.ttf);
 @import url(/assets/fonts/Oswald-SemiBold.ttf);
 @import url(/assets/fonts/Oswald-bold.ttf);
 @import url(/assets/fonts/Oswald-VariableFont_wght.ttf);
 
 @font-face {
     font-family: oswald-f;
-    src: url(../static/assets/fonts/Oswald-ExtraLight.ttf);
+    src: url(/assets/fonts/Oswald-ExtraLight.ttf);
     font-weight: 200;
 }
 
@@ -34,7 +34,7 @@
 
 @font-face {
     font-family: oswald-f;
-    src: url(../assets/fonts/Oswald-Medium.ttf);
+    src: url(/assets/fonts/Oswald-Medium.ttf);
     font-weight: 500;
 }
 
@@ -201,3 +201,21 @@ label {
 .selected {
     border-color: #6ED01C;
 }
+
+.tab-button {
+    position: relative;
+  }
+  
+  .tab-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #91EF43;
+  }
+  
+  .tab-content.hidden {
+    display: none;
+  }

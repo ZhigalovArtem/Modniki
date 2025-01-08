@@ -1055,6 +1055,23 @@ def stylistam():
 def capsula():
     return render_template('capsula.html')
 
+@app.route('/aboutus')
+def aboutus():
+    return render_template('aboutus.html')
+
+@app.route('/faq')
+def faq():
+    return render_template('faq.html')
+
+@app.route('/team')
+def team():
+    return render_template('team.html')
+
+@app.route('/contacts')
+def contacts():
+    return render_template('contacts.html')
+
+
 @app.route('/users')
 def users():
     return db.get_users()

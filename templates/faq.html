@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/customStyles.css') }}">
+    <title>Вопросы и ответы</title>
+</head>
+<body class="bg-customGray font-sans">
+
+    <!-- Header -->
+    <header class="flex items-center justify-between p-3 bg-customWhite shadow-md">
+        <!-- Logo and Orders Button Container -->
+        <div class="flex items-center gap-6 ml-20">
+          <a href="{{ url_for('start_page') }}">
+            <img src="{{ url_for('static', filename='assets/img/svg/logoHead.svg') }}" alt="">
+          </a>
+        </div>
+  
+        <!-- Menu Icon -->
+        <div class="text-3xl cursor-pointer mr-10" onclick="toggleMenu()">
+          <img src="{{ url_for('static', filename='assets/img/svg/burger-menu.svg') }}" alt="">
+        </div>
+        
+      </header>
+  
+      <!-- Боковое меню -->
+    <div id="sideMenu" class="fixed top-0 right-0 h-full w-80 bg-customWhite transform translate-x-full transition-transform duration-300 ease-in-out shadow-lg z-50">
+        <!-- Кнопка закрытия -->
+        <button onclick="toggleMenu()" class="absolute top-6 right-6">
+          <img src="{{ url_for('static', filename='assets/img/svg/close-modal.svg') }}" alt="Закрыть" class="w-6 h-6">
+        </button>
+        
+        <!-- Содержимое меню -->
+        <div class="p-8 mt-16">
+            <nav class="space-y-4">
+              <a href="#" class="block oswald-weight-medium text-2xl hover:text-customGreen flex items-center gap-3">
+                <img src="{{ url_for('static', filename='assets/img/svg/profile.svg') }}" alt="" class="w-12 h-12">
+                Профиль
+              </a>
+              <a href="{{ url_for('aboutus') }}" class="block oswald-weight-medium text-2xl hover:text-customGreen flex items-center gap-3">
+                <img src="{{ url_for('static', filename='assets/img/svg/groups.svg') }}" alt="" class="w-12 h-12">
+                О нас
+              </a>
+              <a href="{{ url_for('contacts') }}" class="block oswald-weight-medium text-2xl hover:text-customGreen flex items-center gap-3">
+                <img src="{{ url_for('static', filename='assets/img/svg/contact.svg') }}" alt="" class="w-12 h-12">
+                Контакты
+              </a>
+              <a href="ourteam.html" class="block oswald-weight-medium text-2xl hover:text-customGreen flex items-center gap-3">
+                <img src="{{ url_for('static', filename='assets/img/svg/developers.svg') }}" alt="" class="w-12 h-12">
+                Разработчики
+              </a>
+              <a href="{{ url_for('faq') }}" class="block oswald-weight-medium text-2xl hover:text-customGreen flex items-center gap-3">
+                <img src="{{ url_for('static', filename='assets/img/svg/faq.svg') }}" alt="" class="w-12 h-12">
+                FAQ
+              </a>
+            </nav>
+          </div>
+
+      </div>
+
+    <main class="container mx-auto min-h-screen mt-10 px-4 mb-10">
+
+        <h1 class="text-4xl oswald-weight-medium text-center mb-10">Вопросы и ответы</h1>
+        
+        <div class="max-w-3xl mx-auto space-y-4">
+            <!-- FAQ Item -->
+            <div class="bg-customWhite rounded-lg">
+                <button class="w-full flex justify-between items-center p-4 hover:bg-customGreen hover:rounded-lg" onclick="toggleFaq(this)">
+                    <span class="oswald-weight-medium text-2xl">Как узнать уровень подготовки стилиста?</span>
+                    <svg class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </button>
+                <div class="bg-customWhite text-customBlack oswald-weight-medium text-xl hidden p-4 pt-4 rounded-lg">
+                    <p>У каждого стилиста есть свой рейтинг, который показывается в профиле стилиста.</p>
+                </div>
+            </div>
+
+            <div class="bg-customWhite rounded-lg">
+                <button class="w-full flex justify-between items-center p-4 hover:bg-customGreen hover:rounded-lg" onclick="toggleFaq(this)">
+                    <span class="oswald-weight-medium text-2xl">Cколько это стоит?</span>
+                    <svg class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </button>
+                <div class="bg-customWhite text-customBlack oswald-weight-medium text-xl hidden p-4 pt-4 rounded-lg">
+                    <p>Наши услуги полностью бесплатны.</p>
+                </div>
+            </div>
+
+            <div class="bg-customWhite rounded-lg">
+                <button class="w-full flex justify-between items-center p-4 hover:bg-customGreen hover:rounded-lg" onclick="toggleFaq(this)">
+                    <span class="oswald-weight-medium text-2xl">С какими маркетплейс вы сотрудничаете?</span>
+                    <svg class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </button>
+                <div class="bg-customWhite text-customBlack oswald-weight-medium text-xl hidden p-4 pt-4 rounded-lg">
+                    <p>Мы сотрудничаем с Ozon, Wildberries и Lamoda.</p>
+                </div>
+            </div>
+
+            <div class="bg-customWhite rounded-lg">
+                <button class="w-full flex justify-between items-center p-4 hover:bg-customGreen hover:rounded-lg" onclick="toggleFaq(this)">
+                    <span class="oswald-weight-medium text-2xl">Как стать стилистом?</span>
+                    <svg class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </button>
+                <div class="bg-customWhite text-customBlack oswald-weight-medium text-xl hidden p-4 pt-4 rounded-lg">
+                    <p>Для того, чтобы стать частью нашей компании, нужно всего лишь отправить свой запрос на нашу почту деловых предложений.</p>
+                </div>
+            </div>
+
+            <div class="bg-customWhite rounded-lg">
+                <button class="w-full flex justify-between items-center p-4 hover:bg-customGreen hover:rounded-lg" onclick="toggleFaq(this)">
+                    <span class="oswald-weight-medium text-2xl">Как связаться со стилистом по поводу заказа?</span>
+                    <svg class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </button>
+                <div class="bg-customWhite text-customBlack oswald-weight-medium text-xl hidden p-4 pt-4 rounded-lg">
+                    <p>Связаться с вашим стилистом можно на странице ваше заказа. Через чат и видео-звонок.</p>
+                </div>
+            </div>
+
+            <div class="bg-customWhite rounded-lg">
+                <button class="w-full flex justify-between items-center p-4 hover:bg-customGreen hover:rounded-lg" onclick="toggleFaq(this)">
+                    <span class="oswald-weight-medium text-2xl">Можно ли посмотреть примеры работ?</span>
+                    <svg class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </button>
+                <div class="bg-customWhite text-customBlack oswald-weight-medium text-xl hidden p-4 pt-4 rounded-lg">
+                    <p>Да, вы можете  просмотреть примеры наших работу *тут*.</p>
+                </div>
+            </div>
+
+            <div class="bg-customWhite rounded-lg">
+                <button class="w-full flex justify-between items-center p-4 hover:bg-customGreen hover:rounded-lg" onclick="toggleFaq(this)">
+                    <span class="oswald-weight-medium text-2xl">Что делать, если нет свободных стилистов?</span>
+                    <svg class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </button>
+                <div class="bg-customWhite text-customBlack oswald-weight-medium text-xl hidden p-4 pt-4 rounded-lg">
+                    <p>Если среди наших стилистов нет свободных, вы всегда можете воспользоваться стилистами от наших партнёров.</p>
+                </div>
+            </div>
+
+        </div>
+        
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-black text-white py-8">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Познакомьтесь с нами -->
+            <div>
+                <h3 class="text-xl mb-4 border-b border-white inline-block oswald-weight-medium">Познакомьтесь с нами</h3>
+                <ul class="space-y-2">
+                    <li><a href="{{ url_for('faq') }}" class="hover:text-customGreen oswald-weight-medium">FAQ</a></li>
+                    <li><a href="{{ url_for('team') }}" class="hover:text-customGreen oswald-weight-medium">Наша команда</a></li>
+                    <li><a href="#" class="hover:text-customGreen oswald-weight-medium">Составить капсулу</a></li>
+                    <li><a href="#" class="hover:text-customGreen oswald-weight-medium">Разобрать гардероб</a></li>
+                </ul>
+            </div>
+    
+            <!-- Компания -->
+            <div>
+                <h3 class="text-xl mb-4 border-b border-white inline-block oswald-weight-medium oswald-weight-medium">Компания</h3>
+                <ul class="space-y-2">
+                    <li><a href="{{ url_for('aboutus') }}" class="hover:text-customGreen oswald-weight-medium">О нас</a></li>
+                    <li><a href="{{ url_for('auth_page') }}" class="hover:text-customGreen oswald-weight-medium">Вход в ЛК</a></li>
+                    <li><a href="{{ url_for('contacts') }}" class="hover:text-customGreen oswald-weight-medium">Контакты</a></li>
+                </ul>
+            </div>
+    
+            <!-- Получить услугу -->
+            <div>
+                <h3 class="text-xl mb-4 border-b border-white inline-block oswald-weight-medium">Получить услугу</h3>
+                <div class="flex items-center bg-white rounded-full overflow-hidden mb-4">
+                    <div class="flex-1 flex items-center pl-4">
+                        <img src="{{ url_for('static', filename='assets/img/svg/lupa.svg') }}" alt="Search" class="w-5 h-5">
+                        <input type="text" placeholder="Найти стилиста для услуги..." 
+                               class="w-full px-3 py-2 oswald-weight-medium text-black focus:outline-none">
+                    </div>
+                    <button class="bg-customGreen text-black px-6 py-2 font-bold oswald-weight-medium">
+                        Найти
+                    </button>
+                </div>
+                
+                <div class="flex flex-wrap gap-4">
+                    <button class="bg-customGreen oswald-weight-medium text-black px-6 py-2 rounded-full font-bold hover:bg-opacity-90">
+                        Просмотреть примеры работ
+                    </button>
+                    <button class="bg-customGreen oswald-weight-medium text-black px-6 py-2 rounded-full font-bold hover:bg-opacity-90">
+                        Зарегистрироваться
+                    </button>
+                </div>
+            </div>
+            
+        </div>
+    
+        <!-- Нижняя часть футера -->
+        <div class="container mx-auto px-4 mt-8 flex justify-between items-center">
+            <div class="flex gap-4">
+                <a href="#"><img src="{{ url_for('static', filename='assets/img/svg/vk-logo.svg') }}" alt="VK" class="w-6 h-6"></a>
+                <a href="#"><img src="{{ url_for('static', filename='assets/img/svg/tg-logo.svg') }}" alt="Telegram" class="w-6 h-6"></a>
+            </div>
+            <p class="text-base oswald-weight-medium">Copyright © RUSSIA 2024. Все права защищены</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleFaq(button) {
+            const content = button.nextElementSibling;
+            const arrow = button.querySelector('svg');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+    </script>
+
+    <script>
+    function openVideoModal() {
+        document.getElementById('videoModal').showModal();
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeVideoModal() {
+        document.getElementById('videoModal').close();
+        document.body.style.overflow = 'auto';
+    }
+
+    let currentSlide = 0;
+    const slider = document.getElementById('reviewsSlider');
+    const slides = slider.children;
+    
+    function showSlide(index) {
+      currentSlide = index;
+      const offset = -currentSlide * 100;
+      slider.style.transform = `translateX(${offset}%)`;
+    }
+    
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+    
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    function toggleMenu() {
+        const menu = document.getElementById('sideMenu');
+        const isOpen = menu.classList.contains('translate-x-0');
+        
+        if (isOpen) {
+            menu.classList.remove('translate-x-0');
+            menu.classList.add('translate-x-full');
+            document.body.style.overflow = 'auto';
+            document.body.style.paddingRight = '0';
+        } else {
+            const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+            menu.classList.remove('translate-x-full');
+            menu.classList.add('translate-x-0');
+            document.body.style.overflow = 'hidden';
+            document.body.style.paddingRight = `${scrollbarWidth}px`;
+        }
+    }
+    </script>
+
+</body>
+</html>
