@@ -29,34 +29,37 @@ def chooseClientOrStyle():
 
 @app.route('/auth', methods=['POST', 'GET']) # авторизация
 def auth_page():
-    if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
+    if not session:
+        if request.method == 'POST':
+            email = request.form.get('email')
+            password = request.form.get('password')
 
-        userInfo = db.get_user_info_by_email(email)
-        print(userInfo)
-        if userInfo:
-            print('Правильное мыло')
-            if password == userInfo.get('password'):
-                print('Правильный пароль')
-                session['email'] = email
-                if userInfo['stylist'] == 0:
-                    print(session['email'])
-                    session['stylist'] = userInfo['stylist']
-                    print(session)
-                    return redirect(url_for('lkCL'))  # При удачной авторизации перенаправляется в лк
-                if userInfo['stylist'] == 1:
-                    print(session['email'])
-                    session['stylist'] = userInfo['stylist']
-                    print(session)
-                    return redirect(url_for('lkST'))
+            userInfo = db.get_user_info_by_email(email)
+            print(userInfo)
+            if userInfo:
+                print('Правильное мыло')
+                if password == userInfo.get('password'):
+                    print('Правильный пароль')
+                    session['email'] = email
+                    if userInfo['stylist'] == 0:
+                        print(session['email'])
+                        session['stylist'] = userInfo['stylist']
+                        print(session)
+                        return redirect(url_for('lkCL'))  # При удачной авторизации перенаправляется в лк
+                    if userInfo['stylist'] == 1:
+                        print(session['email'])
+                        session['stylist'] = userInfo['stylist']
+                        print(session)
+                        return redirect(url_for('lkST'))
+                else:
+                    #flash(message='Неправильный пароль')
+                    print('Неправильный пароль')
             else:
-                #flash(message='Неправильный пароль')
-                print('Неправильный пароль')
-        else:
-            #flash(message='Такого пользователя не существует')
-            print('Такого пользователя не существует')
-    return render_template('auth.html')
+                #flash(message='Такого пользователя не существует')
+                print('Такого пользователя не существует')
+        return render_template('auth.html')
+    else:
+        return redirect(url_for('lk'))
 
 @app.route('/registrationCL', methods=['GET', 'POST'])  # регистрация клиента
 def registrationCL_page():
@@ -92,8 +95,9 @@ def registrationCL_page():
 
                 print('Регистрация успешна!')
                 session['email'] = email
+                session['stylist'] = 0
                 #return redirect(url_for('auth_page'))
-                return redirect(url_for('anket_gender'))  # Редирект на страницу выбра пола анкета
+                return redirect(url_for('start_page'))  # Редирект на страницу выбра пола анкета
            #else:
                 #flash(message='Пароли не совпадают')
         else:
@@ -324,7 +328,6 @@ def lkOrders():
     current_orders = db.get_current_orders(user_info['user_id'])
     return render_template('lkOrders.html', completed_orders = completed_orders, user_info = user_info, stylist = user_info['stylist'], current_orders = current_orders)
 
-####### ДОДЕЛАТЬ СОЗДАНИЕ ЧАТОВ, ОТОБРАЖЕНИЕ СУЩЕСТВУЮЩИХ ЧАТОВ, СОХРАНЕНИЕ И ОТРАВКА СООБЩЕНИЙ
 
 @app.route('/create_chat_with_user/<int:user_id>', methods = ['GET', 'POST']) # Создание чата
 def create_chat_with_user(user_id):
@@ -495,24 +498,23 @@ def get_unreaded(userID):
 
 @app.route('/anket-gender', methods = ['POST', 'GET']) # выбор пола для анкеты
 def anket_gender():
-    # if 'email' not in session:
-    #     return redirect(url_for('start_page'))
-    print(session)
-    if 'email' in session:
-        email = session['email']
+    if not session:
+        return redirect(url_for('start_page'))
     else:
-        pass
+        email = session['email']
+    print(session)
 
-    if request.method == 'POST':
-        gender = request.form.get('gender')
-        print(gender)
-        if gender == 'male':
-            gender = 1
-        elif gender == 'female':
-            gender = 0
-        print(f'email {email}\ngender {gender}')
-        anketa[email]= {'gender': gender}
-        return redirect(url_for('anket_purpose'))
+    if session['stylist'] == 0:
+        if request.method == 'POST':
+            gender = request.form.get('gender')
+            print(gender)
+            if gender == 'male':
+                gender = 1
+            elif gender == 'female':
+                gender = 0
+            print(f'email {email}\ngender {gender}')
+            anketa[email]= {'gender': gender}
+            return redirect(url_for('anket_purpose'))
     
     return render_template('gender.html') # after that target woman
 
@@ -721,7 +723,7 @@ def anket_chooseJeansForm():
     else:
         return render_template('chooseJeansFormMan.html')
 
-@app.route('/anket-choosePosadka', methods=['POST', 'GET'])  # 25
+@app.route('/anket-choosePosadka', methods=['POST', 'GET'])  # 25 #### дура ебаная уехала
 def anket_choosePosadka():
     email = session['email']
     user_gender = get_gender(email)
@@ -742,7 +744,7 @@ def anket_choosePosadka():
     # else:
     #     return render_template('choosePosadkaMan.html')
 
-@app.route('/anket-chooseJeansLength', methods=['POST', 'GET'])  # 26
+@app.route('/anket-chooseJeansLength', methods=['POST', 'GET'])  # 26  #### дура ебаная уехала
 def anket_chooseJeansLength():
     email = session['email']
     user_gender = get_gender(email)
