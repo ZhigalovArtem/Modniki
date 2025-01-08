@@ -1092,6 +1092,10 @@ def opencapsula():
 def headerGarderob():
     return render_template('headerGarderob.html')
 
+@app.route('/openGarderob')
+def openGarderob():
+    return render_template('openGarderob.html')
+
 @app.route('/aboutus')
 def aboutus():
     return render_template('aboutus.html')
