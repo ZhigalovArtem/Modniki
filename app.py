@@ -1084,6 +1084,10 @@ def stylistam():
 def capsula():
     return render_template('capsula.html')
 
+@app.route('/opencapsula')
+def opencapsula():
+    return render_template('opencapsula.html')
+
 @app.route('/aboutus')
 def aboutus():
     return render_template('aboutus.html')
