@@ -41,8 +41,14 @@ def auth_page():
                 print('Правильный пароль')
                 session['email'] = email
                 if userInfo['stylist'] == 0:
+                    print(session['email'])
+                    session['stylist'] = userInfo['stylist']
+                    print(session)
                     return redirect(url_for('lkCL'))  # При удачной авторизации перенаправляется в лк
                 if userInfo['stylist'] == 1:
+                    print(session['email'])
+                    session['stylist'] = userInfo['stylist']
+                    print(session)
                     return redirect(url_for('lkST'))
             else:
                 #flash(message='Неправильный пароль')
@@ -158,28 +164,83 @@ def complete_order(order_id):
 ##################################################################################################
 ############################ ЛИЧНЫЙ КАБИНЕТ\ ЧАТЫ ################################################
 
+@app.route('/lk')
+def lk():
+    if session:
+        if session['stylist'] == 0:
+            return redirect(url_for('lkCL'))
+        else:
+            return redirect(url_for('lkST'))
+    else:
+        return redirect(url_for('auth_page'))
+
 @app.route('/lkCL')
 def lkCL():
-    email = session['email']
-    user_info = db.get_user_info_by_email(email)
-    user_params = db.get_user_params(user_info['user_id'])
+    if session:
+        if session['stylist'] == 0:
+            email = session['email']
+            user_info = db.get_user_info_by_email(email)
+            user_params = db.get_user_params(user_info['user_id'])
 
-    birth_date= user_info['birth_date']
-    format = '%d.%m.%Y'
-    years_old = (datetime.now() - datetime.strptime(birth_date, format)).days // 365
+            birth_date= user_info['birth_date']
+            format = '%d.%m.%Y'
+            years_old = (datetime.now() - datetime.strptime(birth_date, format)).days // 365
 
-    orders = db.get_completed_orders_client(user_info['user_id'])
-    completed_orders = []
-    for order in orders:
-        completed_orders.append({'stylist_id': order['stylist_id'], 'stylist_name': order['stylist_name'],
-                                  'average_score': db.get_average_score(order['stylist_id']), 'order_id': order['id'],
-                                  'level': order['stylist_level']})
-    print(f'completed_orders: {completed_orders}')
-    current_user_comments = db.get_comments(user_info['user_id'])
-    print(f'current_user_comments: {current_user_comments}')
+            orders = db.get_completed_orders_client(user_info['user_id'])
+            completed_orders = []
+            for order in orders:
+                completed_orders.append({'stylist_id': order['stylist_id'], 'stylist_name': order['stylist_name'],
+                                        'average_score': db.get_average_score(order['stylist_id']), 'order_id': order['id'],
+                                        'level': order['stylist_level']})
+            print(f'completed_orders: {completed_orders}')
+            current_user_comments = db.get_comments(user_info['user_id'])
+            print(f'current_user_comments: {current_user_comments}')
 
-    return render_template('lkClient.html', user_info=user_info, params = user_params,
-    user_years = years_old, completed_orders = completed_orders, current_user_comments = current_user_comments)
+            return render_template('lkClient.html', user_info=user_info, params = user_params,
+            user_years = years_old, completed_orders = completed_orders, current_user_comments = current_user_comments)
+        else:
+            return redirect(url_for('lkST'))
+    else:
+        return redirect(url_for('start_page'))
+
+@app.route('/lkST')
+def lkST(): ## добавить получение отзывов из бд
+    feedbacks_test = [{'id': 1, 'creator_id': 2, 'stylist_id': 2, 'score': 5, 'text': 'Хороший стилист'},
+    {'id': 2, 'creator_id': 2, 'stylist_id': 2, 'score': 4, 'text': 'Замечательный стилист'}, 
+    {'id': 3, 'creator_id': 3, 'stylist_id': 2, 'score': 5, 'text': 'Чудесный стилист'}, 
+    {'id': 4, 'creator_id': 5, 'stylist_id': 2, 'score': 0, 'text': 'Еблан'}, 
+    {'id': 5, 'creator_id': 6, 'stylist_id': 2, 'score': 0, 'text': 'Криворукий'}]
+    if session:
+        if session['stylist'] == 1:
+            email = session['email']
+            user_info = db.get_user_info_by_email(email)
+            feedbacks = db.get_feedbacks(user_info['user_id'])
+
+            print(f'feedbacks: {feedbacks}')
+            print(f'user_info: {user_info}')
+
+            #### мотьемотическая д'модьель ####
+            sum_scores = 0
+            for feedback in feedbacks:
+                sum_scores += feedback['score']
+            average_score = sum_scores / (len(feedbacks) if len(feedbacks) > 0 else 1) 
+
+            # Получение заказов
+            completed_orders = db.get_completed_orders_stylist(user_info['user_id']) # завершенные заказы
+            current_orders = db.get_current_orders(user_info['user_id']) # активные заказы
+            print(f'completed_orders: {completed_orders}')
+            print(f'current_orders: {current_orders}')
+            # Получение пользователей без чатов
+            avaible_users = db.get_users_without_chats() # доступные клиенты
+
+            print(f'avaible users: {avaible_users}')
+
+            return render_template('lkStilist.html', user_info = user_info, feedbacks = feedbacks,
+        average_score=average_score, completed_orders = completed_orders, current_orders = current_orders, users = avaible_users) 
+        else:
+            return redirect(url_for('lkCL'))
+    else:
+        return redirect(url_for('start_page'))
 
 @app.route('/submit_review', methods=['POST'])
 def submit_review():
@@ -235,38 +296,6 @@ def chats():
                             user_id=user_info['user_id'], unreaded=0, stylist = user_info['stylist'], last_message = last_messages,
                             user_info = user_info)
 
-@app.route('/lkST')
-def lkST(): ## добавить получение отзывов из бд
-    feedbacks_test = [{'id': 1, 'creator_id': 2, 'stylist_id': 2, 'score': 5, 'text': 'Хороший стилист'},
-    {'id': 2, 'creator_id': 2, 'stylist_id': 2, 'score': 4, 'text': 'Замечательный стилист'}, 
-    {'id': 3, 'creator_id': 3, 'stylist_id': 2, 'score': 5, 'text': 'Чудесный стилист'}, 
-    {'id': 4, 'creator_id': 5, 'stylist_id': 2, 'score': 0, 'text': 'Еблан'}, 
-    {'id': 5, 'creator_id': 6, 'stylist_id': 2, 'score': 0, 'text': 'Криворукий'}]
-    email = session['email']
-    user_info = db.get_user_info_by_email(email)
-    feedbacks = db.get_feedbacks(user_info['user_id'])
-
-    print(f'feedbacks: {feedbacks}')
-    print(f'user_info: {user_info}')
-
-    #### мотьемотическая д'модьель ####
-    sum_scores = 0
-    for feedback in feedbacks:
-        sum_scores += feedback['score']
-    average_score = sum_scores / (len(feedbacks) if len(feedbacks) > 0 else 1) 
-
-    # Получение заказов
-    completed_orders = db.get_completed_orders_stylist(user_info['user_id']) # завершенные заказы
-    current_orders = db.get_current_orders(user_info['user_id']) # активные заказы
-    print(f'completed_orders: {completed_orders}')
-    print(f'current_orders: {current_orders}')
-    # Получение пользователей без чатов
-    avaible_users = db.get_users_without_chats() # доступные клиенты
-
-    print(f'avaible users: {avaible_users}')
-
-    return render_template('lkStilist.html', user_info = user_info, feedbacks = feedbacks,
- average_score=average_score, completed_orders = completed_orders, current_orders = current_orders, users = avaible_users) 
 
 @app.route('/download_resume/<int:user_id>')
 def download_resume(user_id):
@@ -1072,6 +1101,7 @@ def contacts():
     return render_template('contacts.html')
 
 
+
 @app.route('/users')
 def users():
     return db.get_users()
@@ -1082,6 +1112,7 @@ def stylists():
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
+    session.pop('stylist', None)
     session.pop('email', None)
     return redirect(url_for('start_page'))
 

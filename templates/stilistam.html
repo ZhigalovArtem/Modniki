@@ -3,8 +3,8 @@
    <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link rel="stylesheet" href="/css/output.css">
-      <link rel="stylesheet" href="/css/customStyles.css">
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/customStyles.css') }}">
       <title>Выбор пола</title>
    </head>
    <body class="bg-customGray">
@@ -13,8 +13,8 @@
     <header class="flex items-center justify-between p-3 bg-customWhite shadow-md">
       <!-- Logo -->
       <div class="ml-20">
-        <a href="index.html">
-          <img src="/assets/img/svg/logoHead.svg" alt="">
+        <a href="{{ url_for('start_page') }}">
+          <img src="{{ url_for('static', filename='assets/img/svg/logoHead.svg') }}" alt="">
         </a>
       </div>
   
@@ -27,7 +27,7 @@
   
       <!-- Menu Icon -->
       <div class="text-3xl cursor-pointer mr-10">
-        <img src="/assets/img/svg/burger-menu.svg" alt="">
+        <img src="{{ url_for('static', filename='assets/img/svg/burger-menu.svg') }}" alt="">
       </div>
     </header>
 
@@ -35,7 +35,7 @@
         
         <div class="relative">
             <div class="absolute left-1/2 transform -translate-x-1/2 top-0 flex justify-center z-50 shadow-gradient">
-                <img src="/assets/img/png/stilist.png" alt="">
+                <img src="{{ url_for('static', filename='assets/img/png/stilist.png') }}" alt="">
             </div>
         </div>
 
@@ -44,7 +44,7 @@
         <p class="ml-14 mt-80 max-w-screen-sm text-2xl text-center max-h-64 oswald-weight-semibold">Кейсы дают портфолио +100500 очков к опыту: вы не только показываете свою работу, но и рассказываете, почему и зачем сделали так, а не иначе.</p>
 
         <div class="flex justify-end mt-5 mr-10">
-            <img src="/assets/img/svg/shtrikhCode.svg" alt="">
+            <img src="{{ url_for('static', filename='assets/img/svg/shtrikhCode.svg') }}" alt="">
         </div>
 
     </main>
@@ -52,7 +52,7 @@
     <div class="flex flex-col lg:flex-row items-center justify-center min-h-screen">
         <!-- Левая часть с изображением -->
         <div class="w-full lg:w-1/3 flex justify-center mb-6 lg:mb-0">
-          <img src="/assets/img/png/stilist_1.png" alt="Модель" class="object-contain">
+          <img src="{{ url_for('static', filename='assets/img/png/stilist_1.png') }}" alt="Модель" class="object-contain">
         </div>
     
         <!-- Правая часть с текстом -->
@@ -78,41 +78,67 @@
       </div>
 
       <div class="flex justify-center mb-40 mt-10">
-        <img src="/assets/img/png/levels.png" class="" alt="">
+        <img src="{{ url_for('static', filename='assets/img/png/levels.png') }}" class="" alt="">
       </div>
   
     <!-- Footer Section -->
-    <footer class="bg-black text-gray-300 py-8">
-      <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-          <h3 class="mb-2 text-white">Познакомьтесь с нами</h3>
-          <ul>
-            <li><a href="#" class="hover:text-lime-500">FAQ</a></li>
-            <li><a href="#" class="hover:text-lime-500">Наша команда</a></li>
-            <li><a href="#" class="hover:text-lime-500">О продукте</a></li>
-          </ul>
-        </div>
-        <div>
-          <h3 class="mb-2 text-white">Компания</h3>
-          <ul>
-            <li><a href="#" class="hover:text-lime-500">О нас</a></li>
-            <li><a href="#" class="hover:text-lime-500">Стилистам</a></li>
-            <li><a href="#" class="hover:text-lime-500">Контакты</a></li>
-          </ul>
-        </div>
+    <footer class="bg-black text-white py-8">
+      <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Познакомьтесь с нами -->
+          <div>
+              <h3 class="text-xl mb-4 border-b border-white inline-block oswald-weight-medium">Познакомьтесь с нами</h3>
+              <ul class="space-y-2">
+                  <li><a href="{{ url_for('faq') }}" class="hover:text-customGreen oswald-weight-medium">FAQ</a></li>
+                  <li><a href="{{ url_for('team') }}" class="hover:text-customGreen oswald-weight-medium">Наша команда</a></li>
+                  <li><a href="#" class="hover:text-customGreen oswald-weight-medium">Составить капсулу</a></li>
+                  <li><a href="#" class="hover:text-customGreen oswald-weight-medium">Разобрать гардероб</a></li>
+              </ul>
+          </div>
+  
+          <!-- Компания -->
+          <div>
+              <h3 class="text-xl mb-4 border-b border-white inline-block oswald-weight-medium oswald-weight-medium">Компания</h3>
+              <ul class="space-y-2">
+                  <li><a href="{{ url_for('aboutus') }}" class="hover:text-customGreen oswald-weight-medium">О нас</a></li>
+                  <li><a href="{{ url_for('auth_page') }}" class="hover:text-customGreen oswald-weight-medium">Вход в ЛК</a></li>
+                  <li><a href="{{ url_for('contacts') }}" class="hover:text-customGreen oswald-weight-medium">Контакты</a></li>
+              </ul>
+          </div>
+  
+          <!-- Получить услугу -->
+          <div>
+              <h3 class="text-xl mb-4 border-b border-white inline-block oswald-weight-medium">Получить услугу</h3>
+              <div class="flex items-center bg-white rounded-full overflow-hidden mb-4">
+                  <div class="flex-1 flex items-center pl-4">
+                      <img src="{{ url_for('static', filename='assets/img/svg/lupa.svg') }}" alt="Search" class="w-5 h-5">
+                      <input type="text" placeholder="Найти стилиста для услуги..." 
+                             class="w-full px-3 py-2 oswald-weight-medium text-black focus:outline-none">
+                  </div>
+                  <button class="bg-customGreen text-black px-6 py-2 font-bold oswald-weight-medium">
+                      Найти
+                  </button>
+              </div>
+              
+              <div class="flex flex-wrap gap-4">
+                  <button class="bg-customGreen oswald-weight-medium text-black px-6 py-2 rounded-full font-bold hover:bg-opacity-90">
+                      Просмотреть примеры работ
+                  </button>
+                  <button class="bg-customGreen oswald-weight-medium text-black px-6 py-2 rounded-full font-bold hover:bg-opacity-90">
+                      Зарегистрироваться
+                  </button>
+              </div>
+          </div>
+          
       </div>
   
-      <!-- Service Section -->
-      <div class="mt-8 text-center">
-        <h3 class="text-white mb-4">Получить услугу</h3>
-        <div class="flex justify-center items-center">
-          <input type="text" name="workerfinder" placeholder="Поиск стилиста..." class="px-4 py-2 rounded-l-md w-1/2 focus:outline-none">
-          <button class="bg-customGreen text-white px-6 py-2 rounded-r-md">Найти</button>
-        </div>
-        <button class="mt-4 bg-customGreen px-6 py-2 text-black rounded-md">Проверить примеры работ</button>
-        <button class="ml-4 mt-4 bg-lime-500 px-6 py-2 text-black rounded-md">Зарегистрироваться</button>
+      <!-- Нижняя часть футера -->
+      <div class="container mx-auto px-4 mt-8 flex justify-between items-center">
+          <div class="flex gap-4">
+              <a href="#"><img src="{{ url_for('static', filename='assets/img/svg/vk-logo.svg') }}" alt="VK" class="w-6 h-6"></a>
+              <a href="#"><img src="{{ url_for('static', filename='assets/img/svg/tg-logo.svg') }}" alt="Telegram" class="w-6 h-6"></a>
+          </div>
+          <p class="text-base oswald-weight-medium">Copyright © RUSSIA 2024. Все права защищены</p>
       </div>
-      <p class="text-center mt-6 text-gray-500">&copy; 2024 Russia. Все права защищены</p>
-    </footer>
+  </footer>
   </body>
 </html>

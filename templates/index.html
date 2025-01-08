@@ -20,9 +20,9 @@
   
       <!-- Navigation -->
       <nav class="flex space-x-6 gap-5">
-        <button class="bg-black text-customWhite text-xl px-8 py-2 rounded-full hover:bg-gray-800">СТИЛИСТАМ</button>
+        <a href="{{ url_for('stylistam') }}"><button class="bg-black text-customWhite text-xl px-8 py-2 rounded-full hover:bg-gray-800">СТИЛИСТАМ</button></a>
         <button class="bg-black text-customWhite text-xl px-8 py-2 rounded-full hover:bg-gray-800">РАЗБОР ГАРДЕРОБА</button>
-        <button class="bg-black text-customWhite text-xl px-8 py-2 rounded-full hover:bg-gray-800">КАПСУЛА</button>
+        <a href="{{ url_for('capsula') }}"><button class="bg-black text-customWhite text-xl px-8 py-2 rounded-full hover:bg-gray-800">КАПСУЛА</button></a>
       </nav>
   
       <!-- Menu Icon -->
@@ -89,7 +89,7 @@
     <!-- Содержимое меню -->
     <div class="p-8 mt-16">
       <nav class="space-y-4">
-        <a href="#" class="block oswald-weight-medium text-2xl hover:text-customGreen flex items-center gap-3">
+        <a href="{{ url_for('lk') }}" class="block oswald-weight-medium text-2xl hover:text-customGreen flex items-center gap-3">
           <img src="{{ url_for('static', filename='assets/img/svg/profile.svg') }}" alt="" class="w-12 h-12">
           Профиль
         </a>
