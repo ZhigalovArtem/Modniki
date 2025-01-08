@@ -114,8 +114,11 @@ def registrationST_page():
         isStylist = True
         level = 0
 
-        resume = request.files['resume']
-        certificate = request.files['certificate']
+        try:
+            resume = request.files['resume']
+            certificate = request.files['certificate']
+        except Exception as e:
+            pass
         # Сохранение резюме
         if resume:
             resume_filename = secure_filename(resume.filename)
