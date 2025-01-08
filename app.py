@@ -1088,6 +1088,10 @@ def capsula():
 def opencapsula():
     return render_template('opencapsula.html')
 
+@app.route('/headerGarderob')
+def headerGarderob():
+    return render_template('headerGarderob.html')
+
 @app.route('/aboutus')
 def aboutus():
     return render_template('aboutus.html')
