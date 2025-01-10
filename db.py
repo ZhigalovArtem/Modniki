@@ -305,6 +305,15 @@ def update_resume(user_id, resume_path):
     conn.commit()
     conn.close()
 
+# обновление фото профиля
+def update_profile_photo(user_id, photo_path):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('UPDATE users SET photo_path = ? WHERE user_id = ?', (photo_path, user_id))
+    conn.commit()
+    conn.close()
+
 # плучение информации о пользователе по email
 def get_user_info_by_email(email):
     conn = get_db_connection()

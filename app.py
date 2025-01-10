@@ -4,6 +4,7 @@ from flask import Flask, json, jsonify, render_template, request, redirect, send
 from flask_socketio import SocketIO, emit, join_room, leave_room
 import db
 from werkzeug.utils import secure_filename
+import uuid  # Добавить в начало файла с другими импортами
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
@@ -180,6 +181,22 @@ def lk():
             return redirect(url_for('lkST'))
     else:
         return redirect(url_for('auth_page'))
+
+@app.route('/upload_profile_photo', methods=['POST'])
+def upload_profile_photo():
+    if request.method == 'POST':
+        print('upload_profile_photo')
+        # Получаем файл и user_id напрямую из формы
+        photo = request.files['photo']
+        user_id = request.form['user_id']
+        
+        # Получаем расширение файла
+        file_extension = photo.filename.rsplit('.', 1)[1].lower()
+        random_filename = f"{uuid.uuid4()}.{file_extension}"
+        photo_path = os.path.join('./static/uploads/photos', random_filename)
+        photo.save(photo_path)
+        db.update_profile_photo(user_id, photo_path)
+        return jsonify({'success': True, 'photo_path': photo_path})
 
 @app.route('/lkCL')
 def lkCL():
@@ -412,7 +429,7 @@ def handle_send_message(data):
         if chat['user_id'] != user_id:
             second_user_id = chat['user_id']
     # Сохраняем ообщение в БД
-    db.save_message(chat_id, user_id, message) # Сохранение сооб��ения в базу данных
+    db.save_message(chat_id, user_id, message) # Сохранение сообщения в базу данных
 
     # Отправляем сообщение в комнату чата
     room = f"chat_{chat_id}"
@@ -424,7 +441,8 @@ def handle_send_message(data):
     except Exception as e:
         print('ne emit')
     print(f'\nSecond user unreaded: {unreaded_messages_chat}\n')
-    emit('receive_message', {'sender': user_name, 'text': message, 'timestamp': date,}, room=room)
+    print(f'user_info: {user_info["photo_path"]}')
+    emit('receive_message', {'sender': user_name, 'text': message, 'timestamp': date, 'photo_path': user_info['photo_path']}, room=room)
     
 @socketio.on('join_chat') # Выводит сообщение о подключении
 def handle_join_chat(data):
@@ -723,7 +741,7 @@ def anket_chooseJeansForm():
     else:
         return render_template('chooseJeansFormMan.html')
 
-@app.route('/anket-choosePosadka', methods=['POST', 'GET'])  # 25 #### дура ебаная уехала
+@app.route('/anket-choosePosadka', methods=['POST', 'GET'])  # 25
 def anket_choosePosadka():
     email = session['email']
     user_gender = get_gender(email)
@@ -744,7 +762,7 @@ def anket_choosePosadka():
     # else:
     #     return render_template('choosePosadkaMan.html')
 
-@app.route('/anket-chooseJeansLength', methods=['POST', 'GET'])  # 26  #### дура ебаная уехала
+@app.route('/anket-chooseJeansLength', methods=['POST', 'GET'])  # 26
 def anket_chooseJeansLength():
     email = session['email']
     user_gender = get_gender(email)

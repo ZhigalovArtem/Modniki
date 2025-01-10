@@ -39,11 +39,21 @@
       <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
         <div class="flex items-center justify-between">
           <div class="flex items-center">
+            {% for user in recipient %}
+            {% if user.photo_path %}
             <img
-              src="{{ url_for('static', filename= 'assets/img/png/avatarStilist.png') }}"
+              src="{{ url_for('static', filename=user.photo_path.replace('./static', '').replace('\\', '/')) }}"
               alt="Мария"
               class="w-12 h-12 rounded-full mr-4"
             />
+            {% else %}
+            <img
+              src="{{ url_for('static', filename= 'assets/img/png/avatarless.png') }}"
+              alt="Мария"
+              class="w-12 h-12 rounded-full mr-4"
+            />
+            {% endif %}
+            {% endfor %}
             {% for user in recipient %} {% if user.chat_id == chat_id %}
             <h1
               class="text-2xl font-bold text-customBlack oswald-weight-medium"
@@ -68,11 +78,19 @@
           {% for message in messages %}
           {%if message.first_name != username%}
           <li class="flex items-start gap-3">
+            {% if message.photo_path %}
             <img
-              src="{{ url_for('static', filename= 'assets/img/png/avatarStilist.png') }}"
+              src="{{ url_for('static', filename=message.photo_path.replace('./static', '').replace('\\', '/')) }}"
               alt="Мария"
               class="w-8 h-8 rounded-full mt-1"
             />
+            {% else %}
+            <img
+              src="{{ url_for('static', filename= 'assets/img/png/avatarless.png') }}"
+              alt="Мария"
+              class="w-8 h-8 rounded-full mt-1"
+            />
+            {% endif %}
             <div class="bg-gray-100 rounded-lg p-3 max-w-[80%]">
               <div class="font-medium text-customBlack mb-1">
                 {{ message.first_name }}
@@ -86,11 +104,19 @@
           {%endif%}
           {%if message.first_name == username%}
           <li class="flex justify-end gap-3">
+            {% if message.photo_path %}
             <img
-              src="{{ url_for('static', filename= 'assets/img/png/avatarStilist.png') }}"
+              src="{{ url_for('static', filename=message.photo_path.replace('./static', '').replace('\\', '/')) }}"
               alt="Мария"
               class="w-8 h-8 rounded-full mt-1"
             />
+            {% else %}
+            <img
+              src="{{ url_for('static', filename= 'assets/img/png/avatarless.png') }}"
+              alt="Мария"
+              class="w-8 h-8 rounded-full mt-1"
+            />
+            {% endif %}
             <div class="bg-customBlack text-white rounded-lg p-3 max-w-[80%] justify-end">
               <div class="font-medium mb-1">
                 {{ message.first_name }}
@@ -148,7 +174,9 @@
         }`;
         li.innerHTML = `
           <img 
-            src="${isOwnMessage ? '/assets/img/png/avatarClient.png' : `https://ui-avatars.com/api/?name=${data.sender}`}" 
+            src="${isOwnMessage ? 
+              (data.photo_path ? '/static/' + data.photo_path.replace('./static/', '') : '/static/assets/img/png/avatarless.png') : 
+              (data.photo_path ? '/static/' + data.photo_path.replace('./static/', '') : '/static/assets/img/png/avatarless.png')}" 
             alt="${isOwnMessage ? 'You' : data.sender}" 
             class="w-8 h-8 rounded-full mt-1"
           />

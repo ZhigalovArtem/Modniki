@@ -78,9 +78,24 @@
             
             <!-- Profile Info -->
             <div class="flex items-center gap-6 mb-6">
-              <!-- Фото профиля -->
-              <img src="{{ url_for('static', filename='assets/img/png/avatarStilist.png') }}" alt="Фото профиля" class="w-32 h-32 rounded-full border-2 border-customBlack">
-  
+              <!-- Фото профиля с возможностью загрузки -->
+    <div class="relative">
+      <input type="file" 
+             id="profilePhotoInput" 
+             class="hidden" 
+             accept="image/*"
+             onchange="uploadProfilePhoto(this)">
+      <label for="profilePhotoInput" class="cursor-pointer block">
+        {% if user_info.photo_path %}
+          <img src="{{ user_info.photo_path }}" alt="Фото профиля" class="w-32 h-32 rounded-full object-cover">
+        {% else %}
+          <img src="{{ url_for('static', filename='assets/img/png/avatarless.png') }}" alt="Фото профиля" class="w-32 h-32 rounded-full object-cover">
+        {% endif %}
+        <div class="absolute bottom-0 right-0 bg-customGreen p-2 rounded-full">
+          <img src="{{ url_for('static', filename='assets/img/png/avatarless.png') }}" alt="Загрузить фото" class="w-4 h-4">
+        </div>
+      </label>
+    </div>
               <!-- Имя, Фамилия и Возраст -->
               <div>
 
@@ -101,7 +116,7 @@
                 <p class="text-2xl oswald-weight-medium">{{user_info.last_name}}</p>
                 <!-- Рейтинг и звездочки в одной строке -->
                 <div class="flex items-center gap-2">
-                  <p class="text-xl oswald-weight-medium">{{average_score}}</p>
+                  <p class="text-xl oswald-weight-medium">{{average_score|round(2)}}</p>
                   <div class="flex gap-1">
                     <ul class="flex space-x-1">
                       {% for i in range(average_score|round|int) %}
@@ -125,7 +140,11 @@
                       {% for feedback in feedbacks %}
                       <div class="border-2 border-customGreen rounded-lg px-10 py-4 w-full flex-shrink-0">
                         <div class="flex items-center gap-3 mb-2">
+                          {% if feedback.photo_path %}
+                          <img src="{{ url_for('static', filename=feedback.photo_path.replace('./static', '').replace('\\', '/')) }}" alt="Фото клиента" class="w-10 h-10 rounded-full">
+                          {% else %}
                           <img src="{{ url_for('static', filename='assets/img/png/avatarClient.png') }}" alt="Фото клиента" class="w-10 h-10 rounded-full">
+                          {% endif %}
                           <div>
                             <p class="font-medium">{{feedback.first_name}} {{feedback.last_name}}</p>
                             <div class="flex gap-1">
@@ -341,7 +360,11 @@
           {% for user in users %}
           <li class="bg-white p-4 border-2 border-customBlack rounded-lg shadow-md flex items-center justify-between">
             <div class="flex items-center space-x-4">
-              <img src="{{ url_for('static', filename= 'assets/img/png/avatarClient.png') }}" alt="Avatar" class="w-32 h-32 rounded-full object-cover">
+              {% if user.photo_path %}
+              <img src="{{ user.photo_path }}" alt="Avatar" class="w-32 h-32 rounded-full object-cover">
+              {% else %}
+              <img src="{{ url_for('static', filename= 'assets/img/png/avatarless.png') }}" alt="Avatar" class="w-32 h-32 rounded-full object-cover">
+              {% endif %}
               <div>
                 <h3 class="text-xl oswald-weight-medium">{{user.first_name}} {{user.last_name}}</h3>
               </div>
@@ -366,9 +389,13 @@
           {% for order in current_orders %}
           <li class="bg-white p-4 border-2 border-customBlack rounded-lg shadow-md flex items-center justify-between">
             <div class="flex items-center space-x-4">
-              <img src="{{ url_for('static', filename= 'assets/img/png/avatarClient.png') }}" alt="Avatar" class="w-32 h-32 rounded-full object-cover">
+              {% if order.client_photo %}
+              <img src="{{ url_for('static', filename=order.client_photo.replace('./static', '').replace('\\', '/')) }}" alt="Avatar" class="w-32 h-32 rounded-full object-cover">
+              {% else %}
+              <img src="{{ url_for('static', filename= 'assets/img/png/avatarless.png') }}" alt="Avatar" class="w-32 h-32 rounded-full object-cover">
+              {% endif %}
               <div>
-                <h3 class="text-xl oswald-weight-medium">{{order.first_name}} {{order.last_name}}</h3>
+                <h3 class="text-xl oswald-weight-medium">{{order.client_first_name}} {{order.client_last_name}}</h3>
               </div>
             </div>
             <div class="flex flex-col space-y-2">
@@ -406,6 +433,33 @@
       </nav>
     </div>
   </div>
+
+  <script>
+    function uploadProfilePhoto(input) {
+      if (input.files && input.files[0]) {
+        const formData = new FormData();
+        formData.append('photo', input.files[0]);
+        formData.append('user_id', '{{ user_info.user_id }}');
+
+        fetch('/upload_profile_photo', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            location.reload();
+          } else {
+            alert('Ошибка при загрузке фото');
+          }
+        })
+        .catch(error => {
+          console.error('Ошибка:', error);
+          alert('Произошла ошибка при загрузке фото');
+        });
+      }
+    }
+  </script>
   
   
   
