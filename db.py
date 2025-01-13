@@ -403,7 +403,7 @@ def get_completed_orders_stylist(user_id):
     conn.close()
     return [dict(row) for row in rows]
 
-# получение отзыв��в оставленных клиентом
+# получение отзывов оставленных клиентом
 def get_comments(user_id):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -488,7 +488,7 @@ def get_average_score(user_id):
     conn.close()
     return average_score
 
-# З��вершение заказа
+# Звершение заказа
 def complete_order(order_id):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -667,7 +667,7 @@ def mark_chat_as_read(chat_id, user_id): # Вроде должно работа�
     conn.close()
 
 # Функция для получения непрочитанных сообщений
-def get_unread_messages(chat_id, user_id): # ��од вопросом
+def get_unread_messages(chat_id, user_id): # под вопросом
     conn = get_db_connection()
     cursor = conn.cursor()
 
@@ -785,6 +785,7 @@ def get_users_without_chats():
     SELECT DISTINCT u.*, up.*
     FROM users u
     JOIN user_parameters up ON u.user_id = up.user_id
+    JOIN user_anketa ua ON u.user_id = ua.user_id
     WHERE u.stylist = 0
     AND u.user_id NOT IN (
         SELECT user_id 
