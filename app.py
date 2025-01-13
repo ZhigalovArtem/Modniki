@@ -762,7 +762,7 @@ def anket_choosePosadka():
     # else:
     #     return render_template('choosePosadkaMan.html')
 
-@app.route('/anket-chooseJeansLength', methods=['POST', 'GET'])  # 26
+@app.route('/anket-chooseJeansLength', methods=['POST', 'GET'])  # 26 выбор длины джинсов, а там юбки
 def anket_chooseJeansLength():
     email = session['email']
     user_gender = get_gender(email)
